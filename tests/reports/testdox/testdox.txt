@@ -1,24 +1,30 @@
-App\Service\RandomQuote
- [x] Get quote
-
-App\Service\Randomizer
- [x] Get number
-
 App\Entity\Event
- [x] Created date is date time object
- [x] Set location
  [x] Created returns valid date
  [x] Start date returns valid date
  [x] End date returns valid date
+ [x] Set location
  [x] Num tickets zero by default
  [x] Adding tickets
  [x] Adding tickets then removing tickets
  [x] Number tickets cant go below zero
  [x] Number tickets cant go below zero and returns false
+ [x] Is event free
+ [x] Is event not free
+ [x] Is event not free and has a price set
+
+App\Entity\Ticket
+ [x] Price is set
+ [x] Setting event to ticket
+
+App\Service\Randomizer
+ [x] Get number
+
+App\Service\RandomQuote
+ [x] Get quote
 
 App\Webservice\Calls
  [x] Random quote
- [x] Quote
+ [ ] Quote
 
 IndexController
  [x] Routes

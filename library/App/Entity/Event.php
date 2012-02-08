@@ -21,16 +21,25 @@ class Event
     private $_endDate;
     /** @Column(type="string", name="name", length=160) */
     private $_name;
-    /** @Column(type="string", name="location", length=255) */
+    /** @Column(type="string", name="location", length=255, nullable=true) */
     private $_location;
-    /** @Column(type="string", name="description", length=500) */
+    /** @Column(type="string", name="description", length=500, nullable=true) */
     private $_description;
     /** @Column(type="integer", name="num_tickets") */
     private $_numTickets = 0;
-    
-    public function __construct()
+    /** @Column(type="boolean", name="free") */
+    private $_free = true;
+    /** @Column(type="float", name="price") */
+    private $_price = 0;
+
+    public function __construct($name, $start, $end, $location, $tickets)
     {
         $this->setCreated();
+        $this->setName($name);
+        $this->setStartDate(new \DateTime($start));
+        $this->setEndDate(new \DateTime($end));
+        $this->setLocation($location);
+        $this->setNumTickets($tickets);
     }
     
     public function getId()
@@ -136,6 +145,29 @@ class Event
         }
         
         return false;
+    }
+
+    public function isFree()
+    {
+        return $this->_free;
+    }
+
+    public function setFree($isFree)
+    {
+        $this->_free = $isFree;
+        return $this;
+    }
+
+    public function getPrice()
+    {
+        return $this->_price;
+    }
+
+    public function setPrice($price = 0)
+    {
+        $this->_price = $price;
+        $this->setFree(false);
+        return $this;
     }
     
     
