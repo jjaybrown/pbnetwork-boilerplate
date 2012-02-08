@@ -1,0 +1,16 @@
+App\Service\RandomQuote
+ [x] Get quote
+
+App\Service\Randomizer
+ [x] Get number
+
+App\Entity\Event
+ [ ] Created date is date time object
+
+App\Webservice\Calls
+ [x] Random quote
+ [x] Quote
+
+IndexController
+ [x] Routes
+

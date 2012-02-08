@@ -45,6 +45,7 @@ class Site_IndexController extends Zend_Controller_Action
                 $quote = new \App\Entity\Quote();
                 $quote->setAuthor($hit['_source']['author']);
                 $quote->setWording($hit['_source']['wording']);
+                $quote->setSource($hit['_source']['source']);
                 $data[] = $quote;
             }
 
@@ -89,7 +90,8 @@ class Site_IndexController extends Zend_Controller_Action
                 $newQuote = new \App\Entity\Quote();
                 $newQuote->setWording($values['quote']);
                 $newQuote->setAuthor($values['name']);
-
+                $newQuote->setSource($values['source']);
+                
                 try {
                     $this->_em->persist($newQuote);
                     $this->_em->flush();
@@ -151,7 +153,8 @@ class Site_IndexController extends Zend_Controller_Action
        $doc = new Elastica_Document(
            $quote->getId(), array('id' => $quote->getId(),
            'wording' => $quote->getWording(),
-           'author' => $quote->getAuthor())
+           'author' => $quote->getAuthor(),
+           'source' => $quote->getSource())
        );
        // var_dump($doc);exit;
        $type->addDocument($doc);
@@ -169,8 +172,10 @@ class Site_IndexController extends Zend_Controller_Action
                     'label'      => 'Home'
                 ),
                 array(
-                    'uri'        => 'http://zf-boilerplate.com/documentation/',
-                    'label'      => 'Documentation'
+                    'action'        => 'index',
+                    'controller'    => 'index',
+                    'module'        => 'event',
+                    'label'      => 'Events'
                 )
             )
         );

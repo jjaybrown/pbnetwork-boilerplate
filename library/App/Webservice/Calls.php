@@ -40,6 +40,7 @@ class Calls
         if (!is_null($quote)) {
             $response->quote->wording = $quote->getWording();
             $response->quote->author = $quote->getAuthor();
+             $response->quote->source = $quote->getSource();
             return $response;
         } else {
             return new \SoapFault(

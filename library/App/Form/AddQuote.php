@@ -20,6 +20,7 @@ class AddQuote extends \EasyBib_Form
 
         $quote = new \Zend_Form_Element_Textarea('quote');
         $name = new \Zend_Form_Element_Text('name');
+        $source = new \Zend_Form_Element_Text('source');
         $submit = new \Zend_Form_Element_Button('submit');
 
         $quote->setLabel('Your wise words:')
@@ -29,9 +30,12 @@ class AddQuote extends \EasyBib_Form
 
         $name->setLabel('Your name:')
             ->setRequired(true);
+        
+        $source->setLabel('Source:')
+            ->setRequired(true);
 
         $submit->setLabel('List my quote');
-        $this->addElements(array($quote, $name, $submit));
+        $this->addElements(array($quote, $name, $source, $submit));
 
         \EasyBib_Form_Decorator::setFormDecorator(
             $this, \EasyBib_Form_Decorator::BOOTSTRAP, 'submit'

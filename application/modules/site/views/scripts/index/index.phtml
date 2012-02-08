@@ -25,7 +25,7 @@
         <?php foreach($this->data as $quote) { ?>
         <blockquote>
             <p><?php echo $quote; ?></p>
-            <small><?php echo $quote->getAuthor(); ?></small>
+            <small><?php echo $quote->getAuthor(); ?>, <?php echo $quote->getSource()?></small>
         </blockquote>
         <?php } ?>
     </div>

@@ -86,5 +86,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $es = new Elastica_Client();
         Zend_Registry::set('es', $es);
     }
+    
+    public function _initLocaleDateTime()
+    {
+        date_default_timezone_set('Europe/London');
+    }
 
 }

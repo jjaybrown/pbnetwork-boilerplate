@@ -16,7 +16,9 @@ class Quote
     private $_wording;
     /** @Column(type="string", name="author") */
     private $_author;
-
+    /** @Column(type="string", name="source")*/
+    private $_source;
+    
     public function getId()
     {
         return $this->_id;
@@ -43,7 +45,19 @@ class Quote
         $this->_author = $author;
         return $this;
     }
-
+    
+    public function getSource()
+    {
+        return $this->_source;
+    }
+    
+    public function setSource($source)
+    {
+        $this->_source = $source;
+        return $this;
+    }
+    
+    
     public function __toString()
     {
         return $this->getWording();
