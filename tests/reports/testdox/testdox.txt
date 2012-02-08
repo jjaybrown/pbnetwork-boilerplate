@@ -5,7 +5,16 @@ App\Service\Randomizer
  [x] Get number
 
 App\Entity\Event
- [ ] Created date is date time object
+ [x] Created date is date time object
+ [x] Set location
+ [x] Created returns valid date
+ [x] Start date returns valid date
+ [x] End date returns valid date
+ [x] Num tickets zero by default
+ [x] Adding tickets
+ [x] Adding tickets then removing tickets
+ [x] Number tickets cant go below zero
+ [x] Number tickets cant go below zero and returns false
 
 App\Webservice\Calls
  [x] Random quote

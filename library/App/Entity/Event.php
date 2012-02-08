@@ -54,22 +54,22 @@ class Event
         return $this;
     }
     
-    public function getStart()
+    public function getStartDate()
     {
         return $this->_startDate;
     }
     
-    public function setStart(\DateTime $date)
+    public function setStartDate(\DateTime $date)
     {
         $this->_startDate= $date;
     }
     
-    public function getEnd()
+    public function getEndDate()
     {
         return $this->_endDate;
     }
     
-    public function setEnd(\DateTime $date)
+    public function setEndDate(\DateTime $date)
     {
         $this->_endDate= $date;
     }
@@ -128,7 +128,7 @@ class Event
     public function removeTickets($num)
     {
         $available = $this->_numTickets;
-        if($available > 0)
+        if($available - $num >= 0)
         {
             $available -= $num;
             $this->_numTickets = $available;
