@@ -13,7 +13,7 @@ class Ticket
      * @GeneratedValue
      */
     private $_id;
-    /** @Column(type="integer", name="id") */
+    /** @Column(type="integer", name="event_id") */
     private $_event_id;
     /** @Column(type="float", name="price") */
     private $_price = 0;
@@ -57,6 +57,17 @@ class Ticket
         }
 
         return false;
+    }
+    
+    public function getEventId()
+    {
+        return $this->_event_id;
+    }
+    
+    public function setEventId($id)
+    {
+        $this->_event_id = $id;
+        return $this;
     }
 
 }

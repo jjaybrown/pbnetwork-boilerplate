@@ -4,90 +4,92 @@ namespace App\Entity;
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
-class EventTest extends \PHPUnit_Framework_TestCase {
+class EventTest extends \PHPUnit_Framework_TestCase 
+{
+    
+    public function setUp()
+    {
+        $this->event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
+        parent::setUp();
+    }
+    
+    public function tearDown()
+    {
+        $this->ticket = null;
+        parent::TearDown();
+    }
     
     public function testCreatedReturnsValidDate()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->setCreated(new \DateTime("2012-02-01 12:45:00"));
-        $this->assertEquals("2012-02-01 12:45:00", $event->getCreated()->format("Y-m-d H:i:s"));
+        
+        $this->event->setCreated(new \DateTime("2012-02-01 12:45:00"));
+        $this->assertEquals("2012-02-01 12:45:00", $this->event->getCreated()->format("Y-m-d H:i:s"));
     }
     
     public function testStartDateReturnsValidDate()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->setStartDate(new \DateTime("2012-02-01 12:45:00"));
-        $this->assertEquals("2012-02-01 12:45:00", $event->getStartDate()->format("Y-m-d H:i:s"));
+        $this->event->setStartDate(new \DateTime("2012-02-01 12:45:00"));
+        $this->assertEquals("2012-02-01 12:45:00", $this->event->getStartDate()->format("Y-m-d H:i:s"));
     }
     
     public function testEndDateReturnsValidDate()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->setEndDate(new \DateTime("2012-02-01 12:45:00"));
-        $this->assertEquals("2012-02-01 12:45:00", $event->getEndDate()->format("Y-m-d H:i:s"));
+        $this->event->setEndDate(new \DateTime("2012-02-01 12:45:00"));
+        $this->assertEquals("2012-02-01 12:45:00", $this->event->getEndDate()->format("Y-m-d H:i:s"));
     }
     
     public function testSetLocation()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->setLocation("test location");
-        $this->assertEquals("test location", $event->getLocation());
+        $this->event->setLocation("test location");
+        $this->assertEquals("test location", $this->event->getLocation());
     }
     
     public function testNumTicketsZeroByDefault()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $this->assertEquals(0, $event->getNumTickets());
+        $this->assertEquals(0, $this->event->getNumTickets());
     }
     
     public function testAddingTickets()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->addTickets(3);
-        $this->assertEquals(3,$event->getNumTickets());
+        $this->event->addTickets(3);
+        $this->assertEquals(3,$this->event->getNumTickets());
     }
     
     public function testAddingTicketsThenRemovingTickets()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->addTickets(3);
-        $event->removeTickets(1);
-        $this->assertEquals(2,$event->getNumTickets());
+        $this->event->addTickets(3);
+        $this->event->removeTickets(1);
+        $this->assertEquals(2,$this->event->getNumTickets());
     }
     
     public function testNumberTicketsCantGoBelowZero()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->addTickets(3);
-        $event->removeTickets(4);
-        $this->assertEquals(3,$event->getNumTickets());
+        $this->event->addTickets(3);
+        $this->event->removeTickets(4);
+        $this->assertEquals(3,$this->event->getNumTickets());
     }
     
     public function testNumberTicketsCantGoBelowZeroAndReturnsFalse()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->addTickets(3);
-        $this->assertFalse($event->removeTickets(4));
+        $this->event->addTickets(3);
+        $this->assertFalse($this->event->removeTickets(4));
     }
 
     public function testIsEventFree()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $this->assertTrue($event->isFree());
+        $this->assertTrue($this->event->isFree());
     }
 
     public function testIsEventNotFree()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->setFree(false);
-        $this->assertFalse($event->isFree());
+        $this->event->setFree(false);
+        $this->assertFalse($this->event->isFree());
     }
 
     public function testIsEventNotFreeAndHasAPriceSet()
     {
-        $event = new Event("test","2012-02-01 12:45:00","2012-02-01 12:45:00","test location",0);
-        $event->setPrice(2.99);
-        $this->assertFalse($event->isFree());
-        $this->assertEquals(2.99,$event->getPrice());
+        $this->event->setPrice(2.99);
+        $this->assertFalse($this->event->isFree());
+        $this->assertEquals(2.99,$this->event->getPrice());
     }
 }
