@@ -28,14 +28,17 @@ class Event_IndexController extends Zend_Controller_Action
             $this->_redirect('/');
         }*/
         
-        $data = $this->_em->getRepository("\App\Entity\Event")->find(1);
+        /*$data = $this->_em->getRepository("\App\Entity\Event")->find(1);
         Zend_Debug::dump($data);
         Zend_Debug::dump($data->getName());
         Zend_Debug::dump($data->getNumTickets());
         $data->setNumTickets(5);
         $data->removeTickets(3);
         $this->_em->flush();
-        Zend_Debug::dump($data->getNumTickets());
+        Zend_Debug::dump($data->getNumTickets());*/
+        $cart = new \App\Classes\Cart(false);
+        //Zend_Debug::dump($cart);
+        //Zend_Debug::dump($cart->session);
     }
 
 }

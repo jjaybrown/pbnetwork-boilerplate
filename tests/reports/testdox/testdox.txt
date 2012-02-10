@@ -1,9 +1,3 @@
-App\Service\RandomQuote
- [x] Get quote
-
-App\Service\Randomizer
- [x] Get number
-
 App\Entity\Event
  [x] Created returns valid date
  [x] Start date returns valid date
@@ -18,14 +12,19 @@ App\Entity\Event
  [x] Is event not free
  [x] Is event not free and has a price set
 
-App\Entity\Ticket
+App\Classes\Ticket
  [x] Price is set
- [x] Setting event to ticket
  [x] Set event id
+
+App\Service\Randomizer
+ [x] Get number
+
+App\Service\RandomQuote
+ [x] Get quote
 
 App\Webservice\Calls
  [x] Random quote
- [x] Quote
+ [ ] Quote
 
 IndexController
  [x] Routes
