@@ -36,8 +36,8 @@ class Event_IndexController extends Zend_Controller_Action
         $data->removeTickets(3);
         $this->_em->flush();
         Zend_Debug::dump($data->getNumTickets());*/
-        $cart = new \App\Classes\Cart(false);
-        //Zend_Debug::dump($cart);
+        $cart = \App\Entity\Cart::init(true);
+        Zend_Debug::dump($cart);
         //Zend_Debug::dump($cart->session);
     }
 
