@@ -92,4 +92,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         date_default_timezone_set('Europe/London');
     }
 
+    public function initDbSessionHandler()
+    {
+        //Session::start();
+    }
+
 }
