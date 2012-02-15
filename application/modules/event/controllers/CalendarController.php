@@ -9,13 +9,28 @@
  */
 class Event_CalendarController extends Zend_Controller_Action
 {
-    /**
-     *
-     */
+    
+    private $_calendarService = null;
+    
     public function init()
     {
+        $this->_calendarService = new \App\Service\Calendar();
+        $this->_calendarService->setValidDates(0, 11); //11 months back, 4 months forward
     }
+    
+    public function indexAction()
+    {
+        // Build the calendar header data
+        $this->view->monthHeader = $this->_calendarService->getFocusDate()->get("MMMM yyyy");
+        $this->view->calHeader = $this->_calendarService->getCalendarHeaderDataArray();
+        
+         // Build the calendar weekdays data
+        $this->view->calWeekdays = $this->_calendarService->getCalendarWeekdayDataArray();
 
+        // Build the calendar monthdays data
+        $this->view->calMonthDays = $this->_calendarService->getCalendarMonthDayDataArray();
+    }
+    
     /**
      *
      */
@@ -27,23 +42,16 @@ class Event_CalendarController extends Zend_Controller_Action
         $year = $request->getParam('year', date('Y'));
 
         // CalendarService
-        $calendarService = new \App\Service\Calendar("$month $year");
-        $calendarService->setValidDates(0, 0); //11 months back, 4 months forward
-
+        $this->_calendarService->setFocusDate("$month $year");
+        
         // Build the calendar header data
-        $this->view->monthHeader = $calendarService->getFocusDate()->get("MMMM yyyy");
-        $this->view->calHeader = $calendarService->getCalendarHeaderDataArray(
-            'calendar', //controller
-            'view' //action
-        );
-
-        // Build the calendar weekdays data
-        $this->view->calWeekdays = $calendarService->getCalendarWeekdayDataArray();
+        $this->view->monthHeader = $this->_calendarService->getFocusDate()->get("MMMM yyyy");
+        $this->view->calHeader = $this->_calendarService->getCalendarHeaderDataArray();
+        
+         // Build the calendar weekdays data
+        $this->view->calWeekdays = $this->_calendarService->getCalendarWeekdayDataArray();
 
         // Build the calendar monthdays data
-        $this->view->calMonthDays = $calendarService->getCalendarMonthDayDataArray();
-
-        // Render the calendar view script
-        //$this->view->render('view-calendar.php');
+        $this->view->calMonthDays = $this->_calendarService->getCalendarMonthDayDataArray();
     }
 }

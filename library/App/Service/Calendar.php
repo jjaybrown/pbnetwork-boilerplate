@@ -111,14 +111,14 @@ class Calendar
      * @param String $action
      * @return Array $calHeader
      */
-    public function getCalendarHeaderDataArray($controller=null,$action=null)
+    public function getCalendarHeaderDataArray($controller="calendar",$action="view")
     {
         $calHeader = array();
         $focusDate = $this->getFocusDate()->get("MMM yyyy");
         foreach ($this->getValidDates() as $date) {
             $arr = array();
             $arr['id'] = ($date->get('MMM yyyy') == $focusDate) ? 'selected-month' : $date->get('MMMyyyy');
-            if (null == $controller && null !== $action) {
+            if (null !== $controller && null !== $action) {
                 $arr['url'] = array(
                     'controller' => $controller,
                     'action' => $action,
