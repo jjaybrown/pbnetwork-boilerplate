@@ -11,11 +11,21 @@ class Event extends EntityRepository
         return $this->_em->createQuery($stmt)->getResult();
     }
     
-    public function findByEventStartDate(\Zend_Date $startDate)
+    public function findByEventStartMonth(\Zend_Date $startDate)
     {
         $month = $startDate->get('M');
         $year = $startDate->get('yyyy');
-        $stmt = 'SELECT e FROM App\Entity\Event e WHERE MONTH(e.start) = '.$month.' AND YEAR(e.start) = '.$year.' ORDER BY e.id DESC';
+        $stmt = 'SELECT e FROM App\Entity\Event e WHERE SUBSTRING(e._startDate,6,2) = '.$month.' AND SUBSTRING(e._endDate,1,4) = '.$year.' ORDER BY e._startDate DESC';
         return $this->_em->createQuery($stmt)->getResult();
+        
+    }
+    
+    public function findByEventEndMonth(\Zend_Date $endDate)
+    {
+        $month = $endDate->get('M');
+        $year = $endDate->get('yyyy');
+        $stmt = 'SELECT e FROM App\Entity\Event e WHERE SUBSTRING(e._endDate,6,2) = '.$month.' AND SUBSTRING(e._endDate,1,4) = '.$year.' ORDER BY e._endDate DESC';
+        return $this->_em->createQuery($stmt)->getResult();
+        
     }
 }

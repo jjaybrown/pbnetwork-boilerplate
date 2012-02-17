@@ -21,7 +21,7 @@ class Event_CalendarController extends Zend_Controller_Action
     public function init()
     {
         $this->_em = Zend_Registry::get('em');
-        $this->_calendarService = new \App\Service\Calendar();
+        $this->_calendarService = new \App\Service\EventCalendar();
         $this->_calendarService->setValidDates(0, 11); //11 months back, 4 months forward
     }
     
@@ -88,7 +88,8 @@ class Event_CalendarController extends Zend_Controller_Action
 
         // Build the calendar monthdays data
         $this->view->calMonthDays = $this->_calendarService->getCalendarMonthDayDataArray();
-        $this->_getEventsForFocusedMonth($this->_calendarService->getFocusDate());
+        
+        //$this->_getEventsForFocusedMonth($this->_calendarService->getFocusDate());
     }
     
     protected function _getEventsForFocusedMonth(\Zend_Date $focus = null)
@@ -97,8 +98,9 @@ class Event_CalendarController extends Zend_Controller_Action
         if(is_null($focus)){
             $focus = $this->_calendarService->getFocusDate();
         }
+        // Get events for focused month
+        $events = $this->_em->getRepository("\App\Entity\Event")->findByEventStartMonth($focus);
         
-        $data = $this->_em->getRepository("\App\Entity\Event")->findByEventStartDate($focus);
-        Zend_Debug::dump($data);
+        return $events;
     }
 }
