@@ -10,7 +10,15 @@ class Event extends EntityRepository
         $stmt = 'SELECT e FROM App\Entity\Event e ORDER BY e._id DESC';
         return $this->_em->createQuery($stmt)->getResult();
     }
-    
+
+    public function findUpcoming($limit = 10)
+    {
+        $qb = $this->createQueryBuilder("e");
+        $qb->add("orderBy", "e._startDate ASC");
+        $qb->setMaxResults($limit);
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
     public function findByEventStartMonth(\Zend_Date $startDate)
     {
         $month = $startDate->get('M');

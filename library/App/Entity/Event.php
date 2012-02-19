@@ -23,6 +23,8 @@ class Event
     private $_name;
     /** @Column(type="string", name="location", length=255, nullable=true) */
     private $_location;
+    /** @Column(type="string", name="venue", length=255, nullable=true) */
+    private $_venue;
     /** @Column(type="string", name="description", length=500, nullable=true) */
     private $_description;
     /** @Column(type="integer", name="num_tickets") */
@@ -63,19 +65,19 @@ class Event
         return $this;
     }
     
-    public function getStartDate()
+    public function getStartDate($format = 'Y-m-d H:i:s')
     {
-        return $this->_startDate;
+        return $this->_startDate->format($format);
     }
-    
+
     public function setStartDate(\DateTime $date)
     {
         $this->_startDate= $date;
     }
     
-    public function getEndDate()
+    public function getEndDate($format = 'Y-m-d H:i:s')
     {
-        return $this->_endDate;
+        return $this->_endDate->format($format);
     }
     
     public function setEndDate(\DateTime $date)
@@ -85,7 +87,7 @@ class Event
     
     public function getName()
     {
-        return $this->_name;
+        return ucfirst(stripslashes($this->_name));
     }
     
     public function setName($name)
@@ -93,13 +95,24 @@ class Event
         $this->_name = $name;
         return $this;
     }
-    
+
+    public function getVenue()
+    {
+        return $this->_venue;
+    }
+
+    public function setVenue($venue)
+    {
+        $this->_venue = $venue;
+        return $this;
+    }
+
     public function getLocation()
     {
         return $this->_location;
     }
     
-     public function setLocation($location)
+    public function setLocation($location)
     {
         $this->_location = $location;
         return $this;
@@ -165,8 +178,10 @@ class Event
 
     public function setPrice($price = 0)
     {
-        $this->_price = $price;
-        $this->setFree(false);
+        if($price != 0){
+            $this->_price = $price;
+            $this->setFree(false);
+        }
         return $this;
     }
     

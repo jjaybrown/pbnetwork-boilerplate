@@ -1,0 +1,53 @@
+<link rel="stylesheet" type="text/css" href="/css/calendar.css" />
+<div id="calendarWrapper" class="pull-left">
+    <div id="calendarHeader">
+        <a href="<?php echo $this->url($this->previousMonth); ?>">Previous</a>
+        <h2><?php echo $this->monthHeader; ?></h2>
+        <a href="<?php echo $this->url($this->nextMonth); ?>">Next</a>
+    </div>
+    <div id="calendarBody">
+        <table id="calendarTable" border="0" cellpadding="0" cellspacing="0">
+            <tr class="weekdays">
+                <?php foreach ($this->calWeekdays as $arr) : ?>
+                <td class="<?php echo $arr['class']; ?>"><?php echo $arr['dayShortStr']; ?></td>
+                <?php endforeach; ?>
+            </tr>
+            <?php foreach ($this->calMonthDays as $weekNum => $weekArr) : ?>
+            <tr class="days">
+                <?php foreach ($weekArr as $day) : ?>
+                <td class="<?php echo $day->getClass(); ?>">
+                    <span class="dayNum"><?php echo $day->getNum(); ?></span>
+                    <ul>
+                    <?php if($day->hasEvents()){
+                       foreach($day->getEvents() as $key => $event){
+                    ?>
+                        <li>
+                        <?php
+                               if($key <= 4){
+                                    echo $event->getName();
+                               }else{
+                                    echo "see more";
+                               }
+                           }
+                        ?>
+                        </li>
+                    <?php }?>
+                    </ul>
+                </td>
+                <?php endforeach; ?>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</div>
+<div class="pull-right">
+    <h3>Event list</h3>
+    <ul>
+    <?php
+    foreach($this->events as $event){
+        echo "<li><span>".$event->getName()."</span></li>";
+    }
+    ?>
+    </ul>
+</div>
+<div style="clear:both"></div>

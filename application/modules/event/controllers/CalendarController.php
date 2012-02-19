@@ -27,29 +27,8 @@ class Event_CalendarController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        // Build the calendar header data
-        $this->view->monthHeader = $this->_calendarService->getFocusDate()->get("MMMM yyyy");
-        $this->view->previousMonth = array(
-            'controller' => 'calendar',
-            'action' => 'view',
-            'month' => $this->_calendarService->getPrevMonth()->get("M"),
-            'year' => $this->_calendarService->getPrevMonth()->get("yyyy")
-        );
-        
-        $this->view->nextMonth = array(
-            'controller' => 'calendar',
-            'action' => 'view',
-            'month' => $this->_calendarService->getNextMonth()->get("M"),
-            'year' => $this->_calendarService->getNextMonth()->get("yyyy")
-        );
-        
-        //$this->view->calHeader = $this->_calendarService->getCalendarHeaderDataArray();
-        
-         // Build the calendar weekdays data
-        $this->view->calWeekdays = $this->_calendarService->getCalendarWeekdayDataArray();
-
-        // Build the calendar monthdays data
-        $this->view->calMonthDays = $this->_calendarService->getCalendarMonthDayDataArray();
+        // Build calendar
+        $this->_buildCalendar();
     }
     
     /**
@@ -64,7 +43,17 @@ class Event_CalendarController extends Zend_Controller_Action
 
         // Set focus date on calendar service
         $this->_calendarService->setFocusDate("$month $year");
-        
+
+        // Build calendar
+        $this->_buildCalendar();
+    }
+
+    protected function _buildCalendar()
+    {
+        // Populate Calendar Month with events
+        $this->_events = $this->_getEventsForFocusedMonth($this->_calendarService->getFocusDate());
+        $this->_calendarService->setEvents($this->_events);
+
         // Build the calendar header data
         $this->view->monthHeader = $this->_calendarService->getFocusDate()->get("MMMM yyyy");
         $this->view->previousMonth = array(
@@ -73,25 +62,28 @@ class Event_CalendarController extends Zend_Controller_Action
             'month' => $this->_calendarService->getPrevMonth()->get("M"),
             'year' => $this->_calendarService->getPrevMonth()->get("yyyy")
         );
-        
+
         $this->view->nextMonth = array(
             'controller' => 'calendar',
             'action' => 'view',
             'month' => $this->_calendarService->getNextMonth()->get("M"),
             'year' => $this->_calendarService->getNextMonth()->get("yyyy")
         );
-        
+
         //$this->view->calHeader = $this->_calendarService->getCalendarHeaderDataArray();
-        
+
          // Build the calendar weekdays data
         $this->view->calWeekdays = $this->_calendarService->getCalendarWeekdayDataArray();
 
         // Build the calendar monthdays data
         $this->view->calMonthDays = $this->_calendarService->getCalendarMonthDayDataArray();
-        
-        //$this->_getEventsForFocusedMonth($this->_calendarService->getFocusDate());
+
+        // Provide events to view
+        $this->view->events = $this->_events;
+
+        $this->renderScript('calendar/calendar.phtml');
     }
-    
+
     protected function _getEventsForFocusedMonth(\Zend_Date $focus = null)
     {
         // Check if a focused month has been provided
