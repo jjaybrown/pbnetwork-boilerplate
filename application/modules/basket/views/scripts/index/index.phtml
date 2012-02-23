@@ -1,0 +1,44 @@
+<h1>Shopping Basket</h1>
+<?php 
+if(count($this->items) > 0){
+?>
+<table>
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th width="80px">Status</th>
+            <th width="80px">Quantity</th>
+            <th width="180px">Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <? foreach($this->items as $item){ ?>
+        <tr>
+            <td><?=$item->getName();?></td>
+            <td><?=($item->isInStock())? 'In Stock' : 'Out of Stock' ;?></td>
+            <td><?=$item->getQuantity();?></td>
+            <td><?=$item->getPrice();?></td>
+        </tr>
+        <? } ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+            <td>Subtotal: <strong><?=$this->currency.$this->subTotal;?></strong></td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td>Total: <strong><?=$this->currency.$this->total;?></strong></td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td>
+                <a href="<?=$this->url(array('module' => 'basket', 'controller' => 'index', 'action' => 'empty')); ?>">empty basket</a>
+                <a href="">checkout</a>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<? }else{ ?>
+<p>Your shopping basket is currently empty.</p>
+<? } ?>

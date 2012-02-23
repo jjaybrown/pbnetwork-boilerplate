@@ -126,4 +126,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Registry::set('locations', $locations);
     }
 
+    /**
+     * init shopping basket
+     */
+    public function _initBasket()
+    {
+        // Start Zend session
+        Zend_Session::start();
+        // Initilize cart object into session
+        \App\Entity\Cart::init();
+
+        // Define currency - GBP
+        Zend_Registry::set('currency', '&pound;');
+    }
 }

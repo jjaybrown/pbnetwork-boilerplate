@@ -163,6 +163,9 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function headerAction()
     {
+        $namespace = new \Zend_Session_Namespace('cart');
+        $items = $namespace->cart->numItemsInCart;
+
         $container = new Zend_Navigation(
             array(
                 array(
@@ -185,6 +188,12 @@ class Site_IndexController extends Zend_Controller_Action
                             'active' => true
                         )
                     )*/
+                ),
+                array(
+                    'action'     => 'index',
+                    'controller' => 'index',
+                    'module'     => 'basket',
+                    'label'      => 'Basket ( '.$items.' )'
                 )
             )
         );

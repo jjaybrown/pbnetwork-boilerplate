@@ -1,5 +1,5 @@
 <?php
-namespace App\Classes;
+namespace App\Classes\Cart;
 
 class Item
 {
@@ -7,6 +7,7 @@ class Item
     protected $_name;
     protected $_price;
     protected $_quantity = 1;
+    protected $_inStock = true;
 
     public function __construct($code, $name, $price){
         $this->code = $code;
@@ -52,5 +53,14 @@ class Item
 
         return true;
     }
-}
 
+    public function setInStock($inStock = true)
+    {
+        $this->_inStock = $inStock;
+    }
+
+    public function isInStock()
+    {
+        return $this->_inStock;
+    }
+}

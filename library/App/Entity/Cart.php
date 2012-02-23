@@ -47,6 +47,7 @@ class Cart
            $cart = new Cart();
            $session = new \Zend_Session_Namespace('cart');
            $cart->setSessionId(\Zend_Session::getId());
+           $session->cart = $cart;
            if($save)
            {
                // Save cart and it's session
@@ -146,6 +147,7 @@ class Cart
 
     public function addItem(\App\Classes\Item $i){
         $exists = false;
+        // Check if item is already in cart
         foreach($this->_items as $item){
             // Find existing item and increment it's quantity
             if($item->code == $i->code){
@@ -155,6 +157,8 @@ class Cart
             }
         }
 
+        // Item doesn't already exist in cart
+        // Add to cart
         if(!$exists){
             array_push($this->_items, $i);
         }
@@ -189,7 +193,7 @@ class Cart
         $this->_items = array();
         $this->_sub_total = 0;
         $this->_total = 0;
-        $this->_numItemsInCart = 0;
+        $this->numItemsInCart = 0;
     }
 
     public function calcSubTotal(){
@@ -213,12 +217,16 @@ class Cart
     }
 
     public function updateItemsInCartCount(){
-        $this->_numItemsInCart = 0;
+        $this->numItemsInCart = 0;
 
         foreach($this->_items as $item){
-            $this->_numItemsInCart += $item->getQuantity();
+            $this->numItemsInCart += $item->getQuantity();
         }
 
-        return $this->_numItemsInCart;
+        return $this->numItemsInCart;
+    }
+
+    public function getItems(){
+        return $this->_items;
     }
 }
