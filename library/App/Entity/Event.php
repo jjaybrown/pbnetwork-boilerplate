@@ -120,7 +120,7 @@ class Event
     
     public function getDescription()
     {
-        return $this->_description;
+        return stripslashes($this->_description);
     }
     
     public function setDescription($description)

@@ -175,7 +175,16 @@ class Site_IndexController extends Zend_Controller_Action
                     'action'        => 'index',
                     'controller'    => 'index',
                     'module'        => 'event',
-                    'label'      => 'Events'
+                    'label'      => 'Events',
+                    /*'pages' => array(
+                        array(
+                            'action' => 'index',
+                            'controller' => 'calendar',
+                            'module' => 'event',
+                            'label' => 'Calendar',
+                            'active' => true
+                        )
+                    )*/
                 )
             )
         );

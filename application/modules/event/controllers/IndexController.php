@@ -25,6 +25,13 @@ class Event_IndexController extends Zend_Controller_Action
         Zend_Debug::dump($events);
     }
 
+    public function viewAction()
+    {
+        $id = $this->_request->getParam('id');
+        $event = $this->_em->getRepository("\App\Entity\Event")->find($id);
+        $this->view->event = $event;
+    }
+
     public function addAction()
     {
         // Create form

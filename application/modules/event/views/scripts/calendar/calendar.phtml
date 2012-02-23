@@ -24,7 +24,7 @@
                         <li>
                         <?php
                                if($key <= 4){
-                                    echo $event->getName();
+                                    echo "<a href='".$this->url(array('controller' => 'index', 'action' => 'view', 'id' => $event->getId()))."'>".$event->getName()."</a>";
                                }else{
                                     echo "see more";
                                }
