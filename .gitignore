@@ -2,3 +2,5 @@
 .idea
 tests/reports/coverage/*
 data/migrations/*
+index.html
+paintball-network.jpg
