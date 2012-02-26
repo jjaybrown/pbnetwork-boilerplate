@@ -151,8 +151,16 @@ class Cart
         foreach($this->_items as $item){
             // Find existing item and increment it's quantity
             if($item->code == $i->code){
-                $item->addQuantity($i->getQuantity());
+                // Item already exists in cart
                 $exists = true;
+                
+                // Check new quantity doesn't exceed item purchase limit
+                $limit = \Zend_Registry::get('max_purchase_amount');
+                if(($item->getQuantity() + $i->getQuantity()) <= $limit)
+                {
+                    $item->addQuantity($i->getQuantity());
+                }
+                
                 break;
             }
         }
@@ -212,14 +220,16 @@ class Cart
     public function calcSubTotal(){
         // Do we have any items in the cart?
         if(sizeof($this->_items) > 0){
+            $sub = 0;
             foreach($this->_items as $item){
-                $this->_sub_total = ($item->getQuantity() * $item->getPrice());
+               $sub  += ($item->getQuantity() * $item->getPrice());
             }
+            
+            $this->_sub_total = $sub;
         }else{
             // If not sub total should be zero
             $this->_sub_total = 0;
         }
-        
 
         return $this->_sub_total;
     }
