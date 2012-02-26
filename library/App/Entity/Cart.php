@@ -163,11 +163,8 @@ class Cart
             array_push($this->_items, $i);
         }
 
-        // Update number of items in cart
-        $this->updateItemsInCartCount();
-        // Re-calculate the carts sub total and total
-        $this->calcSubTotal();
-        $this->calcTotal();
+        // Update cart
+        $this->updateCart();
     }
 
     /*public function removeItem(\App\Classes\Cart\Item $i){
@@ -201,11 +198,8 @@ class Cart
             }
         }
 
-        // Update number of items in cart
-        $this->updateItemsInCartCount();
-        // Re-calculate the carts sub total and total
-        $this->calcSubTotal();
-        $this->calcTotal();
+        // Update cart
+        $this->updateCart();
     }
 
     public function clearCart(){
@@ -247,5 +241,16 @@ class Cart
 
     public function getItems(){
         return $this->_items;
+    }
+
+    /**
+     * Update entire cart
+     */
+    public function updateCart(){
+         // Update number of items in cart
+        $this->updateItemsInCartCount();
+        // Re-calculate the carts sub total and total
+        $this->calcSubTotal();
+        $this->calcTotal();
     }
 }

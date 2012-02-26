@@ -58,9 +58,10 @@ class Basket_IndexController extends Zend_Controller_Action
                 }
             }
 
-            // Re-calculate basket totals
-            $this->_cart->updateItemsInCartCount();
+            // Update entire cart
+            $this->_cart->updateCart();
 
+            // Redirect back to basket 
             $this->_redirect('/basket/index');
         }
 
