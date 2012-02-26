@@ -151,8 +151,16 @@ class Cart
         foreach($this->_items as $item){
             // Find existing item and increment it's quantity
             if($item->code == $i->code){
-                $item->addQuantity($i->getQuantity());
+                // Item already exists in cart
                 $exists = true;
+                
+                // Check new quantity doesn't exceed item purchase limit
+                $limit = \Zend_Registry::get('max_purchase_amount');
+                if(($item->getQuantity() + $i->getQuantity()) <= $limit)
+                {
+                    $item->addQuantity($i->getQuantity());
+                }
+                
                 break;
             }
         }

@@ -52,9 +52,10 @@ class Event_IndexController extends Zend_Controller_Action
                     $ticket->addQuantity($data['quantity']);
 
                     // Remove allocated tickets from events available tickets
-                    $event->removeTickets($data['quantity']);
+                    /*$event->removeTickets($data['quantity']);
                     $this->_em->persist($event);
-                    $this->_em->flush();
+                    $this->_em->flush();*/
+                    
                     // Add to cart
                     $cart->addItem($ticket);
                     $this->_redirect('/basket');
