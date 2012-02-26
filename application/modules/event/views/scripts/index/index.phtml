@@ -1,1 +1,16 @@
-My Content
+<ul>
+    <?foreach($this->events as $event){?>
+    <li>
+        <h4><a href="<?=$this->url(array(
+            'module' => 'event',
+            'controller' => 'index',
+            'action' => 'view',
+            'id' => $event->getId()
+        ));?>"><?=$event->getName();?></a></h4>
+        <p>Start date: <?=$event->getStartDate('l jS \of F Y')?></p>
+        <p>Start Time: <?=$event->getStartDate('h:i:s A')?></p>
+        <p>Location: <?=$event->getLocation();?></p>
+        <p>Venue: <?=$event->getVenue();?></p>
+    </li>
+    <? }?>
+</ul>

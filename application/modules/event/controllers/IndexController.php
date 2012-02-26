@@ -22,6 +22,7 @@ class Event_IndexController extends Zend_Controller_Action
     {
         // Get 5 upcoming events
         $events = $this->_em->getRepository("\App\Entity\Event")->findUpcoming();
+        $this->view->events = $events;
         Zend_Debug::dump($events);
     }
 
