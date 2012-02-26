@@ -95,7 +95,7 @@ class Basket_IndexController extends Zend_Controller_Action
         $cartForm = new \EasyBib_Form;
         $cartForm->setAction('/basket/index/update')
                 ->setMethod('post')
-                ->setAttrib('id', 'cart');
+                ->setName('cart');
 
         // Create form elements for each item
         foreach($this->_cart->getItems() as $item){
@@ -105,6 +105,7 @@ class Basket_IndexController extends Zend_Controller_Action
             // Set default value to the existing quantity of the item
             $quantity->setValue($item->getQuantity());
 
+            $quantity->setAttrib('onChange', 'document.cart.submit()');
             // Check we have enough tickets to display our max purchase amount
             $max_purchase_amount = \Zend_Registry::get('max_purchase_amount');
 
