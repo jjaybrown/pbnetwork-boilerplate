@@ -184,6 +184,15 @@ class Event
         }
         return $this;
     }
+
+    public function isSoldOut()
+    {
+        if($this->_numTickets == 0){
+            return true;
+        }
+
+        return false;
+    }
     
     
 }

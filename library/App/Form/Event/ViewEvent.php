@@ -3,100 +3,46 @@ namespace App\Form\Event;
 
 class ViewEvent extends \EasyBib_Form
 {
+    protected $_event = null;
+
+    public function __construct($event)
+    {
+        $this->_event = $event;
+        parent::__construct();
+    }
+
     public function init()
     {
-        \ZendX_JQuery::enableForm($this);
-        // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/event/index/add'));
-        $this->setAttrib('id', 'addEvent');
-        $name = new \Zend_Form_Element_Text('name');
-        $start = new \ZendX_JQuery_Form_Element_DatePicker('start', array('jQueryParams' => array('dateFormat' => 'dd-mm-yy')));
-        $end = new \ZendX_JQuery_Form_Element_DatePicker('end', array('jQueryParams' => array('dateFormat' => 'dd-mm-yy')));
-        $location = new \ZendX_JQuery_Form_Element_AutoComplete(
-                "location", array('label' => 'Autocomplete:')
-        );
-        $location->setJQueryParams(array('source' => \Zend_Registry::get('locations')));
-        $venue = new \Zend_Form_Element_Text('venue');
-        $description = new \Zend_Form_Element_Textarea('description');
-        $tickets = new \Zend_Form_Element_Text('tickets');
-        $price = new \Zend_Form_Element_Text('price',array('value' => 0));
+        $this->setAction($this->getView()->baseUrl('/event/index/view/id/'.$this->_event->getId()));
+        $this->setAttrib('id', 'viewEvent');
+        
+        $quantity = new \Zend_Form_Element_Select('quantity');
+        
+        // Check we have enough tickets to display our max purchase amount
+        $max_purchase_amount = \Zend_Registry::get('max_purchase_amount');
+        if($this->_event->getNumTickets() >= $max_purchase_amount)
+        {
+            for($i = 1; $i <= $max_purchase_amount; $i++)
+            {
+                $quantity->addMultiOption($i, $i);
+            }
+        }else{
+            for($i = 1; $i <= $this->_event->getNumTickets(); $i++)
+            {
+                $quantity->addMultiOption($i, $i);
+            }
+        }
+        
         $submit = new \Zend_Form_Element_Button('submit');
 
-        $name->setLabel('Event name:')
-            ->setRequired(true);
-
-        $start->setLabel('Start Date:')
-              ->setRequired(true);
-
-        $end->setLabel('End Date:')
-            ->setRequired(true);
-
-        $location->setLabel('Location:')
-            ->setRequired(true);
-
-        $venue->setLabel('Venue:')
-            ->setRequired(true);
-
-        $description->setLabel('Event Info:')
-            ->setRequired(true)
-            ->setAttrib('rows', '5')
-            ->setTranslator(\Zend_Registry::get('Zend_Translate'));
-
-        $tickets->setLabel('Ticket Allocation:')
-                ->setRequired(true);
-
-        $price->setLabel('Ticket Price:')
-                ->setRequired(false)
-                ->setDescription('If event is free, leave price as 0 (ZERO)');
-
-        $submit->setLabel('Create event');
-        $this->addElements(array($name, $start, $end, $location, $venue, $description, $tickets, $price, $submit));
+        $submit->setLabel('Purchase');
+        $this->addElements(array($quantity, $submit));
 
         // Setup decorators for form elements
         \EasyBib_Form_Decorator::setFormDecorator(
             $this, \EasyBib_Form_Decorator::BOOTSTRAP, 'submit'
         );
-
-        // Setup decorators for jQuery elements
-        $start->setDecorators(array('FormElements'
-            => 'UiWidgetElement',
-            array('BootstrapErrors'),
-            array('Description',
-                array('tag' => 'span', 'class' => 'help-inline')
-            ),
-            array('BootstrapTag', array('class' => 'input')),
-            array('Label'),
-            array('HtmlTag',
-                array('tag' => 'div', 'class' => 'clearfix')
-            )
-         ));
-
-        $end->setDecorators(array('FormElements'
-            => 'UiWidgetElement',
-            array('BootstrapErrors'),
-            array('Description',
-                array('tag' => 'span', 'class' => 'help-inline')
-            ),
-            array('BootstrapTag', array('class' => 'input')),
-            array('Label'),
-            array('HtmlTag',
-                array('tag' => 'div', 'class' => 'clearfix')
-            )
-         ));
-
-        $location->setDecorators(array('FormElements'
-            => 'UiWidgetElement',
-            array('BootstrapErrors'),
-            array('Description',
-                array('tag' => 'span', 'class' => 'help-inline')
-            ),
-            array('BootstrapTag', array('class' => 'input')),
-            array('Label'),
-            array('HtmlTag',
-                array('tag' => 'div', 'class' => 'clearfix')
-            )
-         ));
 
     }
 
@@ -107,5 +53,30 @@ class ViewEvent extends \EasyBib_Form
             throw new \Zend_Form_Exception(__METHOD__ . ' expects an array');
         }
         return parent::isValid($data);
+    }
+
+    public function __set($name, $value)
+    {
+        if ($value instanceof Zend_Form_Element) {
+            $this->addElement($value, $name);
+            return;
+        } elseif ($value instanceof Zend_Form) {
+            $this->addSubForm($value, $name);
+            return;
+        } elseif (is_array($value)) {
+            $this->addDisplayGroup($value, $name);
+            return;
+        } elseif ($value instanceof App\Entity\Event){
+            $this->_event = $value;
+            return;
+        }
+
+        require_once 'Zend/Form/Exception.php';
+        if (is_object($value)) {
+            $type = get_class($value);
+        } else {
+            $type = gettype($value);
+        }
+        throw new Zend_Form_Exception('Only form elements and groups may be overloaded; variable of type "' . $type . '" provided');
     }
 }

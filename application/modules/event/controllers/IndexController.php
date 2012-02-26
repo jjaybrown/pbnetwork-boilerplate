@@ -29,6 +29,40 @@ class Event_IndexController extends Zend_Controller_Action
     {
         $id = $this->_request->getParam('id');
         $event = $this->_em->getRepository("\App\Entity\Event")->find($id);
+
+        $viewEventForm = new \App\Form\Event\ViewEvent($event);
+        if($this->_request->isPost()){
+            if($viewEventForm->isValid($this->_request->getPost())){
+                // Get form data
+                $data = $viewEventForm->getValues();
+
+                if($data['quantity'] > 0){
+                    // Get shopping cart
+                    $namespace = new \Zend_Session_Namespace('cart');
+                    $cart = $namespace->cart;
+
+                    // Create ticket(s)
+                    $ticket = new App\Classes\Cart\Ticket(
+                            $event->getId(),
+                            $event->getName(),
+                            $event->getPrice()
+                    );
+
+                    // Set ticket quantity
+                    $ticket->addQuantity($data['quantity']);
+
+                    // Remove allocated tickets from events available tickets
+                    $event->removeTickets($data['quantity']);
+                    $this->_em->persist($event);
+                    $this->_em->flush();
+                    // Add to cart
+                    $cart->addItem($ticket);
+                    $this->_redirect('/basket');
+                }
+            }
+        }
+
+        $this->view->form = $viewEventForm;
         $this->view->event = $event;
     }
 

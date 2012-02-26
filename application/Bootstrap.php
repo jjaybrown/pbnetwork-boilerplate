@@ -136,6 +136,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         // Initilize cart object into session
         \App\Entity\Cart::init();
 
+        // Set max item quantity available for purchase
+        Zend_Registry::set('max_purchase_amount', 5);
         // Define currency - GBP
         Zend_Registry::set('currency', '&pound;');
     }

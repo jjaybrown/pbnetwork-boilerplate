@@ -145,7 +145,7 @@ class Cart
         return $this;
     }
 
-    public function addItem(\App\Classes\Item $i){
+    public function addItem(\App\Classes\Cart\Item $i){
         $exists = false;
         // Check if item is already in cart
         foreach($this->_items as $item){
@@ -170,10 +170,29 @@ class Cart
         $this->calcTotal();
     }
 
-    public function removeItem(\App\Classes\Item $i){
+    /*public function removeItem(\App\Classes\Cart\Item $i){
         foreach($this->_items as $key => $item){
             // Find our item in cart items
             if($item->code == $i->code){
+                // Once we find the item by code, remove it from array
+                unset($this->_items[$key]);
+                // Re-assign key values
+                array_values($this->_items);
+                break;
+            }
+        }
+
+        // Update number of items in cart
+        $this->updateItemsInCartCount();
+        // Re-calculate the carts sub total and total
+        $this->calcSubTotal();
+        $this->calcTotal();
+    }*/
+
+    public function removeItem($code){
+        foreach($this->_items as $key => $item){
+            // Find our item in cart items
+            if($item->code == $code){
                 // Once we find the item by code, remove it from array
                 unset($this->_items[$key]);
                 // Re-assign key values
