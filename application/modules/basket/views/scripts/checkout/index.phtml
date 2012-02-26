@@ -1,0 +1,62 @@
+<h1>Shopping Basket</h1>
+<?php
+
+$form = $this->basketForm;
+if(count($this->items) > 0){
+?>
+<form name="<?=$form->getName();?>" action="<?=$form->getAction();?>" method="<?=$form->getMethod();?>">
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th width="80px">Status</th>
+                <th width="80px">Quantity</th>
+                <th width="80px">Price</th>
+                <th width="140px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <? foreach($this->items as $item){ ?>
+            <tr>
+                <td><?=$item->getName();?></td>
+                <td><?=($item->isInStock())? 'In Stock' : 'Out of Stock' ;?></td>
+                <td><?=$form->getElement('quantity_'.$item->code);?></td>
+                <td><?=$item->getPrice();?></td>
+                <td><a href="<?=$this->url(array(
+                    'module' => 'basket',
+                    'controller' => 'index',
+                    'action' => 'remove',
+                    'code' => $item->code
+                ))?>">Remove</a></td>
+            </tr>
+            <? } ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <td><?=$form->getElement('update');?></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+                <td></td>
+                <td>Subtotal: <strong><?=$this->currency.$this->subTotal;?></strong></td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>Total: <strong><?=$this->currency.$this->total;?></strong></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>
+                    <a href="<?=$this->url(array('module' => 'basket', 'controller' => 'index', 'action' => 'empty')); ?>">empty basket</a>
+                <td>
+                    <a href="/basket/checkout/paypal/type/SET"><img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;"></a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+<? }else{ ?>
+<p>Your shopping basket is currently empty.</p>
+<? } ?>
