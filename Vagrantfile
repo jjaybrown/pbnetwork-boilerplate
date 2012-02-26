@@ -1,8 +1,8 @@
 Vagrant::Config.run do |config|
   config.vm.customize [
     "modifyvm", :id,
-    "--memory", "1024",
-    "--cpus", "2"
+    "--memory", "512",
+    "--cpus", "1"
   ]
   config.vm.box = "lucid32"
   config.vm.forward_port 80, 8080

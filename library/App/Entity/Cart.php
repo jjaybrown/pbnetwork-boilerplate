@@ -170,10 +170,29 @@ class Cart
         $this->calcTotal();
     }
 
-    public function removeItem(\App\Classes\Cart\Item $i){
+    /*public function removeItem(\App\Classes\Cart\Item $i){
         foreach($this->_items as $key => $item){
             // Find our item in cart items
             if($item->code == $i->code){
+                // Once we find the item by code, remove it from array
+                unset($this->_items[$key]);
+                // Re-assign key values
+                array_values($this->_items);
+                break;
+            }
+        }
+
+        // Update number of items in cart
+        $this->updateItemsInCartCount();
+        // Re-calculate the carts sub total and total
+        $this->calcSubTotal();
+        $this->calcTotal();
+    }*/
+
+    public function removeItem($code){
+        foreach($this->_items as $key => $item){
+            // Find our item in cart items
+            if($item->code == $code){
                 // Once we find the item by code, remove it from array
                 unset($this->_items[$key]);
                 // Re-assign key values
