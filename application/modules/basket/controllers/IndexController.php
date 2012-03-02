@@ -86,6 +86,15 @@ class Basket_IndexController extends Zend_Controller_Action
         $this->_redirect('/basket/index');
     }
 
+    // Test function to remove cart and payment
+    public function trashAction()
+    {
+        // Empty cart
+        $this->_cart->trash();
+        \Zend_Session::namespaceUnset('paypal');
+        $this->_redirect('/basket/index');
+    }
+
     /**
      * Creates the shopping basket form
      * @return Zend Form cartForm - the cart form

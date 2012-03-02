@@ -36,6 +36,36 @@ class Paypal
     private $_token;
 
     /**
+     * The raw data returned for the SET API request
+     * @var mixed rawSET
+     */
+    private $_rawSET = null;
+
+    /**
+     * The raw data returned for the GET API request
+     * @var mixed rawGET
+     */
+    private $_rawGET = null;
+
+    /**
+     * The raw data returned for the DO API request
+     * @var mixed rawDO
+     */
+    private $_rawDO = null;
+
+    /**
+     * Has an error occurred with the payment
+     * @var boolean $error
+     */
+    public $error = false;
+
+    /**
+     * The error message, if an error has occurred
+     * @var mixed $errorMessage
+     */
+    public $errorMessage;
+
+    /**
      * Setup required values to access PayPal services
      * @param mixed $username
      * @param mixed $password
@@ -156,16 +186,20 @@ class Paypal
         // Execute the API operation; see the PPHttpPost function above.
         $httpParsedResponseAr = $this->PPHttpPost('SetExpressCheckout', $nvpStr);
 
+        // Store RAW SET response
+        $this->_rawSET = $httpParsedResponseAr;
+
         if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
                 // Redirect to paypal.com.
                 $this->_token = urldecode($httpParsedResponseAr["TOKEN"]);
                 $payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
-                if("sandbox" === $environment || "beta-sandbox" === $environment) {
-                        $payPalURL = "https://www.$environment.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
+                if("sandbox" === $this->_environment || "beta-sandbox" === $this->_environment) {
+                        $payPalURL = "https://www.$this->_environment.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
                 }
                 header("Location: $payPalURL");
                 exit;
-        } else  {
+        }else{
+            // There was an error send email notification
                 exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
         }
     }
@@ -181,7 +215,9 @@ class Paypal
 
         if(!isset($this->_token))
         {
-            exit('Token not received.');
+            $this->error = true;
+            $this->errorMessage = "Token not received";
+            return false;
         }
 
         // Set request-specific fields.
@@ -194,20 +230,27 @@ class Paypal
         $httpParsedResponseAr = $this->PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 
         if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+                
+                // Store RAW GET response
+                $this->_rawGET = $httpParsedResponseAr;
+
                 // Extract the response details.
                 $this->_payerID = $httpParsedResponseAr['PAYERID'];
-                $street1 = $httpParsedResponseAr["SHIPTOSTREET"];
+                /*$street1 = $httpParsedResponseAr["SHIPTOSTREET"];
                 if(array_key_exists("SHIPTOSTREET2", $httpParsedResponseAr)) {
                         $street2 = $httpParsedResponseAr["SHIPTOSTREET2"];
                 }
                 $city_name = $httpParsedResponseAr["SHIPTOCITY"];
                 $state_province = $httpParsedResponseAr["SHIPTOSTATE"];
                 $postal_code = $httpParsedResponseAr["SHIPTOZIP"];
-                $country_code = $httpParsedResponseAr["SHIPTOCOUNTRYCODE"];
+                $country_code = $httpParsedResponseAr["SHIPTOCOUNTRYCODE"];*/
 
-                exit('Get Express Checkout Details Completed Successfully: '.print_r($httpParsedResponseAr, true));
-        } else  {
-                exit('GetExpressCheckoutDetails failed: ' . print_r($httpParsedResponseAr, true));
+                // Return the response
+                return $httpParsedResponseAr;
+        }else{
+            $this->error = true;
+            $this->errorMessage = $httpParsedResponseAr;
+            return false;
         }
     }
     

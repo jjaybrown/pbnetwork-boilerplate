@@ -51,7 +51,7 @@ class Cart
            if($save)
            {
                // Save cart and it's session
-               $cart->_save();
+               $cart->save();
            }
        }
        
@@ -64,7 +64,7 @@ class Cart
         \Zend_Session::namespaceUnset('cart');
     }
     
-    public function _save(){
+    public function save(){
         $em = \Zend_Registry::get('em');
         $em->persist($this);
         $em->flush();
@@ -110,11 +110,11 @@ class Cart
         return $this;
     }
     
-    public function getCompleted(){
+    public function getCompletedDate(){
         return $this->_completed;
     }
     
-    public function setCompleted(\DateTime $completed){
+    public function setCompletedDate(\DateTime $completed){
         $this->_completed = $completed;
         return $this;
     }
