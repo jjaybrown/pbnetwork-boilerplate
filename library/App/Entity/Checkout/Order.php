@@ -17,8 +17,8 @@ class Order
     
     /** @Column(type="string", name="order_status", length="50") */
     private $_status = "";
-    /** @Column(type="string", name="payment_type", length="50") */
-    private $_paymentType = "";
+    /** @Column(type="string", name="payment_method", length="50") */
+    private $_paymentMethod = "";
     /** @Column(type="string", name="first", length="50", nullable = "true") */
     private $_firstName = "";
     /** @Column(type="string", name="last", length="50", nullable = "true") */
@@ -52,14 +52,14 @@ class Order
        $this->_items = serialize($items);
     }
 
-    public function getPaymentType()
+    public function getPaymentMethod()
     {
 
     }
 
-    public function setPaymentType($type)
+    public function setPaymentMethod($method)
     {
-        $this->_paymentType = $type;
+        $this->_paymentMethod = $method;
         return $this;
     }
 
@@ -107,8 +107,18 @@ class Order
 
     public function save()
     {
+        // Get entity manager
         $em = \Zend_Registry::get('em');
-        $em->persist($this);
-        $em->flush();
+        // Check if this order exists
+        $order = $em->find('App\Entity\Checkout\Order', $this->_id);
+        
+        // Order doesnt exist
+        if(is_null($order)){
+            $em->persist($this);
+            $em->flush();
+            $order = $em->find('App\Entity\Checkout\Order', $this->_id);
+        }
+        
+        return $order;
     }
 }

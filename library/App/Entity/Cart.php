@@ -64,10 +64,19 @@ class Cart
         \Zend_Session::namespaceUnset('cart');
     }
     
-    public function save(){
+    public function save()
+    {
+        // Get entity manager
         $em = \Zend_Registry::get('em');
-        $em->persist($this);
-        $em->flush();
+        // Check if this order exists
+        $order = $em->find('App\Entity\Cart', $this->_id);
+        if(is_null($order)){
+            $em->persist($this);
+            $em->flush();
+            $order = $em->find('App\Entity\Cart', $this->_id);
+        }
+        
+        return $order;
     }
     
     public function getId(){

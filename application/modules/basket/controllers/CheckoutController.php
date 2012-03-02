@@ -47,7 +47,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
             $namespace->paypal = $this->_paypal;
         }
 
-        // Get the order from either the session or create one
+        // Get the order from either the session or create one - DONT GET FROM NAMESPACE USE DOCTRINE PERSIST
         if(\Zend_Session::namespaceIsset('order')){
             $namespace = new \Zend_Session_Namespace('order');
             $this->_order = $namespace->order;
@@ -81,7 +81,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
                 $this->_cart->save();
 
                 // Set payment type for order
-                $this->_order->setPaymentType($this->_cart->getPaymentMethod());
+                $this->_order->setPaymentMethod($this->_cart->getPaymentMethod());
 
                 // Save order state
                 $this->_order->save();
@@ -95,12 +95,18 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
                 // Get the Express Checkout Details of the buyer
                 $response = $this->_paypal->GetExpressCheckoutDetails();
-                die($response);
+
                 // Check if the request was successful
                 if($response)
                 {
-                    // Store details - create new order
+                    // Store details
+                    $this->_order->setFirstName($response['FIRSTNAME']);
+                    $this->_order->setLastName($response['LASTNAME']);
+                    $this->_order->setStreet(urldecode($response['SHIPTOSTREET']));
                     
+                    $this->_order->save();
+                    Zend_Debug::dump($this->_order);
+                    Zend_Debug::dump($this->_order->save());
                    
                 }else if($this->_paypal->error){ // An error occurred
                     // Set cart status

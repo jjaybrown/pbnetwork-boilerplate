@@ -200,7 +200,9 @@ class Paypal
                 exit;
         }else{
             // There was an error send email notification
-                exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
+            exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
+            $this->error = true;
+            $this->errorMessage = $httpParsedResponseAr;
         }
     }
 
