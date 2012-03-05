@@ -14,9 +14,9 @@ class Cart
      * @GeneratedValue 
      */
     private $_id;
-    /** @Column(type="string", name="customer_id") */
+    /** @Column(type="integer", name="customer_id") */
     private $_customer_id = 0;// Temp must assign
-    /** @Column(type="string", name="transaction_id", length="255", unique=true) */
+    /** @Column(type="integer", name="transaction_id", length="255", unique=true) */
     private $_transaction_id = 1;// Temp must assign
     /** @Column(type="string", name="session_id", length="255", unique=true) */
     private $_session_id = "";
@@ -26,16 +26,25 @@ class Cart
     private $_completed;
     /** @Column(type="string", name="payment_method", length="255") */
     private $_payment_method ="";
-    /** @Column(type="decimal", name="subtotal") */
+    /** @Column(type="float", name="subtotal") */
     private $_sub_total = 0;
-    /** @Column(type="decimal", name="total") */
+    /** @Column(type="float", name="total") */
     private $_total = 0;
     /** @Column(type="string", name="status") */
     private $_status = "pending";
-
+    /** @Column(type="string", name="items", length="1000") */
     private $_items = array();
+    /** @Column(type="integer", name="num_items_in_cart") */
     public $numItemsInCart = 0;
-    
+
+    public function  __construct() {
+        // Check if Cart is being constructed from database
+        // Items are serialized for db storage
+        if(!is_array($this->_items)){
+            $this->_items = unserialize($this->_items);
+        }
+    }
+
     public static function init($save = false){
        // Check if an existing cart session exists
        if(\Zend_Session::namespaceIsset('cart'))
@@ -68,15 +77,21 @@ class Cart
     {
         // Get entity manager
         $em = \Zend_Registry::get('em');
-        // Check if this order exists
-        $order = $em->find('App\Entity\Cart', $this->_id);
-        if(is_null($order)){
+        // Check if this cart exists
+        $cart = $em->find('App\Entity\Cart', $this->_id);
+        if(is_null($cart)){
+            // Serialize items ready for being stored
+            $this->_items = serialize($this->_items);
             $em->persist($this);
             $em->flush();
-            $order = $em->find('App\Entity\Cart', $this->_id);
+            $cart = $em->find('App\Entity\Cart', $this->_id);
+        }else{
+            $cart = $em->merge($this);
+            $em->persist($cart);
+            $em->flush();
         }
         
-        return $order;
+        return $cart;
     }
     
     public function getId(){
@@ -156,6 +171,7 @@ class Cart
 
     public function addItem(\App\Classes\Cart\Item $i){
         $exists = false;
+
         // Check if item is already in cart
         foreach($this->_items as $item){
             // Find existing item and increment it's quantity

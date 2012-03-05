@@ -15,6 +15,8 @@ class Order
      */
     private $_id;
     
+    /** @Column(type="integer"), name="cart_id") */
+    private $_cartId;
     /** @Column(type="string", name="order_status", length="50") */
     private $_status = "";
     /** @Column(type="string", name="payment_method", length="50") */
@@ -33,28 +35,40 @@ class Order
     private $_country = "";
     /** @Column(type="string", name="post_code", length="50", nullable = "true") */
     private $_postCode = "";
-    /** @Column(type="text", name="items", length="500") */
+    /** @Column(type="string", name="items", length="1000") */
     private $_items = array();
     /**
      * Constructor
      */
-    public function __construct($status, $items = array()){
-       $this->_status = $status;
-       //$this->_orderDate = \DateTime();
-       /*$this->_paymentType = $paymentType;
-       $this->_firstName = $firstName;
-       $this->_lastName = $lastName;
-       $this->_street = $street;
-       $this->_city = $city;
-       $this->_county = $county;
-       $this->_country = $country;
-       $this->_postCode = $postcode;*/
-       $this->_items = serialize($items);
+    public function __construct($cartId, $status, $items = array()){
+        $this->_cartId = $cartId;
+        $this->_status = $status;
+        //$this->_orderDate = \DateTime();
+        /*$this->_paymentType = $paymentType;
+        $this->_firstName = $firstName;
+        $this->_lastName = $lastName;
+        $this->_street = $street;
+        $this->_city = $city;
+        $this->_county = $county;
+        $this->_country = $country;
+        $this->_postCode = $postcode;*/
+        $this->_items = serialize($items);
+    }
+
+    public function getCartId()
+    {
+        return $this->_cartId;
+    }
+
+    public function setCartId($id)
+    {
+        $this->_cartId = $id;
+        return $this;
     }
 
     public function getPaymentMethod()
     {
-
+        return $this->_paymentMethod;
     }
 
     public function setPaymentMethod($method)
@@ -105,10 +119,22 @@ class Order
         return $this;
     }
 
+    public function getItems()
+    {
+        return unserialize($this->_items);
+    }
+
+    public function setItems(array $items)
+    {
+        $this->_items = serialize($items);
+        return $this;
+    }
+
     public function save()
     {
         // Get entity manager
         $em = \Zend_Registry::get('em');
+
         // Check if this order exists
         $order = $em->find('App\Entity\Checkout\Order', $this->_id);
         
@@ -117,6 +143,10 @@ class Order
             $em->persist($this);
             $em->flush();
             $order = $em->find('App\Entity\Checkout\Order', $this->_id);
+        }else{
+            $order = $em->merge($this);
+            $em->persist($order);
+            $em->flush();
         }
         
         return $order;

@@ -6,13 +6,14 @@ class Item
     public $code;
     protected $_name;
     protected $_price;
-    protected $_quantity = 0;
+    protected $_quantity;
     protected $_inStock = true;
 
     public function __construct($code, $name, $price){
         $this->code = $code;
         $this->_name = $name;
         $this->_price = $price;
+        $this->_quantity = (int)0;
     }
 
     public function getName(){
@@ -35,7 +36,7 @@ class Item
 
     public function setQuantity($num)
     {
-        $this->_quantity = $num;
+        $this->_quantity = (int)$num;
     }
 
     public function getQuantity()
