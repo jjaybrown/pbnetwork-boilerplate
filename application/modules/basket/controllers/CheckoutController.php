@@ -92,7 +92,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
                 $this->_cart->setStatus('setting up payment');
 
                 // Set cart payment method
-                $this->_cart->setPaymentMethod('paypal');
+                $this->_cart->setPaymentMethod($this->_paypal->name);
 
                 // Save cart state
                 $this->_cart->save();
@@ -166,8 +166,8 @@ class Basket_CheckoutController extends Zend_Controller_Action
                     // Save cart
                     $this->_cart->save();
                     
-                    // Change order status
-                    $this->_order->setStatus('paid');
+                    // Save Order
+                    $this->_order->save();
                     
                 }else{
                     // Error occurred during transaction

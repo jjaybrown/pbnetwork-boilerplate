@@ -3,6 +3,12 @@ namespace App\Classes\Checkout\Gateways;
 
 class Paypal
 {
+    /**
+     * Name of gateway
+     * @var mixed name 
+     */
+    public $name = "Paypal ExpressCheckout";
+    
     private $_environment; /* set to live when ready */
 
     /**
