@@ -230,12 +230,12 @@ class Paypal
 
         // Execute the API operation; see the PPHttpPost function above.
         $httpParsedResponseAr = $this->PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
-
+        
+        // Store RAW GET response
+        $this->_rawGET = $httpParsedResponseAr;
+        
         if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
                 
-                // Store RAW GET response
-                $this->_rawGET = $httpParsedResponseAr;
-
                 // Extract the response details.
                 $this->_payerID = $httpParsedResponseAr['PAYERID'];
                 /*$street1 = $httpParsedResponseAr["SHIPTOSTREET"];
@@ -276,11 +276,16 @@ class Paypal
 
         // Execute the API operation; see the PPHttpPost function above.
         $httpParsedResponseAr = $this->PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
-
+        
+        // Store RAW DO response
+        $this->_rawDO = $httpParsedResponseAr;
+        
         if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-                exit('Express Checkout Payment Completed Successfully: '.print_r($httpParsedResponseAr, true));
-        } else  {
-                exit('DoExpressCheckoutPayment failed: ' . print_r($httpParsedResponseAr, true));
+            return $httpParsedResponseAr;
+        }else{
+            $this->error = true;
+            $this->errorMessage = urldecode($httpParsedResponseAr['L_LONGMESSAGE0']);
+            return false;
         }
     }
 }

@@ -32,18 +32,10 @@ class Cart
     private $_total = 0;
     /** @Column(type="string", name="status") */
     private $_status = "pending";
-    /** @Column(type="string", name="items", length="1000") */
+    /** @Column(type="array", name="items") */
     private $_items = array();
     /** @Column(type="integer", name="num_items_in_cart") */
     public $numItemsInCart = 0;
-
-    public function  __construct() {
-        // Check if Cart is being constructed from database
-        // Items are serialized for db storage
-        if(!is_array($this->_items)){
-            $this->_items = unserialize($this->_items);
-        }
-    }
 
     public static function init($save = false){
        // Check if an existing cart session exists
@@ -80,8 +72,6 @@ class Cart
         // Check if this cart exists
         $cart = $em->find('App\Entity\Cart', $this->_id);
         if(is_null($cart)){
-            // Serialize items ready for being stored
-            $this->_items = serialize($this->_items);
             $em->persist($this);
             $em->flush();
             $cart = $em->find('App\Entity\Cart', $this->_id);
@@ -89,6 +79,13 @@ class Cart
             $cart = $em->merge($this);
             $em->persist($cart);
             $em->flush();
+        }
+        
+        // Update session with newly saved cart
+        if(\Zend_Session::namespaceIsset('cart'))
+        { 
+            $session = new \Zend_Session_Namespace('cart');
+            $session->cart = $this;
         }
         
         return $cart;

@@ -35,7 +35,7 @@ class Order
     private $_country = "";
     /** @Column(type="string", name="post_code", length="50", nullable = "true") */
     private $_postCode = "";
-    /** @Column(type="string", name="items", length="1000") */
+    /** @Column(type="array", name="items") */
     private $_items = array();
     /**
      * Constructor
@@ -52,7 +52,7 @@ class Order
         $this->_county = $county;
         $this->_country = $country;
         $this->_postCode = $postcode;*/
-        $this->_items = serialize($items);
+        $this->_items = $items;
     }
 
     public function getCartId()
@@ -63,6 +63,17 @@ class Order
     public function setCartId($id)
     {
         $this->_cartId = $id;
+        return $this;
+    }
+    
+    public function getStatus()
+    {
+        return $this->_status;
+    }
+    
+    public function setStatus($status)
+    {
+        $this->_status = $status;
         return $this;
     }
 
@@ -121,12 +132,12 @@ class Order
 
     public function getItems()
     {
-        return unserialize($this->_items);
+        return $this->_items;
     }
 
     public function setItems(array $items)
     {
-        $this->_items = serialize($items);
+        $this->_items = $items;
         return $this;
     }
 

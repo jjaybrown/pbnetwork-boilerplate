@@ -83,6 +83,11 @@ class Basket_CheckoutController extends Zend_Controller_Action
         switch($this->_request->getParam('type'))
         {
             case "SET":
+                
+                // Reset paypal gateway as this may be another transaction attempt
+                $this->_paypal->error = false;
+                $this->_paypal->errorMessage = "";
+                
                 // Set cart status
                 $this->_cart->setStatus('setting up payment');
 
@@ -109,16 +114,18 @@ class Basket_CheckoutController extends Zend_Controller_Action
                 $response = $this->_paypal->GetExpressCheckoutDetails();
 
                 // Check if the request was successful
-                if($response)
+                if(!$this->_paypal->error)
                 {
                     // Store details
-                    $this->_order->setFirstName($response['FIRSTNAME']);
-                    $this->_order->setLastName($response['LASTNAME']);
+                    $this->_order->setFirstName(urldecode($response['FIRSTNAME']));
+                    $this->_order->setLastName(urldecode($response['LASTNAME']));
                     $this->_order->setStreet(urldecode($response['SHIPTOSTREET']));
+                    $this->_order->setCity($response['SHIPTOCITY']);
+                    $this->_order->setCounty(urldecode($response['SHIPTOSTATE']));
+                    $this->_order->setPostCode(urldecode($response['SHIPTOZIP']));
+                    $this->_order->setCountry(urldecode($response['SHIPTOCOUNTRYNAME']));
                     
                     $this->_order->save();
-                    Zend_Debug::dump($this->_order);
-                    Zend_Debug::dump($this->_order->save());
                    
                 }else if($this->_paypal->error){ // An error occurred
                     // Set cart status
@@ -139,23 +146,36 @@ class Basket_CheckoutController extends Zend_Controller_Action
                 $this->_cart->setStatus('processing payment');
 
                 // Finalise the PayPal transaction
-                $success = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal());
+                $transaction = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal());
 
                 // Check cart transaction was successful
-                if($success){
+                if(!$this->_paypal->error){
                     // Check status of payment
                     
 
-                    // Set cart status
+                    // Set cart and order status
                     $this->_cart->setStatus('paid');
+                    $this->_order->setStatus('paid');
+                    
                     // Set whether the cart transation is comeplete or not
                     $this->_cart->setComplete(true);
+                    
                     // Set date and time of completion
                     $this->_cart->setCompletedDate(new \DateTime());
+                    
+                    // Save cart
+                    $this->_cart->save();
+                    
+                    // Change order status
+                    $this->_order->setStatus('paid');
+                    
                 }else{
                     // Error occurred during transaction
                     // Set cart status
-                    $this->_cart->setStatus('error');
+                    $this->_cart->setStatus('payment error');
+                    // Save cart
+                    $this->_cart->save();
+                    \Zend_Debug::dump($this->_paypal->errorMessage);
                 }
                 break;
         }
