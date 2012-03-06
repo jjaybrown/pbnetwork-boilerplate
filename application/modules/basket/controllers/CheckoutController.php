@@ -115,6 +115,15 @@ class Basket_CheckoutController extends Zend_Controller_Action
         // Save order state
         $this->_order->save();
 
+        // Create transaction
+        $transaction = new App\Entity\Checkout\Transaction(
+                $this->_order->getId(),
+                $this->_cart->getPaymentMethod(),
+                $this->_cart->getStatus(),
+                'paypal SET method',
+                $rawData
+        );
+
         // Setup the Express Checkout Transaction
         $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/GET", "http://localhost:8080/basket/checkout/");
     }
