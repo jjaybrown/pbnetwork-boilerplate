@@ -16,8 +16,6 @@ class Cart
     private $_id;
     /** @Column(type="integer", name="customer_id") */
     private $_customer_id = 0;// Temp must assign
-    /** @Column(type="integer", name="transaction_id", length="255", unique=true) */
-    private $_transaction_id = 1;// Temp must assign
     /** @Column(type="string", name="session_id", length="255", unique=true) */
     private $_session_id = "";
     /** @Column(type="boolean", name="complete") */
@@ -101,15 +99,6 @@ class Cart
     
     public function setCustomerId($id){
         $this->_customer_id = $id;
-        return $this;
-    }
-    
-    public function getTransactionId(){
-        return $this->_transaction_id;
-    }
-    
-    public function setTransactionId($id){
-        $this->_transaction_id = $id;
         return $this;
     }
     
