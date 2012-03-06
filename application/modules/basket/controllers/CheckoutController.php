@@ -83,124 +83,140 @@ class Basket_CheckoutController extends Zend_Controller_Action
         switch($this->_request->getParam('type'))
         {
             case "SET":
-                
-                // Reset paypal gateway as this may be another transaction attempt
-                $this->_paypal->error = false;
-                $this->_paypal->errorMessage = "";
-                
-                // Set cart status
-                $this->_cart->setStatus('setting up payment');
-
-                // Set cart payment method
-                $this->_cart->setPaymentMethod($this->_paypal->name);
-
-                // Save cart state
-                $this->_cart->save();
-
-                // Set payment type for order
-                $this->_order->setPaymentMethod($this->_cart->getPaymentMethod());
-
-                // Save order state
-                $this->_order->save();
-
-                // Setup the Express Checkout Transaction
-                $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/GET", "http://localhost:8080/basket/checkout/");
+                $this->_paypalSetMethod();
                 break;
             case "GET":
-                // Set cart status
-                $this->_cart->setStatus('getting customer details');
-                
-                // Save cart
-                $this->_cart->save();
-                
-                // Get the Express Checkout Details of the buyer
-                $response = $this->_paypal->GetExpressCheckoutDetails();
-
-                // Check if the request was successful
-                if(!$this->_paypal->error)
-                {
-                    // Store details
-                    $this->_order->setFirstName(urldecode($response['FIRSTNAME']));
-                    $this->_order->setLastName(urldecode($response['LASTNAME']));
-                    $this->_order->setStreet(urldecode($response['SHIPTOSTREET']));
-                    $this->_order->setCity($response['SHIPTOCITY']);
-                    $this->_order->setCounty(urldecode($response['SHIPTOSTATE']));
-                    $this->_order->setPostCode(urldecode($response['SHIPTOZIP']));
-                    $this->_order->setCountry(urldecode($response['SHIPTOCOUNTRYNAME']));
-                    
-                    $this->_order->save();
-                   
-                }else if($this->_paypal->error){ // An error occurred
-                    // Set cart status
-                    $this->_cart->setStatus('payment error');
-                    
-                    // Save cart
-                    $this->_cart->save();
-                    
-                    // Output error message to user
-                    $this->_flashMessenger->addMessage($this->paypal->_errorMessage);
-                    
-                    $this->_redirect('/basket/index/');
-                }else{
-                    // Set cart status
-                    $this->_cart->setStatus('transaction failed');
-                    
-                    // Save cart
-                    $this->_cart->save();
-                
-                    // Output error message to user
-                    $this->_flashMessenger->addMessage("Sorry something went wrong, please try again.");
-                    $this->_redirect('/basket/index/');
-                }
-                
+                $this->_paypalGetMethod();
                 break;
             case "DO":
-                // Set cart status
-                $this->_cart->setStatus('processing payment');
-                
-                // Save cart
-                $this->_cart->save();
-                
-                // Finalise the PayPal transaction
-                $transaction = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal());
-
-                // Check cart transaction was successful
-                if(!$this->_paypal->error){
-                    // Check status of payment
-                    
-
-                    // Set cart and order status
-                    $this->_cart->setStatus('paid');
-                    $this->_order->setStatus('paid');
-                    
-                    // Set whether the cart transation is comeplete or not
-                    $this->_cart->setComplete(true);
-                    
-                    // Set date and time of completion
-                    $this->_cart->setCompletedDate(new \DateTime());
-                    
-                    // Save cart
-                    $this->_cart->save();
-                    
-                    // Save Order
-                    $this->_order->save();
-                    
-                    // Forward to order complete page
-                    $this->_redirect('/basket/checkout/complete');
-                    
-                }else{
-                    // Error occurred during transaction
-                    // Set cart status
-                    $this->_cart->setStatus('payment error');
-                    
-                    // Save cart
-                    $this->_cart->save();
-                    \Zend_Debug::dump($this->_paypal->errorMessage);
-                }
+                $this->_paypalDoMethod();
                 break;
         }
     }
-    
+
+    public function _paypalSetMethod()
+    {
+        // Reset paypal gateway as this may be another transaction attempt
+        $this->_paypal->error = false;
+        $this->_paypal->errorMessage = "";
+
+        // Set cart status
+        $this->_cart->setStatus('setting up payment');
+
+        // Set cart payment method
+        $this->_cart->setPaymentMethod($this->_paypal->name);
+
+        // Save cart state
+        $this->_cart->save();
+
+        // Set payment type for order
+        $this->_order->setPaymentMethod($this->_cart->getPaymentMethod());
+
+        // Save order state
+        $this->_order->save();
+
+        // Setup the Express Checkout Transaction
+        $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/GET", "http://localhost:8080/basket/checkout/");
+    }
+
+    public function _paypalGetMethod()
+    {
+        // Set cart status
+        $this->_cart->setStatus('getting customer details');
+
+        // Save cart
+        $this->_cart->save();
+
+        // Get the Express Checkout Details of the buyer
+        $response = $this->_paypal->GetExpressCheckoutDetails();
+
+        // Check if the request was successful
+        if(!$this->_paypal->error)
+        {
+            // Store details
+            $this->_order->setFirstName(urldecode($response['FIRSTNAME']));
+            $this->_order->setLastName(urldecode($response['LASTNAME']));
+            $this->_order->setStreet(urldecode($response['SHIPTOSTREET']));
+            $this->_order->setCity($response['SHIPTOCITY']);
+            $this->_order->setCounty(urldecode($response['SHIPTOSTATE']));
+            $this->_order->setPostCode(urldecode($response['SHIPTOZIP']));
+            $this->_order->setCountry(urldecode($response['SHIPTOCOUNTRYNAME']));
+
+            // Save order
+            $this->_order->save();
+
+            // Direct to pay
+            $this->_redirect('/basket/checkout/paypal/type/DO');
+        }else if($this->_paypal->error){ // An error occurred
+            // Set cart status
+            $this->_cart->setStatus('payment error');
+
+            // Save cart
+            $this->_cart->save();
+
+            // Output error message to user
+            $this->_flashMessenger->addMessage($this->paypal->_errorMessage);
+
+            $this->_redirect('/basket/index/');
+        }else{
+            // Set cart status
+            $this->_cart->setStatus('transaction failed');
+
+            // Save cart
+            $this->_cart->save();
+
+            // Output error message to user
+            $this->_flashMessenger->addMessage("Sorry something went wrong, please try again.");
+            $this->_redirect('/basket/index/');
+        }
+    }
+
+    public function _paypalDoMethod()
+    {
+        // Set cart status
+        $this->_cart->setStatus('processing payment');
+
+        // Save cart
+        $this->_cart->save();
+
+        // Finalise the PayPal transaction
+        $transaction = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal());
+
+        // Check cart transaction was successful
+        if(!$this->_paypal->error){
+            // Check status of payment
+
+
+            // Set cart and order status
+            $this->_cart->setStatus('paid');
+            $this->_order->setStatus('paid');
+
+            // Set whether the cart transation is comeplete or not
+            $this->_cart->setComplete(true);
+
+            // Set date and time of completion
+            $this->_cart->setCompletedDate(new \DateTime());
+
+            // Save cart
+            $this->_cart->save();
+
+            // Save Order
+            $this->_order->save();
+
+            // Forward to order complete page
+            $this->_redirect('/basket/checkout/complete');
+
+        }else{
+            // Error occurred during transaction
+            // Set cart status
+            $this->_cart->setStatus('payment error');
+
+            // Save cart
+            $this->_cart->save();
+            \Zend_Debug::dump($this->_paypal->errorMessage);
+        }
+    }
+
     public function completeAction()
     {
         $this->render('index');
