@@ -109,7 +109,10 @@ class Basket_CheckoutController extends Zend_Controller_Action
             case "GET":
                 // Set cart status
                 $this->_cart->setStatus('getting customer details');
-
+                
+                // Save cart
+                $this->_cart->save();
+                
                 // Get the Express Checkout Details of the buyer
                 $response = $this->_paypal->GetExpressCheckoutDetails();
 
@@ -130,21 +133,34 @@ class Basket_CheckoutController extends Zend_Controller_Action
                 }else if($this->_paypal->error){ // An error occurred
                     // Set cart status
                     $this->_cart->setStatus('payment error');
+                    
+                    // Save cart
+                    $this->_cart->save();
+                    
                     // Output error message to user
                     $this->_flashMessenger->addMessage($this->paypal->_errorMessage);
+                    
                     $this->_redirect('/basket/index/');
                 }else{
                     // Set cart status
                     $this->_cart->setStatus('transaction failed');
+                    
+                    // Save cart
+                    $this->_cart->save();
+                
                     // Output error message to user
                     $this->_flashMessenger->addMessage("Sorry something went wrong, please try again.");
                     $this->_redirect('/basket/index/');
                 }
+                
                 break;
             case "DO":
                 // Set cart status
                 $this->_cart->setStatus('processing payment');
-
+                
+                // Save cart
+                $this->_cart->save();
+                
                 // Finalise the PayPal transaction
                 $transaction = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal());
 
@@ -173,6 +189,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
                     // Error occurred during transaction
                     // Set cart status
                     $this->_cart->setStatus('payment error');
+                    
                     // Save cart
                     $this->_cart->save();
                     \Zend_Debug::dump($this->_paypal->errorMessage);
