@@ -185,6 +185,9 @@ class Basket_CheckoutController extends Zend_Controller_Action
                     // Save Order
                     $this->_order->save();
                     
+                    // Forward to order complete page
+                    $this->_redirect('/basket/checkout/complete');
+                    
                 }else{
                     // Error occurred during transaction
                     // Set cart status
@@ -196,5 +199,22 @@ class Basket_CheckoutController extends Zend_Controller_Action
                 }
                 break;
         }
+    }
+    
+    public function completeAction()
+    {
+        $this->render('index');
+        
+        // Send confirmation email
+        $mail = new \Zend_Mail();
+        $mail->setSubject('Order Confirmation');
+        $mail->setFrom('orders@thepaintballnetwork.co.uk');
+        $mail->addTo('jason.brown.delta@gmail.com');
+        $mail->setBodyText(
+            'Thankyou for you recent order, please find your order details below: \n\n
+             Order Number: '.$this->_order->getId().'\n\n
+             Order Total: £'.$this->_cart->getSubTotal()
+        );
+        $mail->send();
     }
 }

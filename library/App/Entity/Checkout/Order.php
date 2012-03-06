@@ -54,7 +54,11 @@ class Order
         $this->_postCode = $postcode;*/
         $this->_items = $items;
     }
-
+    public function getId()
+    {
+        return $this->_id;
+    }
+    
     public function getCartId()
     {
         return $this->_cartId;
