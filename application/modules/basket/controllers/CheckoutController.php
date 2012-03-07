@@ -189,7 +189,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
         $this->_cart->save();
 
         // Finalise the PayPal transaction
-        $transaction = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal());
+        $transaction = $this->_paypal->DoExpressCheckoutPayment($this->_cart->getSubTotal(), "GBP", "Sale");
 
         // Check cart transaction was successful
         if(!$this->_paypal->error){
