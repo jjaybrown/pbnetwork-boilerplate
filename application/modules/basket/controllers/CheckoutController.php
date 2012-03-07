@@ -125,7 +125,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
         );
 
         // Setup the Express Checkout Transaction
-        $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/GET", "http://localhost:8080/basket/checkout/");
+        $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/GET", "http://localhost:8080/basket/checkout/", "GBP", "Sale");
     }
 
     public function _paypalGetMethod()

@@ -4,7 +4,7 @@ namespace App\Entity\Checkout;
 
 /**
  *@Entity(repositoryClass="App\Repository\Checkout\Transaction")
- * @Table(name="transaction")
+ * @Table(name="transactions")
  */
 
 class Transaction

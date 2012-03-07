@@ -172,9 +172,7 @@ class Paypal
      * @param mixed $returnURL - the URL used when the customer completes the transaction
      * @param cancelURL - the URL used when the customer cancels the transaction
      * @param float $currency - currency used for payment: GBP, EUR, JPY, CAD, AUD etc.
-     * @param mixed $paymentType - type of payment: Authorization, Sale or Order  * @param mixed $cancelURL - the URL used when the customer cancels the transaction
-     * @param mixed $currency - currency used for payment: GBP, EUR, JPY, CAD, AUD etc.
-     * @param mixed $paymentType - type of payment: Authorization, Sale or Order
+     * @param mixed $paymentType - type of payment: Authorization, Sale or Order  
      */
 
     public function SetExpressCheckout($paymentAmount,$returnURL, $cancelURL, $currency = 'GBP', $paymentType = 'Authorization'){

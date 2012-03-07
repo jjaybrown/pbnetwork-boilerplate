@@ -16,7 +16,7 @@ class Cart
     private $_id;
     /** @Column(type="integer", name="customer_id") */
     private $_customer_id = 0;// Temp must assign
-    /** @Column(type="string", name="session_id", length="255", unique=true) */
+    /** @Column(type="string", name="session_id", length="255") */
     private $_session_id = "";
     /** @Column(type="boolean", name="complete") */
     private $_complete = false;
