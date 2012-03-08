@@ -4,4 +4,3 @@ tests/reports/coverage/*
 data/migrations/*
 index.html
 paintball-network.jpg
-application/configs/application.ini
