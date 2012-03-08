@@ -14,26 +14,30 @@ class Transaction
      * @GeneratedValue 
      */
     private $_id;
-    /** @Column(type="integer"), name="order_id") */
+    /** @Column(type="integer", name="order_id") */
     private $_orderId;
-    /** @Column(type="string"), name="gateway") */
+    /** @Column(type="string", name="gateway") */
     private $_gateway;
-    /** @Column(type="string"), name="status") */
+    /** @Column(type="string", name="status") */
     private $_status;
-    /** @Column(type="string"), name="type") */
-    private $_type;
-    /** @Column(type="array"), name="raw_data") */
+    /** @Column(type="string", name="action") */
+    private $_action;
+    /** @Column(type="string", name="notes") */
+    private $_notes;
+    /** @Column(type="array", name="raw_data") */
     private $_rawData;
-    /** @Column(type="datetime"), name="created") */
+    /** @Column(type="datetime", name="created") */
     private $_created;
 
-    public function __construct($orderId, $gateway, $status, $type, $rawData)
+    public function __construct($orderId, $gateway, $status, $action, $notes, $rawData)
     {
         $this->_orderId = $orderId;
         $this->_gateway = $gateway;
         $this->_status = $status;
-        $this->_type = $type;
+        $this->_action = $action;
+        $this->_notes = $notes;
         $this->_rawData = $rawData;
+        $this->_created = new \DateTime;
     }
 
     public function getOrderId()
@@ -68,15 +72,26 @@ class Transaction
         $this->_status = $status;
         return $this;
     }
-
-    public function getType()
+    
+    public function getNotes()
     {
-        return $this->_type;
+        return $this->_notes;
+    }
+    
+    public function setNotes($notes)
+    {
+        $this->_notes = $notes;
+        return $this;
     }
 
-    public function setType($type)
+    public function getAction()
     {
-        $this->_type = $type;
+        return $this->_action;
+    }
+
+    public function setAction($action)
+    {
+        $this->_action = $action;
         return $this;
     }
 

@@ -102,7 +102,27 @@ class Paypal
     {
         $this->_environment = $env;
     }
-
+    
+    public function getPayerId()
+    {
+        return $this->_payerID;
+    }
+    
+    public function getRawGET()
+    {
+        return $this->_rawGET;
+    }
+    
+    public function getRawSET()
+    {
+        return $this->_rawSET;
+    }
+    
+    public function getRawDO()
+    {
+        return $this->_rawDO;
+    }
+    
     /**
      * Send HTTP POST Request
      *

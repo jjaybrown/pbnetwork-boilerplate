@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 /**
  *@Entity(repositoryClass="App\Repository\Event")
  * @Table(name="event") 

@@ -96,36 +96,39 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
     public function _paypalSetMethod()
     {
-        // Reset paypal gateway as this may be another transaction attempt
-        $this->_paypal->error = false;
-        $this->_paypal->errorMessage = "";
+        // Check if this is a response request sent by API SET return URL
+        if($this->_request->getParam('response'))
+        {
+            // Get correlationID
+            
+            // Create a transaction 
+            $this->_paypalTransaction($this->_cart->getStatus(), 'SET','', $this->_paypal->getRawSET());
+            
+            // Redirect to API GET request
+            $this->_redirect('/basket/checkout/paypal/type/GET');
+        }else{ // Initial API SET request
+            // Reset paypal gateway as this may be another transaction attempt
+            $this->_paypal->error = false;
+            $this->_paypal->errorMessage = "";
 
-        // Set cart status
-        $this->_cart->setStatus('setting up payment');
+            // Set cart status
+            $this->_cart->setStatus('setting up payment');
 
-        // Set cart payment method
-        $this->_cart->setPaymentMethod($this->_paypal->name);
+            // Set cart payment method
+            $this->_cart->setPaymentMethod($this->_paypal->name);
 
-        // Save cart state
-        $this->_cart->save();
+            // Save cart state
+            $this->_cart->save();
 
-        // Set payment type for order
-        $this->_order->setPaymentMethod($this->_cart->getPaymentMethod());
+            // Set payment type for order
+            $this->_order->setPaymentMethod($this->_cart->getPaymentMethod());
 
-        // Save order state
-        $this->_order->save();
+            // Save order state
+            $this->_order->save();
 
-        // Create transaction
-        $transaction = new App\Entity\Checkout\Transaction(
-                $this->_order->getId(),
-                $this->_cart->getPaymentMethod(),
-                $this->_cart->getStatus(),
-                'paypal SET method',
-                $rawData
-        );
-
-        // Setup the Express Checkout Transaction
-        $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/GET", "http://localhost:8080/basket/checkout/", "GBP", "Sale");
+            // Setup the Express Checkout Transaction
+            $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/SET/response/true", "http://localhost:8080/basket/checkout/", "GBP", "Sale");
+        }
     }
 
     public function _paypalGetMethod()
@@ -153,9 +156,9 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
             // Save order
             $this->_order->save();
-
+            
             // Direct to pay
-            $this->_redirect('/basket/checkout/paypal/type/DO');
+            $redirect = '/basket/checkout/paypal/type/DO';
         }else if($this->_paypal->error){ // An error occurred
             // Set cart status
             $this->_cart->setStatus('payment error');
@@ -166,7 +169,7 @@ class Basket_CheckoutController extends Zend_Controller_Action
             // Output error message to user
             $this->_flashMessenger->addMessage($this->paypal->_errorMessage);
 
-            $this->_redirect('/basket/index/');
+            $redirect = '/basket/index/';
         }else{
             // Set cart status
             $this->_cart->setStatus('transaction failed');
@@ -176,8 +179,13 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
             // Output error message to user
             $this->_flashMessenger->addMessage("Sorry something went wrong, please try again.");
-            $this->_redirect('/basket/index/');
+
+            $redirect = '/basket/index/';
         }
+        
+        // Create a transaction 
+        $this->_paypalTransaction($this->_cart->getStatus(), 'GET','', $this->_paypal->getRawGET());
+        $this->_redirect($redirect);
     }
 
     public function _paypalDoMethod()
@@ -193,9 +201,6 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
         // Check cart transaction was successful
         if(!$this->_paypal->error){
-            // Check status of payment
-
-
             // Set cart and order status
             $this->_cart->setStatus('paid');
             $this->_order->setStatus('paid');
@@ -211,27 +216,50 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
             // Save Order
             $this->_order->save();
-
-            // Forward to order complete page
-            $this->_redirect('/basket/checkout/complete');
-
-        }else{
-            // Error occurred during transaction
+            
+            // Reset cart and order
+            $this->_cart->trash();
+            
+            $redirect = '/basket/checkout/complete';
+        }else{ // Error occurred during transaction
             // Set cart status
             $this->_cart->setStatus('payment error');
 
             // Save cart
             $this->_cart->save();
             \Zend_Debug::dump($this->_paypal->errorMessage);
+            $redirect = '/basket/checkout/';
         }
+        // Get transaction id
+        $this->_paypalTransaction($this->_cart->getStatus(), 'DO','Transaction Id '.$transaction['TRANSACTIONID'], $this->_paypal->getRawGET());
+        $this->_redirect($redirect);
     }
-
+    
+    protected function _paypalTransaction($status, $type, $notes, $raw)
+    {
+        // Create transaction
+        $transaction = new App\Entity\Checkout\Transaction(
+                $this->_order->getId(),
+                $this->_cart->getPaymentMethod(),
+                $status,
+                $type,
+                $notes,
+                $raw
+        );
+        
+        // Save transaction
+        $this->_em->persist($transaction);
+        $this->_em->flush();
+    }
+    
     public function completeAction()
     {
         $this->render('index');
         
+        $transactions =  $this->_em->getRepository("\App\Entity\Checkout\Transaction")->findBy(array('_orderId' => '22'));
+        \Zend_Debug::dump($transactions);
         // Send confirmation email
-        $mail = new \Zend_Mail();
+        /*$mail = new \Zend_Mail();
         $mail->setSubject('Order Confirmation');
         $mail->setFrom('orders@thepaintballnetwork.co.uk');
         $mail->addTo('jason.brown.delta@gmail.com');
@@ -240,6 +268,6 @@ class Basket_CheckoutController extends Zend_Controller_Action
              Order Number: '.$this->_order->getId().'\n\n
              Order Total: £'.$this->_cart->getSubTotal()
         );
-        $mail->send();
+        $mail->send();*/
     }
 }
