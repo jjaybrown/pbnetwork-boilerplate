@@ -37,35 +37,41 @@ class Basket_CheckoutController extends Zend_Controller_Action
         $this->_em = Zend_Registry::get('em');
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
 
-        // Get the paypal gateway from either the session or create and store in session
-        if(\Zend_Session::namespaceIsset('paypal')){
-            $namespace = new \Zend_Session_Namespace('paypal');
-            $this->_paypal = $namespace->paypal;
-        }else{
-            $namespace = new \Zend_Session_Namespace('paypal');
-            $this->_paypal = new \App\Classes\Checkout\Gateways\Paypal("seller_1330298593_biz_api1.jbfreelance.co.uk", "1330298621", "AD4YlKHKo7SfxDaPWqwPESCGRwSPAsOsQt.YFf.2OzThbSujuH8xOM0M");
-            $namespace->paypal = $this->_paypal;
-        }
-
         // Get shopping cart from session namespace
         $namespace = new \Zend_Session_Namespace('cart');
         $this->_cart = $namespace->cart;
-        
-        // Save shopping cart
-        $this->_cart = $this->_cart->save();
 
-        // Get the order from either the session or create one - DONT GET FROM NAMESPACE USE DOCTRINE PERSIST
-        $this->_order = $this->_em->getRepository("\App\Entity\Checkout\Order")->findOneBy(array('_cartId' => $this->_cart->getId()));
-        // Check of an order already exists for this cart
-        if(is_null($this->_order)){
-            // Create order
-            $this->_order = new \App\Entity\Checkout\Order($this->_cart->getId(), 'pending payment', $this->_cart->getItems());
-        }else{
-            // Update order record
-            $this->_order->setItems($this->_cart->getItems());
+        // Check if Cart has items
+        if($this->_cart->numItemsInCart != 0){
+            // Get the paypal gateway from either the session or create and store in session
+            if(\Zend_Session::namespaceIsset('paypal')){
+                $namespace = new \Zend_Session_Namespace('paypal');
+                $this->_paypal = $namespace->paypal;
+            }else{
+                $namespace = new \Zend_Session_Namespace('paypal');
+                $this->_paypal = new \App\Classes\Checkout\Gateways\Paypal("seller_1330298593_biz_api1.jbfreelance.co.uk", "1330298621", "AD4YlKHKo7SfxDaPWqwPESCGRwSPAsOsQt.YFf.2OzThbSujuH8xOM0M");
+                $namespace->paypal = $this->_paypal;
+            }
+
+            // Save shopping cart
+            $this->_cart = $this->_cart->save();
+
+            // Get the order from either the session or create one - DONT GET FROM NAMESPACE USE DOCTRINE PERSIST
+            $this->_order = $this->_em->getRepository("\App\Entity\Checkout\Order")->findOneBy(array('_cartId' => $this->_cart->getId()));
+            // Check of an order already exists for this cart
+            if(is_null($this->_order)){
+                // Create order
+                $this->_order = new \App\Entity\Checkout\Order($this->_cart->getId(), 'pending payment', $this->_cart->getItems());
+            }else{
+                // Update order record
+                $this->_order->setItems($this->_cart->getItems());
+            }
+
+            $this->_order->save();
+        }else{ // No items
+            // Redirect back to basket
+            $this->_redirect('/basket/');
         }
-
-        $this->_order->save();
     }
 
     public function indexAction()
