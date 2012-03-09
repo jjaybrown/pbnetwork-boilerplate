@@ -43,13 +43,20 @@ class Basket_CheckoutController extends Zend_Controller_Action
 
         // Check if Cart has items
         if($this->_cart->numItemsInCart != 0){
-            // Get the paypal gateway from either the session or create and store in session
+            // Get the paypal gateway from the session
             if(\Zend_Session::namespaceIsset('paypal')){
                 $namespace = new \Zend_Session_Namespace('paypal');
                 $this->_paypal = $namespace->paypal;
-            }else{
+            }else{ // or create and store in session
                 $namespace = new \Zend_Session_Namespace('paypal');
-                $this->_paypal = new \App\Classes\Checkout\Gateways\Paypal("seller_1330298593_biz_api1.jbfreelance.co.uk", "1330298621", "AD4YlKHKo7SfxDaPWqwPESCGRwSPAsOsQt.YFf.2OzThbSujuH8xOM0M");
+
+                // Create new paypal gateway object
+                $this->_paypal = new \App\Classes\Checkout\Gateways\Paypal(
+                    "seller_1330298593_biz_api1.jbfreelance.co.uk",
+                    "1330298621",
+                    "AD4YlKHKo7SfxDaPWqwPESCGRwSPAsOsQt.YFf.2OzThbSujuH8xOM0M"
+                );
+                // Store gateway object in session namespace
                 $namespace->paypal = $this->_paypal;
             }
 
@@ -74,6 +81,9 @@ class Basket_CheckoutController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Checkout index page - wont be accessible in real world, used for debug
+     */
     public function indexAction()
     {
         \Zend_Debug::dump($this->_cart);
@@ -81,6 +91,9 @@ class Basket_CheckoutController extends Zend_Controller_Action
         \Zend_Debug::dump($this->_order);
     }
 
+    /**
+     * Paypal checkout process
+     */
     public function paypalAction()
     {
         \Zend_Debug::dump($this->_paypal);
@@ -89,24 +102,28 @@ class Basket_CheckoutController extends Zend_Controller_Action
         switch($this->_request->getParam('type'))
         {
             case "SET":
+                // Setup the paypal gateway and payment process
                 $this->_paypalSetMethod();
                 break;
             case "GET":
+                // Obtain the customers details
                 $this->_paypalGetMethod();
                 break;
             case "DO":
+                // Complete the payment
                 $this->_paypalDoMethod();
                 break;
         }
     }
 
+    /**
+     * Paypal SET API request wrapper
+     */
     public function _paypalSetMethod()
     {
         // Check if this is a response request sent by API SET return URL
         if($this->_request->getParam('response'))
         {
-            // Get correlationID
-            
             // Create a transaction 
             $this->_paypalTransaction($this->_cart->getStatus(), 'SET','', $this->_paypal->getRawSET());
             
@@ -137,6 +154,9 @@ class Basket_CheckoutController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Paypal GET API request wrapper
+     */
     public function _paypalGetMethod()
     {
         // Set cart status
@@ -194,6 +214,9 @@ class Basket_CheckoutController extends Zend_Controller_Action
         $this->_redirect($redirect);
     }
 
+    /**
+     * Paypal DO API request wrapper
+     */
     public function _paypalDoMethod()
     {
         // Set cart status
@@ -240,7 +263,14 @@ class Basket_CheckoutController extends Zend_Controller_Action
         $this->_paypalTransaction($this->_cart->getStatus(), 'DO','Transaction Id '.$transaction['TRANSACTIONID'], $this->_paypal->getRawGET());
         $this->_redirect($redirect);
     }
-    
+
+    /**
+     * Creates a transaction record
+     * @param string $status - Status of the transaction
+     * @param string $type - Type of transaction being made. i.e. SET, GET, DO
+     * @param string $notes - Additional information related to the transaction
+     * @param mixed $raw - The RAW data dump returned from the gateway provider
+     */
     protected function _paypalTransaction($status, $type, $notes, $raw)
     {
         // Create transaction
@@ -257,7 +287,10 @@ class Basket_CheckoutController extends Zend_Controller_Action
         $this->_em->persist($transaction);
         $this->_em->flush();
     }
-    
+
+    /**
+     * Checkout complete page
+     */
     public function completeAction()
     {
         $this->render('index');

@@ -9,6 +9,16 @@ class Paypal
      */
     public $name = "Paypal ExpressCheckout";
     
+    /**
+     * Paypal API version number
+     * @var string 
+     */
+    private $version = "51.0";
+
+    /**
+     * Paypal Environment - Live, sandbox or beta-sandbox
+     * @var string
+     */
     private $_environment; /* set to live when ready */
 
     /**
@@ -102,22 +112,38 @@ class Paypal
     {
         $this->_environment = $env;
     }
-    
+
+    /**
+     * Returns the payer ID
+     * @return string
+     */
     public function getPayerId()
     {
         return $this->_payerID;
     }
-    
-    public function getRawGET()
-    {
-        return $this->_rawGET;
-    }
-    
+
+    /**
+     * Get the RAW data from a API SET request
+     * @return mixed
+     */
     public function getRawSET()
     {
         return $this->_rawSET;
     }
-    
+
+    /**
+     * Get the RAW data from a API GET request
+     * @return mixed
+     */
+    public function getRawGET()
+    {
+        return $this->_rawGET;
+    }
+
+    /**
+     * Get the RAW data from a API DO request
+     * @return mixed
+     */
     public function getRawDO()
     {
         return $this->_rawDO;
@@ -141,7 +167,7 @@ class Paypal
                 $API_Endpoint = "https://api-3t.$this->_environment.paypal.com/nvp";
         }
 
-        $version = urlencode('51.0');
+        $version = urlencode($this->_version);
 
         // Set the curl parameters.
         $ch = curl_init();
@@ -163,9 +189,13 @@ class Paypal
 
         // Get response from the server.
         $httpResponse = curl_exec($ch);
-
+        /**
+         * @TODO need to supress and handle error gracefully
+         */
         if(!$httpResponse) {
-                exit('$methodName_ failed: '.curl_error($ch).'('.curl_errno($ch).')');
+            // API method failed
+            $this->error = true;
+            $this->errorMessage = '$methodName_ failed: '.curl_error($ch).'('.curl_errno($ch).')';
         }
 
         // Extract the response details.
@@ -179,8 +209,13 @@ class Paypal
                 }
         }
 
+        /**
+         * @TODO need to supress and handle error gracefully
+         */
         if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
-                exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
+            // Invalid HTTP response
+            $this->error = true;
+            $this->errorMessage = "Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.";
         }
 
         return $httpParsedResponseAr;
