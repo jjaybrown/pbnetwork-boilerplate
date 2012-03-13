@@ -2,7 +2,8 @@
 namespace App\Entity;
 
 /**
- * @Table(name="users")
+ * @Entity(repositoryClass="App\Repository\User")
+ * @Table(name="user")
  */
 class User
 {
@@ -24,8 +25,33 @@ class User
     /** @Column(type="string", name="activation_code") */
     private $_activationCode;
     
+    public function __construct()
+    {
+        $this->_username = "";
+        $this->_password = "";
+        $this->_emailAddress = "";
+        $this->_created = new \DateTime();
+        $this->_activate = false;
+        $this->_activationCode = "";
+    }
+    
     public function getId()
     {
         return $this->_id;
+    }
+    
+    public function getUsername()
+    {
+        return $this->_username();
+    }
+    
+    public function getPassword()
+    {
+        return $this->_password;
+    }
+    
+    public function getEmailAddress()
+    {
+        return $this->_emailAddress;
     }
 }
