@@ -1,29 +1,46 @@
 <?php
 
-use App\Form\Auth\Login as Login;
+use App\Form\Auth\Login as LoginForm;
 
-class Site_AuthController extends Zend_Controller_Action
+class Site_AuthController extends App_Controller
 {
-    /**
-     * @var Doctrine\ORM\EntityManager
-     */
-    protected $_em = null;
-
     public function init()
     {
-        $this->_em = Zend_Registry::get('em');
+        parent::init();
     }
-        
+    
+    public function preDispatch()
+    {
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            // If the user is logged in, we don't want to show the login form;
+            // however, the logout action should still be available
+            if ('logout' != $this->getRequest()->getActionName()) {
+                $this->_helper->redirector('index', 'index');
+            }
+        } else {
+            // If they aren't, they can't logout, so that action should 
+            // redirect to the login form
+            if ('logout' == $this->getRequest()->getActionName()) {
+                $this->_helper->redirector('index');
+            }
+        }
+    }
+    
     public function indexAction()
     {
-        $form = new Login();
+        $this->_helper->redirector('login');
+    }
+    
+    public function loginAction()
+    {
+        $form = new LoginForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
             if ($form->isValid($request->getPost())) {
                 if ($this->_process($form->getValues())) {
                     // We're authenticated!
                     //\Zend_Debug::dump($auth->hasIdentity());
-                    //\Zend_Debug::dump($auth->getIdentity());
+                    \Zend_Debug::dump($this->_auth->getIdentity());
                     //$this->_helper->redirector('index', 'index');
                 }else{
                     // Auth failed
@@ -34,6 +51,12 @@ class Site_AuthController extends Zend_Controller_Action
         $this->view->form = $form;
     }
     
+    public function logoutAction()
+    {
+        Zend_Auth::getInstance()->clearIdentity();
+        $this->_helper->redirector('index'); // back to login page
+    }
+    
     protected function _process($values)
     {
         // Get our authentication adapter and check credentials
@@ -41,12 +64,11 @@ class Site_AuthController extends Zend_Controller_Action
         $adapter->setIdentity($values['username']); 
         $adapter->setCredential($values['password']);
 
-        $auth = Zend_Auth::getInstance();
-        $result = $auth->authenticate($adapter);
+        $result = $this->_auth->authenticate($adapter);
 
         if ($result->isValid()) {
             $user = $adapter->getResultRowObject();
-            $auth->getStorage()->write($user);
+            $this->_auth->getStorage()->write($user);
             return true;
         }
         return false;

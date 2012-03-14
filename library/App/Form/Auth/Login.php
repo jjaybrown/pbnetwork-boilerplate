@@ -8,7 +8,7 @@ class Login extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/auth/'));
+        $this->setAction($this->getView()->baseUrl('/auth/login'));
         $this->setAttrib('id', 'login');       
         
         $username = new \Zend_Form_Element_Text('username');
