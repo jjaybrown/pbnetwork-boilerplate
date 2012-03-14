@@ -40,22 +40,24 @@ class Auth extends \Zend_Controller_Plugin_Abstract
             $module = $request->getModuleName();
             $controller = $request->getControllerName();
             $action = $request->getActionName();
-            $resource = /*$module.":".*/$controller;
+            $resource = $module.":".$controller;
             $role = $this->_acl->getCurrentRole();
             
-            // Check if a user is logged in
-            if($this->_auth->hasIdentity())
+            // Check if a user is logged and doesnt have access
+            if($this->_auth->hasIdentity() && !$this->_acl->isAllowed($role, $resource, $action))
             {
-                if(!$this->_acl->isAllowed($role, $resource, $action))
-                {
+                // Direct to unauthorised page
+                $request->setModuleName('site');
+                $request->setControllerName('auth');
+                $request->setActionName('forbidden');
 
-                }
-            }else{ // Not logged in direct to login page
-                $request->setModuleName('Site');
-                $request->setControllerName('Auth');
-                $request->setActionName('Login');
-                
-                $this->getResponse()->appendBody("<p>$role</p>");
+                // Redirect to login page
+                $this->getResponse()->setHttpResponseCode(401);
+            }elseif(!$this->_auth->hasIdentity() && !$this->_acl->isAllowed($role, $resource, $action)){
+                // Not logged in trying to access a restricted page
+                $request->setModuleName('site');
+                $request->setControllerName('auth');
+                $request->setActionName('login');
                 
                 // Redirect to login page
                 $this->getResponse()->setHttpResponseCode(403);

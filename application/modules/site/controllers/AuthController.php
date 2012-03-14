@@ -59,6 +59,11 @@ class Site_AuthController extends AppController
         $this->_helper->redirector('index'); // back to login page
     }
     
+    public function forbiddenAction()
+    {
+        // Log unauthorized access attempt
+    }
+    
     protected function _process($values)
     {
         // Get our authentication adapter and check credentials

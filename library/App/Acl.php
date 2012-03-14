@@ -34,6 +34,7 @@ class Acl extends \Zend_Acl
             
             case 'DB':
                 // Build Acl from database
+                $this->__buildAclFromDb();
                 break;
         }
     }
@@ -50,23 +51,15 @@ class Acl extends \Zend_Acl
         }
         
         // Add the resources
-        
+        //\Zend_Debug::dump(count($this->_config->resources));die;
         // Check theres more than one resource available
-        if(count($this->_config->resources) > 1)
-        {
-            foreach ($this->_config->resources->resource as $resource) {
-                if (!$this->has($resource)) {
-                    $this->addResource(new \Zend_Acl_Resource($resource));
-                }
+        foreach ($this->_config->resources->resource as $resource) {
+            if (!$this->has($resource)) {
+                $this->addResource(new \Zend_Acl_Resource($resource));
             }
-        }else{ // Only one resource available
-            if (!$this->has($this->_config->resources->resource)) {
-                    $this->addResource(new \Zend_Acl_Resource($this->_config->resources->resource));
-                }
         }
         
         $roles = array($this->getCurrentRole());
-
         /*if ($roles[0] == self::AUTH_ROLE) {
             $roles[] = self::AUTH_INACTIVE_MEMBER_ROLE;
         }*/
@@ -84,7 +77,6 @@ class Acl extends \Zend_Acl
                 if (isset($this->_config->roles->{$role}->allow)) {
                     $allow = $this->_config->roles->{$role}->allow;
                     
-                    
                     // always use an array of resources, even if there's only 1
                     if ($allow->resource instanceof \Zend_Config) {
                         $resources = $allow->resource->toArray();
@@ -93,7 +85,9 @@ class Acl extends \Zend_Acl
                     }
 
                     foreach ($resources as $resource) {
+
                         if ($resource === '*') {
+                            
                             $this->allow($role); // global allow
                         } elseif ($resource && $this->has($resource)) {
                             $this->allow($role, $resource);
@@ -101,6 +95,48 @@ class Acl extends \Zend_Acl
                     }
                 }
             }
+        }
+        \Zend_Debug::dump($this);die;
+    }
+    
+    public function __buildAclFromDb()
+    {
+        // Add resources
+        $this->add(new \Zend_Acl_Resource('site:index'));
+        $this->add(new \Zend_Acl_Resource('site:auth'));
+        $this->add(new \Zend_Acl_Resource('event:index'));
+        $this->add(new \Zend_Acl_Resource('event:calendar'));
+        $this->add(new \Zend_Acl_Resource('basket:index'));
+        $this->add(new \Zend_Acl_Resource('basket:checkout'));
+        
+        switch($this->getCurrentRole())
+        {
+            case "Guest":
+                // Create Guest role
+                $role = new \Zend_Acl_Role('Guest');
+                $this->addRole($role);
+                
+                // Setup access rights
+                $this->allow($role, 'site:index',array('index'));
+                $this->allow($role, 'site:auth',array('login'));
+                $this->allow($role, 'event:index',array('index','view'));
+                $this->allow($role, 'event:calendar',array('index', 'view'));
+                $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
+                break;
+            
+            case "Member":
+                // Create Guest role
+                $role = new \Zend_Acl_Role('Member');
+                $this->addRole($role);
+                
+                // Setup access rights
+                $this->allow($role, 'site:index',array('index'));
+                $this->allow($role, 'site:auth',array('login', 'logout'));
+                $this->allow($role, 'event:index',array('index','view', 'add'));
+                $this->allow($role, 'event:calendar',array('index', 'view'));
+                $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
+                $this->allow($role, 'basket:checkout',array('index', 'paypal', 'complete'));
+                break;
         }
     }
     

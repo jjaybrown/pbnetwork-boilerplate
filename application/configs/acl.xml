@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acl xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0">
     <resources>
-        <resource>index</resource>
+        <resource>site:index</resource>
+        <resource>site:auth</resource>
+        <resource>event:index</resource>
+        <resource>event:calendar</resource>
+        <resource>basket:index</resource>
     </resources>
     <roles>
         <Guest label="Guest"></Guest>
         <allow>
-            <resource>*</resource>
+            <resource>site:index</resource>
+            <resource>site:auth</resource>
+            <resource>event:index</resource>
+            <resource>event:calendar</resource>
         </allow>
         <Member label="Member"></Member>
         <allow>
-            <resource>index</resource>
+            <resource>site:index</resource>
+            <resource>basket:index</resource>
         </allow>
     </roles>
 </acl>

@@ -154,7 +154,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
         
         // Create the ACL object from defination
-        $acl = new App\Acl(\App\Acl::XML, $aclDefinition);
+        $acl = new App\Acl(\App\Acl::DB, $aclDefinition);
         
         // Initialise ACL and auth controller plugin
         $fc->registerPlugin(new App\Plugin\Auth($acl));

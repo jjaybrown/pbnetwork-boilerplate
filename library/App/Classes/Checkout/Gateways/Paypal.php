@@ -13,7 +13,7 @@ class Paypal
      * Paypal API version number
      * @var string 
      */
-    private $version = "51.0";
+    private $_version = "51.0";
 
     /**
      * Paypal Environment - Live, sandbox or beta-sandbox
