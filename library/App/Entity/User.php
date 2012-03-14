@@ -3,9 +3,9 @@ namespace App\Entity;
 
 /**
  * @Entity(repositoryClass="App\Repository\User")
- * @Table(name="user")
+ * @Table(name="users")
  */
-class User
+class User implements \Zend_Acl_Role_Interface
 {
     /**
      * @Id @Column(type="integer", name="id")
@@ -24,6 +24,8 @@ class User
     private $_activate;
     /** @Column(type="string", name="activation_code") */
     private $_activationCode;
+    /** @Column(type="string", name="role") */
+    private $_roleId = "Guest";
     
     public function __construct()
     {
@@ -53,5 +55,10 @@ class User
     public function getEmailAddress()
     {
         return $this->_emailAddress;
+    }
+    
+    public function getRoleId()
+    {
+        return $this->_roleId;
     }
 }

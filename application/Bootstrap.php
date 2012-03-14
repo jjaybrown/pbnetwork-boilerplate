@@ -141,4 +141,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         // Define currency - GBP
         Zend_Registry::set('currency', '&pound;');
     }
+    
+    /**
+     * init Front Controller plugins 
+     */
+    public function _initAcl()
+    {
+        $this->bootstrap('frontController');
+        $fc = $this->getResource('frontController');
+        
+        // Define acl from xml
+        $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
+        
+        // Create the ACL object from defination
+        $acl = new App\Acl(\App\Acl::XML, $aclDefinition);
+        
+        // Initialise ACL and auth controller plugin
+        $fc->registerPlugin(new App\Plugin\Auth($acl));
+        
+        return $acl;
+    }
+    
 }

@@ -1,6 +1,8 @@
 <?php
 
-class App_Controller extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
+namespace App;
+
+class Controller extends \Zend_Controller_Action implements \Zend_Acl_Resource_Interface
 {
 
     /**
@@ -27,8 +29,8 @@ class App_Controller extends Zend_Controller_Action implements Zend_Acl_Resource
     
     public function init()
     {
-        $this->_auth = Zend_Auth::getInstance();
-        $this->_em = Zend_Registry::get('em');
+        $this->_auth = \Zend_Auth::getInstance();
+        $this->_em = \Zend_Registry::get('em');
     }
     
     public function getResourceId()

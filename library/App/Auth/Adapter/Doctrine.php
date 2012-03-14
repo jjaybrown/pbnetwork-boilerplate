@@ -144,9 +144,10 @@ class App_Auth_Adapter_Doctrine implements Zend_Auth_Adapter_Interface
         );
 
         try {
+            // Get result as an Array
             $result = $query->getArrayResult();
-            // Set result object
-            $this->resultRowObject = $result;
+            // Get result as an Entity object and store
+            $this->resultRowObject = $query->getResult();
             
             // Count number of items returned
             $resultCount = count($result);

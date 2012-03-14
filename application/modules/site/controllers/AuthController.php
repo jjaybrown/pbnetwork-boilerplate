@@ -1,8 +1,9 @@
 <?php
 
 use App\Form\Auth\Login as LoginForm;
+use App\Controller as AppController;
 
-class Site_AuthController extends App_Controller
+class Site_AuthController extends AppController
 {
     public function init()
     {
@@ -11,24 +12,25 @@ class Site_AuthController extends App_Controller
     
     public function preDispatch()
     {
-        if (Zend_Auth::getInstance()->hasIdentity()) {
+        if ($this->_auth->hasIdentity()) {
             // If the user is logged in, we don't want to show the login form;
             // however, the logout action should still be available
             if ('logout' != $this->getRequest()->getActionName()) {
-                $this->_helper->redirector('index', 'index');
+                //$this->_helper->redirector('index', 'index');
             }
         } else {
             // If they aren't, they can't logout, so that action should 
             // redirect to the login form
             if ('logout' == $this->getRequest()->getActionName()) {
-                $this->_helper->redirector('index');
+                //$this->_helper->redirector('index');
             }
         }
     }
     
     public function indexAction()
     {
-        $this->_helper->redirector('login');
+        //$this->_helper->redirector('login');
+        \Zend_Debug::dump($this->_auth->getIdentity());
     }
     
     public function loginAction()
@@ -68,6 +70,12 @@ class Site_AuthController extends App_Controller
 
         if ($result->isValid()) {
             $user = $adapter->getResultRowObject();
+            
+            // Remove Array index from query
+            if(isset($user[0])){
+                $user = $user[0];
+            }
+            
             $this->_auth->getStorage()->write($user);
             return true;
         }
