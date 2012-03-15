@@ -57,6 +57,11 @@ class User
         return $this->_emailAddress;
     }
     
+    public function getRoleId()
+    {
+        return $this->_roleId;
+    }
+    
     public function _generateActivationCode()
     {
         // Take date object, salt and username and generate a hash
