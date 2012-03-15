@@ -31,6 +31,11 @@ class Basket_CheckoutController extends AppController
         // Get shopping cart from session namespace
         $namespace = new \Zend_Session_Namespace('cart');
         $this->_cart = $namespace->cart;
+        
+        $customer = $this->_auth->getIdentity();
+        
+        // Assign customer id to cart
+        $this->_cart->setCustomerId($customer->getId());
 
         // Check if Cart has items
         if($this->_cart->numItemsInCart != 0){
