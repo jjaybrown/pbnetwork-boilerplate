@@ -244,24 +244,30 @@ class Paypal
 
         // Execute the API operation; see the PPHttpPost function above.
         $httpParsedResponseAr = $this->PPHttpPost('SetExpressCheckout', $nvpStr);
-
-        // Store RAW SET response
-        $this->_rawSET = $httpParsedResponseAr;
-
-        if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-                // Redirect to paypal.com.
-                $this->_token = urldecode($httpParsedResponseAr["TOKEN"]);
-                $payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
-                if("sandbox" === $this->_environment || "beta-sandbox" === $this->_environment) {
-                        $payPalURL = "https://www.$this->_environment.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
-                }
-                header("Location: $payPalURL");
-                exit;
+        
+        // Test that PPHttpPost didn't error
+        if($this->error)
+        {
+            throw new \Zend_Exception($this->errorMessage);
         }else{
-            // There was an error send email notification
-            exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
-            $this->error = true;
-            $this->errorMessage = $httpParsedResponseAr;
+            // Store RAW SET response
+            $this->_rawSET = $httpParsedResponseAr;
+
+            if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+                    // Redirect to paypal.com.
+                    $this->_token = urldecode($httpParsedResponseAr["TOKEN"]);
+                    $payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
+                    if("sandbox" === $this->_environment || "beta-sandbox" === $this->_environment) {
+                            $payPalURL = "https://www.$this->_environment.paypal.com/webscr&cmd=_express-checkout&token=$this->_token";
+                    }
+                    header("Location: $payPalURL");
+                    exit;
+            }else{
+                // There was an error send email notification
+                exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
+                $this->error = true;
+                $this->errorMessage = $httpParsedResponseAr;
+            }
         }
     }
 
@@ -290,28 +296,34 @@ class Paypal
         // Execute the API operation; see the PPHttpPost function above.
         $httpParsedResponseAr = $this->PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
         
-        // Store RAW GET response
-        $this->_rawGET = $httpParsedResponseAr;
-        
-        if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-                
-                // Extract the response details.
-                $this->_payerID = $httpParsedResponseAr['PAYERID'];
-                /*$street1 = $httpParsedResponseAr["SHIPTOSTREET"];
-                if(array_key_exists("SHIPTOSTREET2", $httpParsedResponseAr)) {
-                        $street2 = $httpParsedResponseAr["SHIPTOSTREET2"];
-                }
-                $city_name = $httpParsedResponseAr["SHIPTOCITY"];
-                $state_province = $httpParsedResponseAr["SHIPTOSTATE"];
-                $postal_code = $httpParsedResponseAr["SHIPTOZIP"];
-                $country_code = $httpParsedResponseAr["SHIPTOCOUNTRYCODE"];*/
-
-                // Return the response
-                return $httpParsedResponseAr;
+        // Test that PPHttpPost didn't error
+        if($this->error)
+        {
+            throw new \Zend_Exception($this->errorMessage);
         }else{
-            $this->error = true;
-            $this->errorMessage = $httpParsedResponseAr;
-            return false;
+            // Store RAW GET response
+            $this->_rawGET = $httpParsedResponseAr;
+
+            if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+
+                    // Extract the response details.
+                    $this->_payerID = $httpParsedResponseAr['PAYERID'];
+                    /*$street1 = $httpParsedResponseAr["SHIPTOSTREET"];
+                    if(array_key_exists("SHIPTOSTREET2", $httpParsedResponseAr)) {
+                            $street2 = $httpParsedResponseAr["SHIPTOSTREET2"];
+                    }
+                    $city_name = $httpParsedResponseAr["SHIPTOCITY"];
+                    $state_province = $httpParsedResponseAr["SHIPTOSTATE"];
+                    $postal_code = $httpParsedResponseAr["SHIPTOZIP"];
+                    $country_code = $httpParsedResponseAr["SHIPTOCOUNTRYCODE"];*/
+
+                    // Return the response
+                    return $httpParsedResponseAr;
+            }else{
+                $this->error = true;
+                $this->errorMessage = $httpParsedResponseAr;
+                return false;
+            }
         }
     }
     
@@ -336,15 +348,21 @@ class Paypal
         // Execute the API operation; see the PPHttpPost function above.
         $httpParsedResponseAr = $this->PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
         
-        // Store RAW DO response
-        $this->_rawDO = $httpParsedResponseAr;
-        
-        if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-            return $httpParsedResponseAr;
+        // Test that PPHttpPost didn't error
+        if($this->error)
+        {
+            throw new \Zend_Exception($this->errorMessage);
         }else{
-            $this->error = true;
-            $this->errorMessage = urldecode($httpParsedResponseAr['L_LONGMESSAGE0']);
-            return false;
+            // Store RAW DO response
+            $this->_rawDO = $httpParsedResponseAr;
+
+            if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+                return $httpParsedResponseAr;
+            }else{
+                $this->error = true;
+                $this->errorMessage = urldecode($httpParsedResponseAr['L_LONGMESSAGE0']);
+                return false;
+            }
         }
     }
 }
