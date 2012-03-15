@@ -118,7 +118,7 @@ class Acl extends \Zend_Acl
                 
                 // Setup access rights
                 $this->allow($role, 'site:index',array('index'));
-                $this->allow($role, 'site:auth',array('login'));
+                $this->allow($role, 'site:auth',array('login', 'register'));
                 $this->allow($role, 'event:index',array('index','view'));
                 $this->allow($role, 'event:calendar',array('index', 'view'));
                 $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
@@ -131,7 +131,7 @@ class Acl extends \Zend_Acl
                 
                 // Setup access rights
                 $this->allow($role, 'site:index',array('index'));
-                $this->allow($role, 'site:auth',array('login', 'logout'));
+                $this->allow($role, 'site:auth',array('login', 'logout', 'register'));
                 $this->allow($role, 'event:index',array('index','view', 'add'));
                 $this->allow($role, 'event:calendar',array('index', 'view'));
                 $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));

@@ -5,7 +5,7 @@ namespace App\Entity;
  * @Entity(repositoryClass="App\Repository\User")
  * @Table(name="users")
  */
-class User implements \Zend_Acl_Role_Interface
+class User
 {
     /**
      * @Id @Column(type="integer", name="id")
@@ -25,16 +25,16 @@ class User implements \Zend_Acl_Role_Interface
     /** @Column(type="string", name="activation_code") */
     private $_activationCode;
     /** @Column(type="string", name="role") */
-    private $_roleId = "Guest";
+    private $_roleId = "Member";
     
-    public function __construct()
+    public function __construct($username, $password, $emailAddress)
     {
-        $this->_username = "";
-        $this->_password = "";
-        $this->_emailAddress = "";
+        $this->_username = $username;
+        $this->_password = $password;
+        $this->_emailAddress = $emailAddress;
         $this->_created = new \DateTime();
         $this->_activate = false;
-        $this->_activationCode = "";
+        $this->_activationCode = $this->_generateActivationCode();
     }
     
     public function getId()
@@ -60,5 +60,11 @@ class User implements \Zend_Acl_Role_Interface
     public function getRoleId()
     {
         return $this->_roleId;
+    }
+    
+    public function _generateActivationCode()
+    {
+        // Take date object, salt and username and generate a hash
+        return md5($this->_created->getTimestamp()."salt".$this->_username);
     }
 }
