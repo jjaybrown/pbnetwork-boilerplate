@@ -1,16 +1,8 @@
 <?php
+use App\Controller as AppController;
 
-class Basket_CheckoutController extends Zend_Controller_Action
+class Basket_CheckoutController extends AppController
 {
-    /**
-     * @var Doctrine\ORM\EntityManager
-     */
-    protected $_em = null;
-
-    /**
-     * @var Zend_Controller_Action_Helper
-     */
-    protected $_flashMessenger = null;
 
     /**
      * @var App\Entity\Cart $_cart 
@@ -34,9 +26,8 @@ class Basket_CheckoutController extends Zend_Controller_Action
      */
     public function init()
     {
-        $this->_em = Zend_Registry::get('em');
-        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-
+        parent::init();
+        
         // Get shopping cart from session namespace
         $namespace = new \Zend_Session_Namespace('cart');
         $this->_cart = $namespace->cart;
@@ -96,7 +87,6 @@ class Basket_CheckoutController extends Zend_Controller_Action
      */
     public function paypalAction()
     {
-        \Zend_Debug::dump($this->_paypal);
         $this->render('index');
         
         switch($this->_request->getParam('type'))

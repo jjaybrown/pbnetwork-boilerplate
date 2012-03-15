@@ -29,8 +29,9 @@ class Controller extends \Zend_Controller_Action implements \Zend_Acl_Resource_I
     
     public function init()
     {
-        $this->_auth = \Zend_Auth::getInstance();
         $this->_em = \Zend_Registry::get('em');
+        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        $this->_auth = \Zend_Auth::getInstance();
     }
     
     public function getResourceId()
