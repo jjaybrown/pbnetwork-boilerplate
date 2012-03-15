@@ -27,7 +27,7 @@ class Basket_CheckoutController extends AppController
     public function init()
     {
         parent::init();
-        
+    
         // Get shopping cart from session namespace
         $namespace = new \Zend_Session_Namespace('cart');
         $this->_cart = $namespace->cart;
@@ -246,8 +246,9 @@ class Basket_CheckoutController extends AppController
 
             // Save cart
             $this->_cart->save();
-            \Zend_Debug::dump($this->_paypal->errorMessage);
-            $redirect = '/basket/checkout/';
+            
+            // Throw error message
+            throw new \Zend_Exception($this->_paypal->errorMessage);
         }
         // Get transaction id
         $this->_paypalTransaction($this->_cart->getStatus(), 'DO','Transaction Id '.$transaction['TRANSACTIONID'], $this->_paypal->getRawGET());
