@@ -20,6 +20,8 @@ class User
     private $_emailAddress;
     /** @Column(type="datetime", name="created")*/
     private $_created;
+    /** @Column(type="datetime", name="updated")*/
+    private $_updated;
     /** @Column(type="boolean", name="active")*/
     private $_active = false;
     /** @Column(type="string", name="activation_code") */
@@ -27,14 +29,17 @@ class User
     /** @Column(type="string", name="role") */
     private $_roleId = "Member";
     
+    private $_salt;
+    
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;
         // Treat password with salt
-        $salt = \Zend_Registry::get('salt'); 
+        $this->_salt = \Zend_Registry::get('salt'); 
         $this->_password = SHA1($salt.$password);
         $this->_emailAddress = $emailAddress;
         $this->_created = new \DateTime();
+        $this->_updated = new \DateTime();
         $this->_activationCode = $this->_generateActivationCode();
     }
     
@@ -53,9 +58,25 @@ class User
         return $this->_password;
     }
     
+    public function setPassword($password)
+    {
+        $this->_password = SHA1($this->_salt.$password);
+        // Update timestamp
+        $this->_updated = new \DateTime();
+        return $this;
+    }
+    
     public function getEmailAddress()
     {
         return $this->_emailAddress;
+    }
+    
+    public function setEmailAddress($email)
+    {
+        $this->_emailAddress = $email;
+        // Update timestamp
+        $this->_updated = new \DateTime();
+        return $this;
     }
     
     public function getRoleId()
