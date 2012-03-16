@@ -2,80 +2,29 @@
 namespace App\Entity;
 
 /**
- * @Entity(repositoryClass="App\Repository\User")
- * @Table(name="users")
+ * @Entity(repositoryClass="App\Repository\Profile")
+ * @Table(name="profiles")
  */
-class User
+class Profile
 {
     /**
      * @Id @Column(type="integer", name="id")
      * @GeneratedValue
      */
     private $_id;
-    /** @Column(type="string", name="username", unique="true") */
-    private $_username;
-    /** @Column(type="string", name="password") */
-    private $_password;
-    /** @Column(type="string", name="email_address") */
-    private $_emailAddress;
-    /** @Column(type="datetime", name="created")*/
-    private $_created;
-    /** @Column(type="boolean", name="active")*/
-    private $_active = false;
-    /** @Column(type="string", name="activation_code") */
-    private $_activationCode;
-    /** @Column(type="string", name="role") */
-    private $_roleId = "Member";
+    /** @Column(type="string", name="first_name") */
+    private $_firstName;
+    /** @Column(type="string", name="last_name") */
+    private $_lastName;
+    /** @Column(type="datetime", name="dob") */
+    private $_dob;
     
-    public function __construct($username, $password, $emailAddress)
+    public function __construct()
     {
-        $this->_username = $username;
-        // Treat password with salt
-        $salt = \Zend_Registry::get('salt'); 
-        $this->_password = SHA1($salt.$password);
-        $this->_emailAddress = $emailAddress;
-        $this->_created = new \DateTime();
-        $this->_activationCode = $this->_generateActivationCode();
     }
     
     public function getId()
     {
         return $this->_id;
-    }
-    
-    public function getUsername()
-    {
-        return $this->_username();
-    }
-    
-    public function getPassword()
-    {
-        return $this->_password;
-    }
-    
-    public function getEmailAddress()
-    {
-        return $this->_emailAddress;
-    }
-    
-    public function getRoleId()
-    {
-        return $this->_roleId;
-    }
-    
-    public function getActivationCode()
-    {
-        return $this->_activationCode;
-    }
-    
-    public function _generateActivationCode()
-    {
-        // Take date object, username and email address and generate a hash
-        return md5($this->_created->getTimestamp().$this->_username.$this->_emailAddress);
-    }
-    
-    public function isActive()
-    {
-        return $this->_active;
     }
 }
