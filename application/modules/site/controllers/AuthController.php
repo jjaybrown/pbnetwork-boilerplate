@@ -32,7 +32,6 @@ class Site_AuthController extends AppController
     public function indexAction()
     {
         //$this->_helper->redirector('login');
-        \Zend_Debug::dump($this->_auth->getIdentity());
     }
     
     public function loginAction()
@@ -43,7 +42,7 @@ class Site_AuthController extends AppController
             if ($form->isValid($request->getPost())) {
                 if ($this->_processLogin($form->getValues())) {
                     // We're authenticated!
-                    //$this->_helper->redirector('index', 'index');
+                    $this->_helper->redirector('index', 'index');
                 }else{
                     // Auth failed
                     \Zend_Debug::dump("failed");
@@ -69,12 +68,15 @@ class Site_AuthController extends AppController
         $form = new RegisterForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            if ($form->isValid($request->getPost())) {
-                \Zend_Debug::dump($request->getPost());
+            if ($form->isValid($request->getPost())) {                
                 // Process registration data
                 $data = $request->getPost();
                 $user = new User($data['username'], $data['password'], $data['email']);
-                \Zend_Debug::dump($user);
+                $this->_em->persist($user);
+                $this->_em->flush();
+                
+                // Retrieve activation code and email user for activation
+                $code = $user->getActivationCode();
             }
         }
         $this->view->form = $form;
@@ -85,7 +87,9 @@ class Site_AuthController extends AppController
         // Get our authentication adapter and check credentials
         $adapter = $this->_getAuthAdapter('Doctrine');
         $adapter->setIdentity($values['username']); 
-        $adapter->setCredential($values['password']);
+        // Salt password
+        $salt = \Zend_Registry::get('salt');
+        $adapter->setCredential(SHA1($salt.$values['password']));
 
         $result = $this->_auth->authenticate($adapter);
 
@@ -97,8 +101,16 @@ class Site_AuthController extends AppController
                 $user = $user[0];
             }
             
-            $this->_auth->getStorage()->write($user);
-            return true;
+            // Check user has activated account
+            if(!$user->isActive())
+            {
+                // User isn't activated remove user from auth
+                $this->_auth->clearIdentity();
+                return false;
+            }else{
+                $this->_auth->getStorage()->write($user);
+                return true;
+            }
         }
         return false;
     }

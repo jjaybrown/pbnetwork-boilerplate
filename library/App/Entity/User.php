@@ -20,8 +20,8 @@ class User
     private $_emailAddress;
     /** @Column(type="datetime", name="created")*/
     private $_created;
-    /** @Column(type="boolean", name="activate")*/
-    private $_activate;
+    /** @Column(type="boolean", name="active")*/
+    private $_active = false;
     /** @Column(type="string", name="activation_code") */
     private $_activationCode;
     /** @Column(type="string", name="role") */
@@ -30,10 +30,11 @@ class User
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;
-        $this->_password = $password;
+        // Treat password with salt
+        $salt = \Zend_Registry::get('salt'); 
+        $this->_password = SHA1($salt.$password);
         $this->_emailAddress = $emailAddress;
         $this->_created = new \DateTime();
-        $this->_activate = false;
         $this->_activationCode = $this->_generateActivationCode();
     }
     
@@ -62,9 +63,19 @@ class User
         return $this->_roleId;
     }
     
+    public function getActivationCode()
+    {
+        return $this->_activationCode;
+    }
+    
     public function _generateActivationCode()
     {
-        // Take date object, salt and username and generate a hash
-        return md5($this->_created->getTimestamp()."salt".$this->_username);
+        // Take date object, username and email address and generate a hash
+        return md5($this->_created->getTimestamp().$this->_username.$this->_emailAddress);
+    }
+    
+    public function isActive()
+    {
+        return $this->_active;
     }
 }

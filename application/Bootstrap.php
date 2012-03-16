@@ -5,6 +5,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     public function _initConfig()
     {
         Zend_Registry::set('config', $this->getOptions());
+        
+        // Set application salt
+        Zend_Registry::set("salt", "84fjfn393ks@dnc94843n,vs43");
     }
     
     public function _initAutoloaderNamespaces()

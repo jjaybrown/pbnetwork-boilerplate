@@ -1,6 +1,7 @@
 <?php
 namespace App\Form\Auth;
 use App\Plugin\Form\Validators\PasswordConfirm as PasswordConfirm;
+use App\Plugin\Form\Validators\UsernameUnique as UsernameUnique;
 
 class Register extends \EasyBib_Form
 {
@@ -15,7 +16,7 @@ class Register extends \EasyBib_Form
         $username = new \Zend_Form_Element_Text('username');
         //@TODO add filter to check for unique username
         $username->addFilters(array('StringTrim', 'StringToLower'))
-                //->addValidator(array('StringLength', false, array(0, 50)))
+                ->addValidator(new UsernameUnique())
                 ->setRequired(true)
                 ->setLabel("Username:")
                 ->setDescription("This will be publically visible");
