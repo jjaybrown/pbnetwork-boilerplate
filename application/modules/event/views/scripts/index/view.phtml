@@ -1,19 +1,21 @@
-<h2><?php echo $this->event->getName(); ?></h2>
-<h4><?php echo $this->event->getVenue(); ?></h4>
-<p><?php echo $this->event->getLocation(); ?></p>
-<p><?php echo $this->event->getDescription(); ?></p>
-<p>Num tickets available: <strong><?php echo $this->event->getNumTickets(); ?></strong></p>
-<p>Ticket Price: 
-<?
-if($this->event->isFree()){
-    echo "FREE";
-}else{
-    echo $this->event->getPrice();
-}
-?></p>
-<? if(!$this->event->isSoldOut()){
-    echo $this->form;
-}else{
-    echo "Sorry event has sold out.";
-}
-?>
+<div class="hero-unit">
+    <h2><?php echo $this->event->getName(); ?></h2>
+    <h4><?php echo $this->event->getVenue(); ?></h4>
+    <p><?php echo $this->event->getLocation(); ?></p>
+    <p><?php echo $this->event->getDescription(); ?></p>
+    <p>Num tickets available: <strong><?php echo $this->event->getNumTickets(); ?></strong></p>
+    <p>Ticket Price: 
+    <?
+    if($this->event->isFree()){
+        echo "FREE";
+    }else{
+        echo $this->event->getPrice();
+    }
+    ?></p>
+    <? if(!$this->event->isSoldOut()){
+        echo $this->form;
+    }else{
+        echo "Sorry event has sold out.";
+    }
+    ?>
+</div>

@@ -1,14 +1,29 @@
-<div class="topbar">
-  <div class="fill">
+<!--<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="/">the paintball network</a>
-      <?php echo $this->navigation()->menu(); ?>
-        <!--<form action="<?=$this->baseUrl('/index/search')?>" class="pull-right">
+      <?php echo $this->navigation()->menu()->setUlClass('nav'); ?>
+        <form action="<?=$this->baseUrl('/index/search')?>" class="pull-right">
             <input class="input" name="query" type="text" placeholder="...">
             <button class="btn" type="submit"><?php echo $this->translate("Find Quote"); ?></button>
-        </form>-->
+        </form>
+        <?php echo $this->loggedInAs(); ?>
     </div>
   </div>
-</div>
-
-
+</div>-->
+<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="./index.html">the Paintball Network</a>
+          <div class="nav-collapse">
+          <?php echo $this->navigation()->menu()->setUlClass('nav'); ?>
+          <?php echo $this->loggedInAs(); ?>
+          </div>
+        </div>
+      </div>
+    </div>

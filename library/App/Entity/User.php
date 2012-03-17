@@ -36,7 +36,7 @@ class User
         $this->_username = $username;
         // Treat password with salt
         $this->_salt = \Zend_Registry::get('salt'); 
-        $this->_password = SHA1($salt.$password);
+        $this->_password = SHA1($this->_salt.$password);
         $this->_emailAddress = $emailAddress;
         $this->_created = new \DateTime();
         $this->_updated = new \DateTime();
@@ -50,7 +50,7 @@ class User
     
     public function getUsername()
     {
-        return $this->_username();
+        return $this->_username;
     }
     
     public function getPassword()

@@ -77,6 +77,7 @@ class Site_AuthController extends AppController
                 
                 // Retrieve activation code and email user for activation
                 $code = $user->getActivationCode();
+                //@TODO add messages to flash, send email with activation code
             }
         }
         $this->view->form = $form;
