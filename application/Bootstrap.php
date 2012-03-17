@@ -162,6 +162,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         // Initialise ACL and auth controller plugin
         $fc->registerPlugin(new App\Plugin\Auth($acl));
         
+        // Define restricted usernames
+        Zend_Registry::set('reserved_usernames', array(
+            'admin', 'superadmin', 'super user', 'administrator', 'moderator'
+        ));
+        
         return $acl;
     }
     
