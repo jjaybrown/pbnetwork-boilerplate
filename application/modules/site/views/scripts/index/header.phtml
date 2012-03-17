@@ -1,31 +1,31 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-    <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="./index.html">the Paintball Network</a>
-        <div class="nav-collapse">
-        <?php 
-        $partial = array('partials/menu.phtml', 'site');
-        $this->navigation()->menu()->setPartial($partial);
-        echo $this->navigation()->menu()->render(); ?>
-        <!-- setup basket -->
-        <?php
-        $namespace = new \Zend_Session_Namespace('cart');
-        $items = $namespace->cart->numItemsInCart;
-        ?>
-        <?php echo $this->loggedInAs(); ?>
-        <ul class="nav pull-right">
-            <li class="divider-vertical"></li>
-            <li>
-                <a href="/basket">Basket <span class="badge badge-inverse"><?php echo $items; ?></span></a>
-            </li>
-            <li class="divider-vertical"></li>
-        </ul>
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="./index.html">the Paintball Network</a>
+            <div class="nav-collapse">
+                <?php 
+                $partial = array('partials/menu.phtml', 'site');
+                $this->navigation()->menu()->setPartial($partial);
+                echo $this->navigation()->menu()->render(); ?>
+                <!-- setup basket -->
+                <?php
+                $namespace = new \Zend_Session_Namespace('cart');
+                $items = $namespace->cart->numItemsInCart;
+                ?>
+                <ul class="nav pull-right">
+                    <li class="divider-vertical"></li>
+                    <li>
+                        <a href="/basket">Basket <span class="badge badge-inverse"><?php echo $items; ?></span></a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <?php echo $this->loggedInAs(); ?>
+                </ul>
+            </div>
         </div>
-    </div>
     </div>
 </div>

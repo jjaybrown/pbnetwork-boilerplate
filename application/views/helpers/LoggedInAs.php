@@ -12,8 +12,8 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
                 'controller'=>'auth',
                 'action'=>'logout'), null, true);
             //return '<p class="navbar-text pull-right">Welcome <span style="color:#08C;">' . ucwords($username) .  '</span>. <a href="'.$logoutUrl.'">Logout</a></p>';
-            return '<ul class="nav pull-right">
-                    <li class="navbar-text pull-right dropdown">
+            return '
+                    <li class="navbar-text dropdown">
                         <a href="#"
                             class="dropdown-toggle"
                             data-toggle="dropdown">
@@ -26,8 +26,7 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
                             <li class="divider"></li>
                             <li><a href="'.$logoutUrl.'">Logout</a></li>
                         </ul>
-                    </li>
-                </ul>';
+                    </li>';
             
         } 
 
@@ -41,7 +40,7 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
             'module' => 'site',
             'controller'=>'auth',
             'action'=>'index'));
-        return '<p class="navbar-text pull-right"><a href="'.$loginUrl.'">Login</a></p>';
+        return '<li><a href="'.$loginUrl.'">Login</a></li>';
     }
 }
 ?>
