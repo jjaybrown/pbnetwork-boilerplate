@@ -17,7 +17,7 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
                         <a href="#"
                             class="dropdown-toggle"
                             data-toggle="dropdown">
-                            '. ucwords($username) .' <i class="icon-user icon-white"></i>
+                            <i class="icon-user icon-white"></i> '. ucwords($username) .'
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
