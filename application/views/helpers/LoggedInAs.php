@@ -21,10 +21,10 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Settings</a></li>
+                            <li><a href="#"><i class="icon-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
                             <li class="divider"></li>
-                            <li><a href="'.$logoutUrl.'">Logout</a></li>
+                            <li><a href="'.$logoutUrl.'"><i class="icon-lock"></i> Logout</a></li>
                         </ul>
                     </li>';
             

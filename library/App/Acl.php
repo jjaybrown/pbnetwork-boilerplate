@@ -128,11 +128,10 @@ class Acl extends \Zend_Acl
         switch($this->getCurrentRole())
         {
             case \App\Acl::ADMIN:
-                
+                $this->allow($member, 'event:index',array('add'));
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
-                $this->allow($member, 'event:index',array('add'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
             case \App\Acl::GUEST:

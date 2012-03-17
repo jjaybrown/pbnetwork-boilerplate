@@ -17,8 +17,8 @@ class Zend_View_Helper_IsOrganizer extends Zend_View_Helper_Abstract
                 "
                     <div class='well pull-right' style='padding:8px 0; width:300px;'>
                         <ul class='nav nav-list'>
-                            <li class='nav-header'>Event Organizer Menu</li>
-                            <li><a href='#'><i class='icon-edit'></i> Create event</a></li>
+                            <li class='nav-header'>Event Organizer Options</li>
+                            <li><a href='/event/index/add'><i class='icon-edit'></i> Create event</a></li>
                         </ul>
                     </div>
                 ";
