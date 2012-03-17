@@ -40,14 +40,15 @@
         </table>
     </div>
 </div>
-<div class="pull-right">
-    <h3>Event list</h3>
-    <ul>
-    <?php
-    foreach($this->events as $event){
-        echo "<li><span>".$event->getName()."</span></li>";
-    }
-    ?>
+
+<div class="well pull-right" style="padding:8px 0; width:300px;">
+    <ul class="nav nav-list">
+        <li class="nav-header">Events this month</li>
+        <?php
+        foreach($this->events as $event){
+            echo "<li><a href=''><i class='icon-calendar'></i>".$event->getName()."</a></li>";
+        }
+        ?>
     </ul>
 </div>
 <div style="clear:both"></div>

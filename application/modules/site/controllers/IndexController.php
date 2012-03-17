@@ -64,9 +64,6 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function headerAction()
     {
-        $namespace = new \Zend_Session_Namespace('cart');
-        $items = $namespace->cart->numItemsInCart;
-
         $container = new Zend_Navigation(
             array(
                 array(
@@ -78,23 +75,62 @@ class Site_IndexController extends Zend_Controller_Action
                 array(
                     'action'        => 'index',
                     'controller'    => 'index',
+                    'module'        => 'news',
+                    'label'      => 'News',
+                    'pages' => array(
+                        array(
+                            'action' => 'archive',
+                            'controller' => 'index',
+                            'module' => 'news',
+                            'label' => 'Archive'
+                        )
+                    )
+                ),
+                array(
+                    'action'        => 'index',
+                    'controller'    => 'index',
                     'module'        => 'event',
                     'label'      => 'Events',
-                    /*'pages' => array(
+                    'pages' => array(
                         array(
                             'action' => 'index',
                             'controller' => 'calendar',
                             'module' => 'event',
-                            'label' => 'Calendar',
-                            'active' => true
+                            'label' => 'Calendar'
                         )
-                    )*/
+                    )
+                ),
+                array(
+                    'action'        => 'index',
+                    'controller'    => 'index',
+                    'module'        => 'community',
+                    'label'      => 'Community',
+                    'pages' => array(
+                        array(
+                            'action' => 'index',
+                            'controller' => 'roundup',
+                            'module' => 'community',
+                            'label' => 'Roundup'
+                        ),
+                        array(
+                            'action' => 'index',
+                            'controller' => 'forums',
+                            'module' => 'community',
+                            'label' => 'Forums'
+                        ),
+                        array(
+                            'action' => 'index',
+                            'controller' => 'groups',
+                            'module' => 'community',
+                            'label' => 'Groups'
+                        )
+                    )
                 ),
                 array(
                     'action'     => 'index',
                     'controller' => 'index',
-                    'module'     => 'basket',
-                    'label'      => 'Basket ( '.$items.' )'
+                    'module'     => 'magazine',
+                    'label'      => 'Paintball Scene Magazine'
                 )
             )
         );

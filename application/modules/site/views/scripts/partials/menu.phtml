@@ -1,0 +1,32 @@
+<ul class="nav">
+
+<?php
+
+$html = array();
+
+foreach ($this->container as $page) 
+{
+    /*if (!empty($page->pages))
+    {
+        $html[] = "<li class='dropdown'>";
+        $html[] = "<a href='#' 'dropdown-toggle' data-toggle='dropdown'>".$page->getLabel()."<b class='caret'></b></a>";
+        $html[] = "<ul class='dropdown-menu'>";
+        foreach ($page->pages as $subpage) 
+        {
+            $html[] = "<li>";
+            $html[] = $this->menu()->htmlify($subpage) . PHP_EOL;
+            $html[] = "</li>";
+        }
+        $html[] = "</ul>";
+    }else{*/
+        $html[] = "<li>";
+        $html[] = $this->menu()->htmlify($page) . PHP_EOL;
+    //}
+
+    $html[] = "</li>";
+}
+
+echo join(PHP_EOL, $html);
+
+?>
+</ul>

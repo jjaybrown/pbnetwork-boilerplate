@@ -23,8 +23,9 @@
 
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
-  <link rel="stylesheet" href="<?=$this->baseUrl('/css/style.css')?>">
+  <!--<link rel="stylesheet" href="<?=$this->baseUrl('/css/style.css')?>">-->
   <link rel="stylesheet" href="<?=$this->baseUrl('/css/bootstrap.css')?>">
+  <link rel="stylesheet" href="<?=$this->baseUrl('/css/bootstrap-responsive.css')?>">
   <!-- end CSS-->
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
@@ -33,7 +34,6 @@
        Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
        For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
   <script src="<?=$this->baseUrl('js/libs/modernizr-2.0.6.min.js')?>"></script>
-  <?php echo $this->jQuery(); ?>
 </head>
 
 <body>
@@ -51,15 +51,22 @@
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
 
   <!-- scripts concatenated and minified via ant build script-->
   <script defer src="<?=$this->baseUrl('js/plugins.js')?>"></script>
   <script defer src="<?=$this->baseUrl('js/script.js')?>"></script>
   <!-- end scripts-->
-
+  
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="<?=$this->baseUrl('js/libs/bootstrap.js')?>"></script>
+  <script typ="text/script">
+  $(document).ready(function(){
+      $('.dropdown-toggle').dropdown();
+  });
+  </script>
 
   <!-- Change UA-XXXXX-X to be your site's ID -->
   <script>
