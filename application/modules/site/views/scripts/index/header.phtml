@@ -17,13 +17,14 @@
         $namespace = new \Zend_Session_Namespace('cart');
         $items = $namespace->cart->numItemsInCart;
         ?>
-        <ul class="nav">
+        <?php echo $this->loggedInAs(); ?>
+        <ul class="nav pull-right">
             <li class="divider-vertical"></li>
             <li>
                 <a href="/basket">Basket <span class="badge badge-inverse"><?php echo $items; ?></span></a>
             </li>
+            <li class="divider-vertical"></li>
         </ul>
-        <?php echo $this->loggedInAs(); ?>
         </div>
     </div>
     </div>
