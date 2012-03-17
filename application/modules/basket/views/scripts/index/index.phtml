@@ -5,7 +5,7 @@ $form = $this->basketForm;
 if(count($this->items) > 0){
 ?>
 <form name="<?=$form->getName();?>" action="<?=$form->getAction();?>" method="<?=$form->getMethod();?>">
-    <table>
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Item</th>
@@ -21,13 +21,13 @@ if(count($this->items) > 0){
                 <td><?=$item->getName();?></td>
                 <td><?=($item->isInStock())? 'In Stock' : 'Out of Stock' ;?></td>
                 <td><?=$form->getElement('quantity_'.$item->code);?></td>
-                <td><?=$item->getPrice();?></td>
+                <td><?=Zend_Registry::get('currency')." ".$item->getPrice();?></td>
                 <td><a href="<?=$this->url(array(
                     'module' => 'basket',
                     'controller' => 'index',
                     'action' => 'remove',
                     'code' => $item->code
-                ))?>">Remove</a></td>
+                ))?>" class="close">&times;</a></td>
             </tr>
             <? } ?>
         </tbody>
