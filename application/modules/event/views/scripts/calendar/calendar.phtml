@@ -40,13 +40,13 @@
         </table>
     </div>
 </div>
-
+<?php echo $this->IsOrganizer();?>
 <div class="well pull-right" style="padding:8px 0; width:300px;">
     <ul class="nav nav-list">
         <li class="nav-header">Events this month</li>
         <?php
         foreach($this->events as $event){
-            echo "<li><a href=''><i class='icon-calendar'></i>".$event->getName()."</a></li>";
+            echo "<li><a href='#'><i class='icon-calendar'></i>".$event->getName()."</a></li>";
         }
         ?>
     </ul>

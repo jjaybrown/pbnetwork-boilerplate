@@ -117,33 +117,31 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('basket:index'));
         $this->add(new \Zend_Acl_Resource('basket:checkout'));
         
+        // Create roles
+        $guest = new \Zend_Acl_Role(\App\Acl::GUEST);
+        $this->addRole($guest);
+        $member = new \Zend_Acl_Role(\App\Acl::MEMBER);
+        $this->addRole($member, $guest);
+        $admin = new \Zend_Acl_Role(\App\Acl::ADMIN);
+        $this->addRole($admin, $member);
+        
         switch($this->getCurrentRole())
         {
-            case \App\Acl::GUEST:
-                // Create Guest role
-                $role = new \Zend_Acl_Role(\App\Acl::GUEST);
-                $this->addRole($role);
+            case \App\Acl::ADMIN:
                 
-                // Setup access rights
-                $this->allow($role, 'site:index',array('index'));
-                $this->allow($role, 'site:auth',array('login', 'register'));
-                $this->allow($role, 'event:index',array('index','view'));
-                $this->allow($role, 'event:calendar',array('index', 'view'));
-                $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
-                break;
-            
             case \App\Acl::MEMBER:
-                // Create Guest role
-                $role = new \Zend_Acl_Role(\App\Acl::MEMBER);
-                $this->addRole($role);
-                
                 // Setup access rights
-                $this->allow($role, 'site:index',array('index'));
-                $this->allow($role, 'site:auth',array('login', 'logout', 'register'));
-                $this->allow($role, 'event:index',array('index','view', 'add'));
-                $this->allow($role, 'event:calendar',array('index', 'view'));
-                $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
-                $this->allow($role, 'basket:checkout',array('index', 'paypal', 'complete'));
+                $this->allow($member, 'site:auth',array('logout'));
+                $this->allow($member, 'event:index',array('add'));
+                $this->allow($member, 'event:calendar',array('index', 'view'));
+                $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
+            case \App\Acl::GUEST:
+                // Setup access rights
+                $this->allow($guest, 'site:index',array('index'));
+                $this->allow($guest, 'site:auth',array('login', 'register'));
+                $this->allow($guest, 'event:index',array('index','view'));
+                $this->allow($guest, 'event:calendar',array('index', 'view'));
+                $this->allow($guest, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
                 break;
         }
     }
