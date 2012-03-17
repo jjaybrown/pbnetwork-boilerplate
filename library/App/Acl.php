@@ -16,6 +16,14 @@ class Acl extends \Zend_Acl
      */
     const DB = 'DB';
     
+    /**
+     * Define role constants  
+     */
+    const GUEST = "Guest";
+    const MEMBER = "Member";
+    const ORGANIZER = "Organizer";
+    const ADMIN = "Admin";
+    
     protected $_configType;
     
     protected $_config;
@@ -111,9 +119,9 @@ class Acl extends \Zend_Acl
         
         switch($this->getCurrentRole())
         {
-            case "Guest":
+            case \App\Acl::GUEST:
                 // Create Guest role
-                $role = new \Zend_Acl_Role('Guest');
+                $role = new \Zend_Acl_Role(\App\Acl::GUEST);
                 $this->addRole($role);
                 
                 // Setup access rights
@@ -124,9 +132,9 @@ class Acl extends \Zend_Acl
                 $this->allow($role, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
                 break;
             
-            case "Member":
+            case \App\Acl::MEMBER:
                 // Create Guest role
-                $role = new \Zend_Acl_Role('Member');
+                $role = new \Zend_Acl_Role(\App\Acl::MEMBER);
                 $this->addRole($role);
                 
                 // Setup access rights
@@ -152,7 +160,7 @@ class Acl extends \Zend_Acl
             return $user->getRoleId();
         }else{
             // No one logged in assume guest
-            return "Guest";
+            return \App\Acl::GUEST;
         }
     }
 }
