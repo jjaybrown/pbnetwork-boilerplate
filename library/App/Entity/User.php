@@ -53,6 +53,14 @@ class User
         return $this->_username;
     }
     
+    public function setUsername($username)
+    {
+        $this->_username = $username;
+        // Update timestamp
+        $this->_updated = new \DateTime();
+        return $this;
+    }
+    
     public function getPassword()
     {
         return $this->_password;
@@ -79,6 +87,16 @@ class User
         return $this;
     }
     
+    public function getCreated($format = "d-m-Y H:i:s")
+    {
+        return $this->_created->format($format);
+    }
+    
+    public function getUpdated($format = "d-m-Y H:i:s")
+    {
+        return $this->_updated->format($format);
+    }
+    
     public function getRoleId()
     {
         return $this->_roleId;
@@ -98,5 +116,13 @@ class User
     public function isActive()
     {
         return $this->_active;
+    }
+    
+    public function setActiveStatus($active)
+    {
+        $this->_active = $active;
+        // Update timestamp
+        $this->_updated = new \DateTime();
+        return $this;
     }
 }

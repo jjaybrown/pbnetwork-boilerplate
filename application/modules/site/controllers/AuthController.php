@@ -42,7 +42,12 @@ class Site_AuthController extends AppController
             if ($form->isValid($request->getPost())) {
                 if ($this->_processLogin($form->getValues())) {
                     // We're authenticated!
-                    $this->_helper->redirector('index', 'index');
+                    if($this->_auth->getIdentity()->getRoleId() == App\Acl::ADMIN)
+                    {
+                        $this->_helper->redirector('index', 'admin');
+                    }else{
+                        $this->_helper->redirector('index', 'index');
+                    }
                 }else{
                     // Auth failed
                     \Zend_Debug::dump("failed");

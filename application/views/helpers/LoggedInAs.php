@@ -12,7 +12,7 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
                 'controller'=>'auth',
                 'action'=>'logout'), null, true);
             //return '<p class="navbar-text pull-right">Welcome <span style="color:#08C;">' . ucwords($username) .  '</span>. <a href="'.$logoutUrl.'">Logout</a></p>';
-            return '
+            $html= '
                     <li class="navbar-text dropdown">
                         <a href="#"
                             class="dropdown-toggle"
@@ -20,13 +20,23 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
                             <i class="icon-user icon-white"></i> '. ucwords($username) .'
                             <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-user"></i> Profile</a></li>
+                        <ul class="dropdown-menu">';
+                  if($auth->getIdentity()->getRoleId() == \App\Acl::ADMIN)
+                  {
+                    $html .= '<li><a href="'.$this->view->url(
+                            array(
+                                "module" => "admin",
+                                "controller" => "index",
+                                "action" => "index"
+                                )).'"><i class="icon-home"></i> Admin Panel</a></li>';
+                  }
+                  $html .= '<li><a href="#"><i class="icon-user"></i> Profile</a></li>
                             <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
                             <li class="divider"></li>
                             <li><a href="'.$logoutUrl.'"><i class="icon-lock"></i> Logout</a></li>
                         </ul>
                     </li>';
+            return $html;
             
         } 
 

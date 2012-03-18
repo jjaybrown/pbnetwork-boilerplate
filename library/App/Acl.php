@@ -117,6 +117,10 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('basket:index'));
         $this->add(new \Zend_Acl_Resource('basket:checkout'));
         
+        // Admin resources
+        $this->add(new \Zend_Acl_Resource('admin:index'));
+        $this->add(new \Zend_Acl_Resource('admin:user'));
+        
         // Create roles
         $guest = new \Zend_Acl_Role(\App\Acl::GUEST);
         $this->addRole($guest);
@@ -129,6 +133,8 @@ class Acl extends \Zend_Acl
         {
             case \App\Acl::ADMIN:
                 $this->allow($member, 'event:index',array('add'));
+                $this->allow($member, 'admin:index',array('index'));
+                $this->allow($member, 'admin:user',array('index', 'add', 'edit', 'delete', 'block'));
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
