@@ -1,0 +1,44 @@
+<h3>Orders</h3>
+<table class="table table-striped">
+  <thead>
+    <tr style="text-transform: uppercase;">
+      <th>id</th>
+      <th>payment method</th>
+      <th>status</th>
+      <th>completed date</th>
+      <th>number items</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    foreach($this->orders as $order)
+    {
+    ?>
+    <tr>
+        <td><?=$order->getId();?></td>
+        <td><?=$order->getPaymentMethod();?></td>
+        <td><?=$order->getStatus();?></td>
+        <td><?=($order->isComplete()?$order->getCompletedDate('H:ia, D dS M Y'):'');?></td>
+        <td><a href=""><?=$order->numItemsInCart?></a></td>
+        <td><?=\Zend_Registry::get('currency').$order->getSubTotal()?></td>
+        <td>
+            <div class="btn-group pull-right">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Actions
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">View Transactions</a></li>
+                    <li><a href="#">View Address Details</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Audit Data</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    <?
+    }
+    ?>
+  </tbody>
+</table>
