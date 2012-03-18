@@ -36,7 +36,7 @@ class Basket_CheckoutController extends AppController
         
         // Assign customer id to cart
         $this->_cart->setCustomerId($customer->getId());
-
+        
         // Check if Cart has items
         if($this->_cart->numItemsInCart != 0){
             // Get the paypal gateway from the session
@@ -145,7 +145,7 @@ class Basket_CheckoutController extends AppController
             $this->_order->save();
 
             // Setup the Express Checkout Transaction
-            $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://localhost:8080/basket/checkout/paypal/type/SET/response/true", "http://localhost:8080/basket/checkout/", "GBP", "Sale");
+            $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://".$_SERVER['HTTP_HOST']."/basket/checkout/paypal/type/SET/response/true", "http://".$_SERVER['HTTP_HOST']."/basket/checkout/", "GBP", "Sale");
         }
     }
 

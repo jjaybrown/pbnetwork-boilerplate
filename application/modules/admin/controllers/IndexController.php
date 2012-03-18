@@ -48,6 +48,12 @@ class Admin_IndexController extends AppController
                     'controller'    => 'user',
                     'module'        => 'admin',
                     'label'      => 'Users',
+                ),
+                array(
+                    'action'        => 'index',
+                    'controller'    => 'order',
+                    'module'        => 'admin',
+                    'label'      => 'Orders',
                 )
             )
         );

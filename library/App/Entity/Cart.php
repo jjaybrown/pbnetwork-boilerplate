@@ -120,8 +120,8 @@ class Cart
         return $this;
     }
     
-    public function getCompletedDate(){
-        return $this->_completed;
+    public function getCompletedDate($format = "d-m-Y H:i:s"){
+        return $this->_completed->format($format);
     }
     
     public function setCompletedDate(\DateTime $completed){

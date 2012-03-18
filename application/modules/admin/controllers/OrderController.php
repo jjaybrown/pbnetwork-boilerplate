@@ -12,6 +12,13 @@ class Admin_OrderController extends AppController
     
     public function indexAction()
     {
+        // Get all orders
+        $orders = $this->_em->getRepository("\App\Entity\Cart")->findAll();
+        $this->view->orders = $orders;
+    }
+    
+    public function auditAction()
+    {
         
     }
 }

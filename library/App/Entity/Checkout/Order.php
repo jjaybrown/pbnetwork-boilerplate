@@ -15,8 +15,9 @@ class Order
      */
     private $_id;
     
-    /** @Column(type="integer"), name="cart_id") */
+    /** @Column(type="integer", name="cart_id") */
     private $_cartId;
+    
     /** @Column(type="string", name="status", length="50") */
     private $_status = "";
     /** @Column(type="string", name="payment_method", length="50") */

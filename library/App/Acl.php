@@ -120,6 +120,7 @@ class Acl extends \Zend_Acl
         // Admin resources
         $this->add(new \Zend_Acl_Resource('admin:index'));
         $this->add(new \Zend_Acl_Resource('admin:user'));
+        $this->add(new \Zend_Acl_Resource('admin:order'));
         
         // Create roles
         $guest = new \Zend_Acl_Role(\App\Acl::GUEST);
@@ -132,9 +133,10 @@ class Acl extends \Zend_Acl
         switch($this->getCurrentRole())
         {
             case \App\Acl::ADMIN:
-                $this->allow($member, 'event:index',array('add'));
-                $this->allow($member, 'admin:index',array('index', 'clearcache'));
-                $this->allow($member, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
+                $this->allow($admin, 'event:index',array('add'));
+                $this->allow($admin, 'admin:index',array('index', 'clearcache'));
+                $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
+                $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
