@@ -102,6 +102,14 @@ class User
         return $this->_roleId;
     }
     
+    public function setRoleId($roleId)
+    {
+        $this->_roleId = $roleId;
+        // Update timestamp
+        $this->_updated = new \DateTime();
+        return $this;
+    }
+    
     public function getActivationCode()
     {
         return $this->_activationCode;

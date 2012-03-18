@@ -133,8 +133,8 @@ class Acl extends \Zend_Acl
         {
             case \App\Acl::ADMIN:
                 $this->allow($member, 'event:index',array('add'));
-                $this->allow($member, 'admin:index',array('index'));
-                $this->allow($member, 'admin:user',array('index', 'add', 'edit', 'delete', 'block'));
+                $this->allow($member, 'admin:index',array('index', 'clearcache'));
+                $this->allow($member, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));

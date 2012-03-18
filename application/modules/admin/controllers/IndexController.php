@@ -12,7 +12,7 @@ class Admin_IndexController extends AppController
 
     public function indexAction()
     {
-        \Zend_Debug::dump(Zend_Layout::getMvcInstance()->getLayoutPath());
+        
     }
 
     public function headerAction()
@@ -55,9 +55,10 @@ class Admin_IndexController extends AppController
         $this->view->navigation($container);
     }
 
-    public function footerAction()
+    public function clearcacheAction()
     {
-        // action body
+        $this->_cache->deleteAll();
+        $this->_helper->redirector('index', 'index');
     }
 
 

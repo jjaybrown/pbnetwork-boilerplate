@@ -3,6 +3,7 @@
 use App\Controller as AppController;
 use App\Entity\User as User;
 use App\Form\Admin\User\Edit as EditForm;
+use App\Form\Admin\User\Access as PermissonsForm;
 
 class Admin_UserController extends AppController
 {
@@ -30,6 +31,11 @@ class Admin_UserController extends AppController
             $this->_cache->save('users', $users);
         }
         $this->view->users = $users;
+        
+        // Add permission form to view
+        $this->view->permissionForm = new PermissonsForm();
+        
+           
     }
     
     public function editAction()
@@ -102,6 +108,35 @@ class Admin_UserController extends AppController
         
         // Redirect back to users front page
         $this->_helper->redirector(array('module' => 'admin', 'controller' => 'user', 'action' => 'index'));
+    }
+    
+    public function permissionsAction()
+    {
+        $id = $this->_request->getParam('id');
+    
+        $request = $this->getRequest();
+        if ($request->isPost())
+        {
+            // Process registration data
+            $data = $request->getPost();
+
+            // Get user object with id of the user we've edited
+            $user = $this->_em->find('App\Entity\User', $id);
+
+            // Update user object
+            $user->setRoleId($data['_roleId']);
+
+            // Merge it with our persisted object
+            $this->_em->persist($this->_em->merge($user));
+            // Save updated object
+            $this->_em->flush();
+
+            // Clear cache
+            $this->_cache->delete('users');
+
+            // Redirect back to users front page
+            $this->_helper->redirector(array('module' => 'admin', 'controller' => 'user', 'action' => 'index'));
+        }
     }
 }
 

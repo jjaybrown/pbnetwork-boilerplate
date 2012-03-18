@@ -43,7 +43,7 @@
                         ))?>">Delete</a></li>
                     <li class=""><a href="">Block</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Change Access</a></li>
+                    <li class="access"><a rel="<?=$user->getId();?>" class="<?=$user->getRoleId();?>">Change Access</a></li>
                 </ul>
             </div>
         </td>
@@ -67,6 +67,23 @@
     <a href="#" class="btn btn-danger">Delete User</a>
   </div>
 </div>
+
+<!-- Permissions modal -->
+<div class="modal fade" id="access">
+  <div class="modal-header">
+    <h3>Change User access permissions</h3>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-info">
+        <p>Modifying a user's access permissions will change the level of site functionality they have access to, be <strong>careful</strong>, you don't want to grant a user more access than they should have.</p>
+    </div>
+      <?php echo $this->permissionForm;?>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -74,6 +91,13 @@
         {
             $("#delete .modal-footer .btn-danger").attr('href', $(this).attr('rel'));
             $('#delete').modal('toggle');
+        });
+        
+        $(".access a").click(function()
+        {
+            $("#access #permissions").attr('action', '/admin/user/permissions/id/'+$(this).attr('rel'));
+            $("#access #permissions #_roleId").val($(this).attr('class'));
+            $('#access').modal('toggle');
         });
         
     });

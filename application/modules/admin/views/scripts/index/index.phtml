@@ -1,1 +1,24 @@
-Admin Content
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3 well" style="padding:8px 0;">
+    <!--Sidebar content-->
+        <ul class="nav nav-list">
+            <li class="nav-header">Dashboard</li>
+            <li>
+                <a href="#">Orders</a>
+            </li>
+            <li>
+                <a href="#">Library</a>
+            </li>
+            <li class="nav-header">System Options</li>
+            <li>
+                <a href="<?=$this->url(array('controller' => 'index', 'action' => 'clearcache'))?>">Clear Memcache</a>
+            </li>
+        </ul>
+    </div>
+    <div class="span8 well" style="padding:8px 0;">
+      <!--Body content-->
+      
+    </div>
+  </div>
+</div>
