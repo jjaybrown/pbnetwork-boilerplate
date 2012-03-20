@@ -80,6 +80,8 @@ class Site_AuthController extends AppController
                 $this->_em->persist($user);
                 $this->_em->flush();
                 
+                // Clear users from cache
+                $this->_cache->delete('users');
                 // Retrieve activation code and email user for activation
                 $code = $user->getActivationCode();
                 //@TODO add messages to flash, send email with activation code
