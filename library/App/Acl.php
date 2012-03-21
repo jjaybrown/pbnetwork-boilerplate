@@ -112,15 +112,21 @@ class Acl extends \Zend_Acl
         // Add resources
         $this->add(new \Zend_Acl_Resource('site:index'));
         $this->add(new \Zend_Acl_Resource('site:auth'));
+        
         $this->add(new \Zend_Acl_Resource('event:index'));
         $this->add(new \Zend_Acl_Resource('event:calendar'));
+        
         $this->add(new \Zend_Acl_Resource('basket:index'));
         $this->add(new \Zend_Acl_Resource('basket:checkout'));
+        
+        $this->add(new \Zend_Acl_Resource('community:index'));
+        $this->add(new \Zend_Acl_Resource('community:forum'));
         
         // Admin resources
         $this->add(new \Zend_Acl_Resource('admin:index'));
         $this->add(new \Zend_Acl_Resource('admin:user'));
         $this->add(new \Zend_Acl_Resource('admin:order'));
+        $this->add(new \Zend_Acl_Resource('admin:community'));
         
         // Create roles
         $guest = new \Zend_Acl_Role(\App\Acl::GUEST);
@@ -134,9 +140,11 @@ class Acl extends \Zend_Acl
         {
             case \App\Acl::ADMIN:
                 $this->allow($admin, 'event:index',array('add'));
+                $this->allow($admin, 'community:forum',array('addCategory', 'addForum', 'addThread'));
                 $this->allow($admin, 'admin:index',array('index', 'clearcache'));
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
                 $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
+                $this->allow($admin, 'admin:community',array('index','forum'));
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
@@ -146,9 +154,14 @@ class Acl extends \Zend_Acl
                 // Setup access rights
                 $this->allow($guest, 'site:index',array('index'));
                 $this->allow($guest, 'site:auth',array('login', 'register'));
+                
                 $this->allow($guest, 'event:index',array('index','view'));
                 $this->allow($guest, 'event:calendar',array('index', 'view'));
+                
                 $this->allow($guest, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
+                
+                $this->allow($guest, 'community:index',array('index'));
+                $this->allow($guest, 'community:forum',array('index', 'addthread'));
                 break;
         }
     }

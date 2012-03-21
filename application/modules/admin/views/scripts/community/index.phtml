@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3 well" style="padding:8px 0;">
+    <!--Sidebar content-->
+        <ul class="nav nav-list">
+            <li class="nav-header">Community</li>
+            <li>
+                <a href="#">Weekly Round up</a>
+            </li>
+            <li>
+                <a href="<?=$this->url(array(
+                    'module' => 'admin',
+                    'controller' => 'community',
+                    'action' => 'forum'
+                ))?>">Forums</a>
+            </li>
+            <li class="nav-header">System Options</li>
+            <li>
+                <a href="<?=$this->url(array('controller' => 'index', 'action' => 'clearcache'))?>">Clear Forum Cache</a>
+            </li>
+        </ul>
+    </div>
+    <div class="span8 well" style="padding:8px 0;">
+      <!--Body content-->
+      
+    </div>
+  </div>
+</div>
