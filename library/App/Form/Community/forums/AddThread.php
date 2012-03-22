@@ -16,7 +16,7 @@ class AddThread extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/community/forum/addThread/'));
+        $this->setAction($this->getView()->baseUrl('/community/thread/add/'));
         $this->setAttrib('id', 'addThread');
         
         $forums = new \Zend_Form_Element_Select('forum');

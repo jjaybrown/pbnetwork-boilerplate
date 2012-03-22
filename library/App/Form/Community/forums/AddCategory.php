@@ -8,7 +8,7 @@ class AddCategory extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/community/forum/addCategory'));
+        $this->setAction($this->getView()->baseUrl('/community/category/add'));
         $this->setAttrib('id', 'addCategory');
         $name = new \Zend_Form_Element_Text('name');
         $name->setLabel("Name:")

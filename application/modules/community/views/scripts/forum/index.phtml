@@ -28,8 +28,8 @@
                     <td>
                         <h4><a href="<?=$this->url(array(
                             'module' => 'community',
-                            'controller' => 'forum',
-                            'action' => 'threads',
+                            'controller' => 'thread',
+                            'action' => 'view',
                             'id' => $forum->getId()
                             ))?>"><i class="<? echo ($forum->open ? 'icon-folder-open' : 'icon-folder-close');?>"></i> <?=ucwords($forum->getName())?></a> <small><?=$forum->getDescription()?></small>
                         </h4>

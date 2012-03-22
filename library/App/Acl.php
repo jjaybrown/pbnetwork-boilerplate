@@ -120,7 +120,9 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('basket:checkout'));
         
         $this->add(new \Zend_Acl_Resource('community:index'));
+        $this->add(new \Zend_Acl_Resource('community:category'));
         $this->add(new \Zend_Acl_Resource('community:forum'));
+        $this->add(new \Zend_Acl_Resource('community:thread'));
         
         // Admin resources
         $this->add(new \Zend_Acl_Resource('admin:index'));
@@ -140,7 +142,9 @@ class Acl extends \Zend_Acl
         {
             case \App\Acl::ADMIN:
                 $this->allow($admin, 'event:index',array('add'));
-                $this->allow($admin, 'community:forum',array('addCategory', 'addForum', 'addThread'));
+                $this->allow($admin, 'community:category',array('add'));
+                $this->allow($admin, 'community:forum',array('index', 'add'));
+                $this->allow($admin, 'community:thread',array('add', 'view'));
                 $this->allow($admin, 'admin:index',array('index', 'clearcache'));
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
                 $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
