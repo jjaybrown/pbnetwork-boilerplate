@@ -15,7 +15,7 @@
     foreach($this->categories as $category)
     {
         ?>
-    <table class="table table-striped table-bordered" id="<?=str_replace(" ", "",$category->getName())?>">
+        <table class="table table-striped table-bordered" id="<?=str_replace(" ", "",$category->getName())?>">
             <thead>
                 <tr><h3><span rel="tooltip" title="<?=$category->getDescription()?>"class="headertip"><?=ucwords($category->getName())?></span></h3></tr>
             </thead>
@@ -24,7 +24,17 @@
             foreach($category->getForums() as $forum)
             {
                 ?>
-                <tr><td><h4><a href="#"><i class="<? echo ($forum->open ? 'icon-folder-open' : 'icon-folder-close');?>"></i> <?=ucwords($forum->getName())?></a> <small><?=$forum->getDescription()?></small></h4></td></tr>
+                <tr>
+                    <td>
+                        <h4><a href="<?=$this->url(array(
+                            'module' => 'community',
+                            'controller' => 'forum',
+                            'action' => 'threads',
+                            'id' => $forum->getId()
+                            ))?>"><i class="<? echo ($forum->open ? 'icon-folder-open' : 'icon-folder-close');?>"></i> <?=ucwords($forum->getName())?></a> <small><?=$forum->getDescription()?></small>
+                        </h4>
+                    </td>
+                </tr>
                 <?
             }
             ?>
