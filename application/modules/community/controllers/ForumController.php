@@ -37,6 +37,16 @@ class Community_ForumController extends AppController
         $this->view->categories = $this->_categories;
     }
     
+    public function threadsAction()
+    {
+        // Get forum id
+        $id = $this->_request->getParam('id');
+        
+        $this->_forums = $this->_em->find('App\Entity\Community\Forum' ,$id);
+        
+        $this->view->forum = $this->_forums;
+    }
+    
     public function addcategoryAction()
     {
         $catForm = new AddCategory();
@@ -163,7 +173,7 @@ class Community_ForumController extends AppController
                     $this->_em->persist($thread);
                     $this->_em->flush();
                     $this->_flashMessenger->addMessage('Successfully created thread');
-                    $this->_redirect('/community/forum/addThread');
+                    $this->_redirect('/community/forum/threads/id/'.$id);
                 }
                 catch (Exception $e) {
                     // Alert user of error

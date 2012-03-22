@@ -161,7 +161,7 @@ class Acl extends \Zend_Acl
                 $this->allow($guest, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
                 
                 $this->allow($guest, 'community:index',array('index'));
-                $this->allow($guest, 'community:forum',array('index', 'addthread'));
+                $this->allow($guest, 'community:forum',array('index', 'threads'));
                 break;
         }
     }

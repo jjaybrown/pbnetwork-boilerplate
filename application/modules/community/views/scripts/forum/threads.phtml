@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="hero-unit">
+        <h1>Forums</h1>
+        <p>
+            The ultimate community site, where beginners to seasoned players can 
+            interact with one another and talk about their passion.
+        </p>
+    </div>
+    <ul class="breadcrumb" id="top">
+        <li>Forums</li>
+        <li class="divider">/</li>
+        <li><a href="">Banter</a></li>
+    </ul>
+    <table class="table table-striped table-bordered" id="<?=str_replace(" ", "",$this->forum->getName())?>">
+        <thead style="margin-bottom:10px;">
+            <tr>
+                <h3 class="pull-left"><span rel="tooltip" title="<?=$this->forum->getDescription()?>"class="headertip"><?=ucwords($this->forum->getName())?></span></h3>
+                <a href="<?=$this->url(array(
+                    'module' => 'community',
+                    'controller' => 'forum',
+                    'action' => 'addThread',
+                    'forum' => $this->forum->getId()
+                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a>
+            </tr>
+        </thead>
+        <tbody>
+        <?
+        foreach($this->forum->getThreads() as $thread)
+        {
+            ?>
+            <tr>
+                <td>
+                    <h4 class="pull-left">
+                        <a href="#"><i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> <small><?=$thread->getDescription()?></small>
+                    </h4>
+                    <div id="options" class="pull-right">Options: <a href="#" rel="tooltip" title="New Post"><i class="icon-edit"></i></a></div>
+                </td>
+            </tr>
+            <?
+        }
+        ?>
+        </tbody>
+    </table>
+    <ul class="breadcrumb">
+        <li>Forums</li>
+        <li class="divider">/</li>
+        <li><a href="">Banter</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('a').tooltip({
+           'placement' : 'top'
+        });
+    });
+</script>
