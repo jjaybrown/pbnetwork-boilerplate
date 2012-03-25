@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="hero-unit">
+    <div class="hero-unit visible-desktop visible-tablet">
         <h1>Forums</h1>
         <p>
             The ultimate community site, where beginners to seasoned players can 
@@ -15,13 +15,13 @@
         <thead style="margin-bottom:10px;">
             <tr>
                 <h3 class="pull-left"><span rel="tooltip" title="<?=$this->forum->getDescription()?>"class="headertip"><?=ucwords($this->forum->getName())?></span></h3>
-                <a href="<?=$this->url(array(
+            </tr>
+            <tr><a href="<?=$this->url(array(
                     'module' => 'community',
                     'controller' => 'thread',
                     'action' => 'add',
                     'forum' => $this->forum->getId()
-                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a>
-            </tr>
+                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a></tr>
         </thead>
         <tbody>
         <?
@@ -29,7 +29,7 @@
         {
             ?>
             <tr>
-                <td>
+                <td class="span8">
                     <h4 class="pull-left">
                         <a href="<?=$this->url(array(
                             'module' => 'community',
@@ -38,11 +38,15 @@
                             'thread' => $thread->getId()
                         ))?>"><i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> <small class="visible-desktop visible-tablet"><?=$thread->getDescription()?></small>
                     </h4>
-                    <div id="options" class="pull-right">
-                        <p>
-                            <i class="icon-comment" title="Updated: <?=$thread->getUpdated('dS F \'y , H:iA')?>"></i><strong> <?=$thread->getPostCount()?></strong>
-                        </p>
-                    </div>
+                </td>
+                <td class="span1">
+                   
+                </td>
+                <td class="span1">
+                    
+                </td>
+                <td class="span2">
+                    <i class="icon-comment" title="Updated: <?=$thread->getUpdated('dS F \'y , H:iA')?>"></i> <strong><?=$thread->getPostCount()?> posts</strong>
                 </td>
             </tr>
             <?
