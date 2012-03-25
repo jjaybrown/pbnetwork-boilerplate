@@ -11,7 +11,6 @@ class Community_ForumController extends AppController
     public function init()
     {
         parent::init();
-        
         $this->_categories = $this->_em->getRepository('App\Entity\Community\Category')->findAll();
     }
         

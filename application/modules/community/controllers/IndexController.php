@@ -62,11 +62,11 @@ class Community_IndexController extends AppController
                             'action' => 'index',
                             'controller' => 'roundup',
                             'module' => 'community',
-                            'label' => 'Roundup'
+                            'label' => 'Community Roundup'
                         ),
                         array(
                             'action' => 'index',
-                            'controller' => 'forums',
+                            'controller' => 'forum',
                             'module' => 'community',
                             'label' => 'Forums'
                         ),
@@ -75,6 +75,12 @@ class Community_IndexController extends AppController
                             'controller' => 'groups',
                             'module' => 'community',
                             'label' => 'Groups'
+                        ),
+                        array(
+                            'action' => 'index',
+                            'controller' => 'competitions',
+                            'module' => 'community',
+                            'label' => 'Weekly Competitions'
                         )
                     )
                 ),

@@ -31,9 +31,18 @@
             <tr>
                 <td>
                     <h4 class="pull-left">
-                        <a href="#"><i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> <small><?=$thread->getDescription()?></small>
+                        <a href="<?=$this->url(array(
+                            'module' => 'community',
+                            'controller' => 'post',
+                            'action' => 'index',
+                            'thread' => $thread->getId()
+                        ))?>"><i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> <small class="visible-desktop visible-tablet"><?=$thread->getDescription()?></small>
                     </h4>
-                    <div id="options" class="pull-right">Options: <a href="#" rel="tooltip" title="New Post"><i class="icon-edit"></i></a></div>
+                    <div id="options" class="pull-right">
+                        <p>
+                            <i class="icon-comment" title="Updated: <?=$thread->getUpdated('dS F \'y , H:iA')?>"></i><strong> <?=$thread->getPostCount()?></strong>
+                        </p>
+                    </div>
                 </td>
             </tr>
             <?
@@ -49,8 +58,12 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        $('a').tooltip({
-           'placement' : 'top'
+        $('.headertip').tooltip({
+           'placement' : 'right'
+        });
+        
+        $('i.icon-comment').tooltip({
+           'placement' : 'left'
         });
     });
 </script>

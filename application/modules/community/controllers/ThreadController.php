@@ -14,11 +14,6 @@ class Community_ThreadController extends AppController
         
         $this->_forums = $this->_em->getRepository('App\Entity\Community\Forum')->findAll();
     }
-        
-    public function indexAction()
-    {
-        $this->view->categories = $this->_categories;
-    }
     
     public function viewAction()
     {

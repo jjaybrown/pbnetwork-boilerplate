@@ -28,13 +28,17 @@
             </div>
         </div>
     </div>
-    <ul class="breadcrumb">
-        <li><a href="">Community Roundup</a></li>
-        <li class="divider"></li>
-        <li><a href="/community/forum#top">Forums</a></li>
-        <li class="divider"></li>
-        <li><a href="">Groups</a></li>
-        <li class="divider"></li>
-        <li><a href="">Weekly Competitions</a></li>
-    </ul>
+    <div id="subnav">
+    <?php 
+    foreach($this->navigation()->getContainer()->getPages() as $page)
+    {
+        if($page->isActive(true))
+        {
+            $partial = array('partials/sub.phtml', 'community');
+            $this->navigation()->menu()->setPartial($partial);
+            echo $this->navigation()->menu()->renderMenu($page,array('ulClass' => 'breadcrumb'));
+        }
+    } 
+    ?>
+    </div>
 </div>

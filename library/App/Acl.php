@@ -123,6 +123,7 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('community:category'));
         $this->add(new \Zend_Acl_Resource('community:forum'));
         $this->add(new \Zend_Acl_Resource('community:thread'));
+        $this->add(new \Zend_Acl_Resource('community:post'));
         
         // Admin resources
         $this->add(new \Zend_Acl_Resource('admin:index'));
@@ -154,6 +155,7 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'site:auth',array('logout'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
+                $this->allow($member, 'community:post',array('index', 'view', 'add'));
             case \App\Acl::GUEST:
                 // Setup access rights
                 $this->allow($guest, 'site:index',array('index'));

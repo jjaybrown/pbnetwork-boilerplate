@@ -23,6 +23,13 @@ class Thread
     
     private $_forum;
     
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $_posts
+     * 
+     * @OneToMany(targetEntity="App\Entity\Community\Post", mappedBy="_thread", cascade={"persist", "remove"})
+     */
+    private $_posts;
+    
     /** @Column(type="string", name="name") */
     private $_name;
     /** @Column(type="string", name="description") */
@@ -66,6 +73,16 @@ class Thread
         $this->_forum = $forum;
         $this->_updated = new \DateTime;
         return $this;
+    }
+    
+    public function getPosts()
+    {
+        return $this->_posts;
+    }
+    
+    public function getPostCount()
+    {
+        return count($this->_posts);
     }
     
     public function getName()
