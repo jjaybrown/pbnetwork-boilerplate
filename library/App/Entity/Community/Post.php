@@ -23,6 +23,15 @@ class Post
     
     private $_thread;
     
+    /**
+     * @ManyToOne(targetEntity="App\Entity\User")
+     * @JoinColumns({
+     *  @JoinColumn(name="user_id", referencedColumnName="id")
+     * })
+     */
+    
+    private $_user;
+    
     /** @Column(type="string", name="content") */
     private $_content;
     /** @Column(type="datetime", name="created", nullable="true") */
@@ -30,8 +39,9 @@ class Post
     /** @Column(type="datetime", name="updated", nullable="true") */
     private $_updated;
     
-    public function __construct($thread, $content)
+    public function __construct($user, $thread, $content)
     {
+        $this->setUser($user);
         $this->setThread($thread);
         $this->_content = $content;
         $this->_created = new \DateTime;
@@ -46,6 +56,17 @@ class Post
     public function getContent()
     {
         return $this->_content;
+    }
+    
+    public function getUser()
+    {
+        $this->_user;
+    }
+    
+    public function setUser($user)
+    {
+        $this->_user = $user;
+        return $this;
     }
     
     public function getThread()
