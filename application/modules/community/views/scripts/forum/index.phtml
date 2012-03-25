@@ -25,15 +25,16 @@
             {
                 ?>
                 <tr>
-                    <td>
+                    <td class="span10">
                         <h4><a href="<?=$this->url(array(
                             'module' => 'community',
                             'controller' => 'thread',
                             'action' => 'view',
                             'id' => $forum->getId()
-                            ))?>"><i class="<? echo ($forum->open ? 'icon-folder-open' : 'icon-folder-close');?>"></i> <?=ucwords($forum->getName())?></a> <small><?=$forum->getDescription()?></small>
+                            ))?>"><i class="<? echo ($forum->open ? 'icon-folder-open' : 'icon-folder-close');?>"></i> <?=ucwords($forum->getName())?></a> <small class="visible-desktop visible-tablet"><?=$forum->getDescription()?></small>
                         </h4>
                     </td>
+                    <td class="span2"></td>
                 </tr>
                 <?
             }
