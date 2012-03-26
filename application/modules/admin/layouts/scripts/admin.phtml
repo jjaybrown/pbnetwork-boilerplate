@@ -58,6 +58,7 @@
     <?= $this->action('header', 'index', 'admin');  ?>
 
     <div class="container" style="margin-top:70px;">
+      <?php echo $this->flashMessages($this->messages); ?>
       <?php echo $this->layout()->content; ?>
 
     <footer>
