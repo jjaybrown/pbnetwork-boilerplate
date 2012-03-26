@@ -142,4 +142,9 @@ class User
         $this->_updated = new \DateTime();
         return $this;
     }
+    
+    public function getPosts()
+    {
+        return $this->_posts;
+    }
 }

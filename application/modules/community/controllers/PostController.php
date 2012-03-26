@@ -41,7 +41,9 @@ class Community_PostController extends AppController
             if ($postForm->isValid($this->_request->getPost())) {
 
                 $data = $postForm->getValues();
-                $post = new Post($this->_thread, $data['post']);
+                /*$this->_em->merge($this->_auth->getIdentity());
+                $this->_em->persist($this->_auth->getIdentity());*/
+                $post = new Post($this->_auth->getIdentity(), $this->_thread, $data['post']);
                 $this->_thread->getPosts()->add($post);
                 try{
                     $this->_em->persist($post);
@@ -50,6 +52,7 @@ class Community_PostController extends AppController
                     $this->_redirect('/community/post/index/thread/'.$this->_thread->getId());
                 }
                 catch (Exception $e) {
+                    die($e);
                     // Alert user of error
                     $this->_flashMessenger->addMessage('Error: '. $e);
                     $this->_redirect('/community/post/index/thread/'.$this->_thread->getId());
