@@ -32,13 +32,6 @@ class User
     
     private $_salt;
     
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $_posts
-     * 
-     * @OneToMany(targetEntity="App\Entity\Community\Post", mappedBy="_user", cascade={"persist", "remove"})
-     */
-    private $_posts;
-    
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;

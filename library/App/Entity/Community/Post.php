@@ -23,15 +23,6 @@ class Post
     
     private $_thread;
     
-    /**
-     * @ManyToOne(targetEntity="App\Entity\User")
-     * @JoinColumns({
-     *  @JoinColumn(name="user_id", referencedColumnName="id")
-     * })
-     */
-    
-    private $_user;
-    
     /** @Column(type="string", name="content") */
     private $_content;
     /** @Column(type="datetime", name="created", nullable="true") */
