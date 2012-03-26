@@ -145,7 +145,7 @@ class Basket_CheckoutController extends AppController
             $this->_order->save();
 
             // Setup the Express Checkout Transaction
-            $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://".$_SERVER['HTTP_HOST']."/basket/checkout/paypal/type/SET/response/true", "http://".$_SERVER['HTTP_HOST']."/basket/checkout/", "GBP", "Sale");
+            $this->_paypal->SetExpressCheckout($this->_cart->getSubTotal(), "http://".$_SERVER['HTTP_HOST']."/basket/checkout/paypal/type/SET/response/true", "http://".$_SERVER['HTTP_HOST']."/basket", "GBP", "Sale");
         }
     }
 
@@ -188,7 +188,7 @@ class Basket_CheckoutController extends AppController
             $this->_cart->save();
 
             // Output error message to user
-            $this->_flashMessenger->addMessage($this->paypal->_errorMessage);
+            $this->_flashMessenger->addMessage(array('error' => $this->paypal->_errorMessage));
 
             $redirect = '/basket/index/';
         }else{
@@ -199,7 +199,8 @@ class Basket_CheckoutController extends AppController
             $this->_cart->save();
 
             // Output error message to user
-            $this->_flashMessenger->addMessage("Sorry something went wrong, please try again.");
+            $this->_flashMessenger->addMessage(array('error' => 'Sorry something went wrong, please try again.'));
+            //@TODO log actual error 
 
             $redirect = '/basket/index/';
         }
@@ -241,9 +242,6 @@ class Basket_CheckoutController extends AppController
             // Save Order
             $this->_order->save();
             
-            // Reset cart and order
-            $this->_cart->trash();
-            
             $redirect = '/basket/checkout/complete';
         }else{ // Error occurred during transaction
             // Set cart status
@@ -252,8 +250,11 @@ class Basket_CheckoutController extends AppController
             // Save cart
             $this->_cart->save();
             
-            // Throw error message
-            throw new \Zend_Exception($this->_paypal->errorMessage);
+            // Output error message to user
+            $this->_flashMessenger->addMessage(array('error' => $this->_paypal->errorMessage));
+            //@TODO log actual error 
+
+            $redirect = '/basket/index/';
         }
         // Get transaction id
         $this->_paypalTransaction($this->_cart->getStatus(), 'DO','Transaction Id '.$transaction['TRANSACTIONID'], $this->_paypal->getRawGET());
@@ -289,6 +290,9 @@ class Basket_CheckoutController extends AppController
      */
     public function completeAction()
     {
+        // Reset cart and order
+        $this->_cart->trash();
+        
         $this->render('index');
         
         $transactions =  $this->_em->getRepository("\App\Entity\Checkout\Transaction")->findBy(array('_orderId' => '22'));

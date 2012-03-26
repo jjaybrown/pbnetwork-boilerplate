@@ -83,6 +83,7 @@ class Basket_IndexController extends Zend_Controller_Action
     {
         // Empty cart
         $this->_cart->clearCart();
+        $this->_flashMessenger->addMessage(array('info' => 'Emptied your shopping cart'));
         $this->_redirect('/basket/index');
     }
 
