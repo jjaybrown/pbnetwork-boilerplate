@@ -38,7 +38,7 @@ class AddForum extends \EasyBib_Form
         ));
         
         $submit = new \Zend_Form_Element_Button('submit');
-        $submit->setLabel("Add Forum");
+        $submit->setLabel("Save Forum");
         
         $this->addElements(array($category, $name, $description, $private, $submit));
 
