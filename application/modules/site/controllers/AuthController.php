@@ -50,7 +50,8 @@ class Site_AuthController extends AppController
                     }
                 }else{
                     // Auth failed
-                    \Zend_Debug::dump("failed");
+                    $this->_flashMessenger->addMessage(array('error' => 'Login failed. Please check your username and password'));
+                    $this->_helper->redirector('login');
                 }
             }
         }
@@ -60,6 +61,7 @@ class Site_AuthController extends AppController
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
+        $this->_flashMessenger->addMessage(array('info' => 'Successfully logged out'));
         $this->_helper->redirector('index'); // back to login page
     }
     
