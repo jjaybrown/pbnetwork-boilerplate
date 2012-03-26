@@ -2,5 +2,6 @@
 .idea
 tests/reports/coverage/*
 data/migrations/*
+library/App/Entity/Proxy/*
 index.html
 paintball-network.jpg
