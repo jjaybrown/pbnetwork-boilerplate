@@ -48,13 +48,12 @@ class Community_PostController extends AppController
                 try{
                     $this->_em->persist($post);
                     $this->_em->flush();
-                    $this->_flashMessenger->addMessage('Successfully created thread');
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully created thread'));
                     $this->_redirect('/community/post/index/thread/'.$this->_thread->getId());
                 }
                 catch (Exception $e) {
-                    die($e);
                     // Alert user of error
-                    $this->_flashMessenger->addMessage('Error: '. $e);
+                    $this->_flashMessenger->addMessage(array('error' => $e));
                     $this->_redirect('/community/post/index/thread/'.$this->_thread->getId());
                 }
             }

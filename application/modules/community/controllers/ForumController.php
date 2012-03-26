@@ -61,12 +61,12 @@ class Community_ForumController extends AppController
                 try{
                     $this->_em->persist($forum);
                     $this->_em->flush();
-                    $this->_flashMessenger->addMessage('Successfully created forum');
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully created forum'));
                     $this->_redirect('/community/forum/add');
                 }
                 catch (Exception $e) {
                     // Alert user of error
-                    $this->_flashMessenger->addMessage('Error: '. $e);
+                    $this->_flashMessenger->addMessage(array('error' => $e));
                     $this->_redirect('/community/forum/add');
                 }
             }
