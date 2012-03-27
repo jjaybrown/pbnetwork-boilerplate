@@ -96,4 +96,52 @@ class Community_ForumController extends AppController
             }
         }
     }
+    
+    public function lockAction()
+    {
+        // Get supplied forum id
+        $id = $this->_request->getParam('id');
+        
+        // Check id is valid
+        if(!is_null($id))
+        {
+            $forum = $this->_em->find("\App\Entity\Community\Forum", $id);
+            // Close forum (Lock)
+            $forum->open = false;
+            try{
+                $this->_em->persist($forum);
+                $this->_em->flush();
+                $this->_flashMessenger->addMessage(array('success' => "Successfully locked: ".$forum->getName()));
+                $this->_redirect('/admin/community/forum/');
+            }catch(Exception $e){
+                // Display error message to user
+                $this->_flashMessenger->addMessage(array('error' => $e));
+                $this->_redirect('/admin/community/forum/');
+            }
+        }
+    }
+    
+    public function unlockAction()
+    {
+        // Get supplied forum id
+        $id = $this->_request->getParam('id');
+        
+        // Check id is valid
+        if(!is_null($id))
+        {
+            $forum = $this->_em->find("\App\Entity\Community\Forum", $id);
+            // Open forum (unlock)
+            $forum->open = true;
+            try{
+                $this->_em->persist($forum);
+                $this->_em->flush();
+                $this->_flashMessenger->addMessage(array('success' => "Successfully unlocked: ".$forum->getName()));
+                $this->_redirect('/admin/community/forum/');
+            }catch(Exception $e){
+                // Display error message to user
+                $this->_flashMessenger->addMessage(array('error' => $e));
+                $this->_redirect('/admin/community/forum/');
+            }
+        }
+    }
 }

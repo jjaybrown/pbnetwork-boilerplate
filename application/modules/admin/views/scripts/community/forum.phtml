@@ -47,7 +47,21 @@
                         'action' => 'delete',
                         'id' => $forum->getId()
                         ))?>">Delete</a></li>
-                    <li class=""><a href="">Lock</a></li>
+                    <?php if($forum->open){ ?>
+                    <li class="lock"><a rel="<?=$this->url(array(
+                        'module' => 'community',
+                        'controller' => 'forum',
+                        'action' => 'lock',
+                        'id' => $forum->getId()
+                        ))?>">Lock</a></li>
+                    <?php }else{ ?>
+                    <li class="unlock"><a rel="<?=$this->url(array(
+                        'module' => 'community',
+                        'controller' => 'forum',
+                        'action' => 'unlock',
+                        'id' => $forum->getId()
+                        ))?>">Unlock</a></li>
+                    <?php } ?>
                     <li class="access"><a rel="<?=$forum->getId();?>">Change Access</a></li>
                     <li class="divider"></li>
                     <li><a href="<?=$this->url(array(
@@ -80,6 +94,34 @@
   </div>
 </div>
 
+<!-- Lock modal -->
+<div class="modal fade" id="lock">
+  <div class="modal-header">
+    <h3>Lock Forum</h3>
+  </div>
+  <div class="modal-body">
+    <p>This will lock the forum, preventing any new threads to be created or posts to be made.</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    <a href="#" class="btn btn-danger">Lock Forum</a>
+  </div>
+</div>
+
+<!-- Unloock modal -->
+<div class="modal fade" id="unlock">
+  <div class="modal-header">
+    <h3>Unlock Forum</h3>
+  </div>
+  <div class="modal-body">
+    <p>This will unlock the forum, allowing new threads and posts to be created.</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    <a href="#" class="btn btn-primary">Unlock Forum</a>
+  </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -87,6 +129,18 @@
         {
             $("#delete .modal-footer .btn-danger").attr('href', $(this).attr('rel'));
             $('#delete').modal('toggle');
+        });
+        
+        $(".lock a").click(function()
+        {
+            $("#lock .modal-footer .btn-danger").attr('href', $(this).attr('rel'));
+            $('#lock').modal('toggle');
+        });
+        
+        $(".unlock a").click(function()
+        {
+            $("#unlock .modal-footer .btn-primary").attr('href', $(this).attr('rel'));
+            $('#unlock').modal('toggle');
         });
         
         $(".access a").click(function()

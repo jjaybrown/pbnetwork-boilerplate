@@ -144,7 +144,7 @@ class Acl extends \Zend_Acl
             case \App\Acl::ADMIN:
                 $this->allow($admin, 'event:index',array('add'));
                 $this->allow($admin, 'community:category',array('add'));
-                $this->allow($admin, 'community:forum',array('index', 'add'));
+                $this->allow($admin, 'community:forum',array('index', 'add', 'delete', 'lock', 'unlock'));
                 $this->allow($admin, 'community:thread',array('add', 'view'));
                 $this->allow($admin, 'admin:index',array('index', 'clearcache'));
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
