@@ -17,7 +17,7 @@ class Site_AuthController extends AppController
         if ($this->_auth->hasIdentity()) {
             // If the user is logged in, we don't want to show the login form;
             // however, the logout action should still be available
-            if ('logout' != $this->getRequest()->getActionName()) {
+            if ('logout' != $this->getRequest()->getActionName() && 'forbidden' != $this->getRequest()->getActionName()) {
                 $this->_helper->redirector('index', 'index');
             }
         } else {
@@ -31,7 +31,7 @@ class Site_AuthController extends AppController
     
     public function indexAction()
     {
-        //$this->_helper->redirector('login');
+        $this->_helper->redirector('login');
     }
     
     public function loginAction()
