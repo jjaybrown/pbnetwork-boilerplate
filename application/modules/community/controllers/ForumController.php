@@ -73,5 +73,27 @@ class Community_ForumController extends AppController
         }
         
         $this->view->form = $forumForm;
-    }         
+    }
+    
+    public function deleteAction()
+    {
+        // Get supplied forum id
+        $id = $this->_request->getParam('id');
+        
+        // Check id is valid
+        if(!is_null($id))
+        {
+            $forum = $this->_em->find("\App\Entity\Community\Forum", $id);
+            try{
+                $this->_em->remove($forum);
+                $this->_em->flush();
+                $this->_flashMessenger->addMessage(array('success' => "Successfully deleted: ".$forum->getName()));
+                $this->_redirect('/admin/community/forum/');
+            }catch(Exception $e){
+                // Display error message to user
+                $this->_flashMessenger->addMessage(array('error' => $e));
+                $this->_redirect('/admin/community/forum/');
+            }
+        }
+    }
 }
