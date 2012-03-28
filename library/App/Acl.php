@@ -146,11 +146,12 @@ class Acl extends \Zend_Acl
                 $this->allow($admin, 'event:index',array('add'));
                 $this->allow($admin, 'community:category',array('add'));
                 $this->allow($admin, 'community:forum',array('index', 'add', 'edit', 'delete', 'lock', 'unlock'));
-                $this->allow($admin, 'community:thread',array('add', 'view'));
+                $this->allow($admin, 'community:thread',array('add'));
                 $this->allow($admin, 'admin:index',array('index', 'clearcache'));
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
                 $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
                 $this->allow($admin, 'admin:community',array('index','forum'));
+                
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
@@ -158,6 +159,7 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
                 $this->allow($member, 'community:post',array('index', 'view', 'add'));
+         
             case \App\Acl::GUEST:
                 // Setup access rights
                 $this->allow($guest, 'site:index',array('index'));
@@ -169,7 +171,8 @@ class Acl extends \Zend_Acl
                 $this->allow($guest, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
                 
                 $this->allow($guest, 'community:index',array('index'));
-                $this->allow($guest, 'community:forum',array('index', 'threads'));
+                $this->allow($guest, 'community:forum',array('index'));
+                $this->allow($guest, 'community:thread',array('view'));
                 break;
         }
     }

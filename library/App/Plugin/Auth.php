@@ -55,6 +55,10 @@ class Auth extends \Zend_Controller_Plugin_Abstract
                 $this->getResponse()->setHttpResponseCode(401);
             }elseif(!$this->_auth->hasIdentity() && !$this->_acl->isAllowed($role, $resource, $action)){
                 // Not logged in trying to access a restricted page
+                
+                $fm = \Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+                $fm->addMessage(array('error' => 'You\'ve tried to access a restricted area'));
+                
                 $request->setModuleName('site');
                 $request->setControllerName('auth');
                 $request->setActionName('login');
