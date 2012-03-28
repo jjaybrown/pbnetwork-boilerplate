@@ -2,6 +2,7 @@
 use App\Controller as AppController;
 use App\Entity\Community\Category as Category;
 use App\Form\Community\Forums\AddForum as AddForum;
+use App\Form\Community\Forums\EditForum as EditForum;
 
 class Community_ForumController extends AppController
 {
@@ -73,6 +74,69 @@ class Community_ForumController extends AppController
         }
         
         $this->view->form = $forumForm;
+    }
+    
+    public function editAction()
+    {
+        // Get supplied forum id
+        $id = $this->_request->getParam('id');
+        
+        if(!is_null($id))
+        {
+            $cats = array();
+            foreach($this->_categories as $category)
+            {
+                $cats[] = $category->getName();
+            }
+            
+            $forumForm = new EditForum($id, $cats);
+
+            if ($this->_request->isPost()) {
+                if ($forumForm->isValid($this->_request->getPost())) {
+
+                    $data = $forumForm->getValues();
+                    $this->_categories = $this->_categories[$data['_category']];
+                    
+                    $forum = $this->_em->find("\App\Entity\Community\Forum", $id);
+                    $forum->setCategory($this->_categories);
+                    $forum->setName($data['_name']);
+                    $forum->setDescription($data['description']);
+                    $forum->private = $data['private'];
+                    //$forum = new Forum($this->_categories, $data['_name'], $data['_description'], $data['_private']);
+                    $this->_categories->getForums()->add($forum);
+                    try{
+                        $this->_em->persist($forum);
+                        $this->_em->flush();
+                        $this->_flashMessenger->addMessage(array('success' => 'Successfully edited forum'));
+                        $this->_redirect('/community/forum/edit/id/'.$id);
+                    }
+                    catch (Exception $e) {
+                        // Alert user of error
+                        $this->_flashMessenger->addMessage(array('error' => $e));
+                        $this->_redirect('/community/forum/edit/id/'.$id);
+                    }
+                }
+            }else{
+                // Get user data from id
+                $query = $this->_em->createQueryBuilder()
+                    ->select('f')
+                    ->from('App\Entity\Community\Forum', 'f')
+                    ->where('f._id = ?1')
+                    ->setParameter(1, $id)
+                    ->getQuery();
+
+                // Persist user object
+                $object = $query->getResult();
+                $this->_em->persist($object[0]);
+
+                // Populate user as array
+                $data = $query->getArrayResult();
+                $data[0]["description"] = $data[0]["_description"];
+                $forumForm->populate($data[0]);
+            }
+
+            $this->view->form = $forumForm;
+        }
     }
     
     public function deleteAction()
