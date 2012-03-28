@@ -19,12 +19,48 @@ class Profile
     /** @Column(type="datetime", name="dob") */
     private $_dob;
     
-    public function __construct()
+    public function __construct($first, $last, \Datetime $dob)
     {
+        $this->_firstName = $first;
+        $this->_lastName = $last;
+        $this->_dob = $dob;
     }
     
     public function getId()
     {
         return $this->_id;
+    }
+    
+    public function getFirstName()
+    {
+        return $this->_firstName;
+    }
+    
+    public function setFirstName($first)
+    {
+        $this->_firstName = $first;
+        return $this;
+    }
+    
+    public function getLastName()
+    {
+        return $this->_lastName;
+    }
+    
+    public function setLastName($last)
+    {
+        $this->_lastName = $last;
+        return $this;
+    }
+    
+    public function getDob()
+    {
+        return $this->_dob->format("d-M-Y");
+    }
+    
+    public function setDob(\Datetime $date)
+    {
+        $this->_dob = $date;
+        return $this;
     }
 }
