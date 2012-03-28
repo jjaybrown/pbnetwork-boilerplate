@@ -112,6 +112,7 @@ class Acl extends \Zend_Acl
         // Add resources
         $this->add(new \Zend_Acl_Resource('site:index'));
         $this->add(new \Zend_Acl_Resource('site:auth'));
+        $this->add(new \Zend_Acl_Resource('site:profile'));
         
         $this->add(new \Zend_Acl_Resource('event:index'));
         $this->add(new \Zend_Acl_Resource('event:calendar'));
@@ -153,6 +154,7 @@ class Acl extends \Zend_Acl
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
+                $this->allow($member, 'site:profile',array('view'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
                 $this->allow($member, 'community:post',array('index', 'view', 'add'));
