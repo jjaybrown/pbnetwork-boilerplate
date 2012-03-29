@@ -1,20 +1,42 @@
 <?php
     $profile = $this->user->getProfile();
 ?>
-<div class="span2">
-    <div class="thumbnail">
-        <img src="<?=$profile->getPicture()?>" />
+<div id="profile-header" class="well well-large">
+    <div class="span2">
+        <div class="thumbnail">
+            <img src="<?=$profile->getPicture()?>" />
+        </div>
+        <div id="level-box">
+            <h5>Current level: <small>Level 5</small></h5>
+            <div rel="tooltip" title="Your 588xp away from reaching Level 6" class="progress progress-warning xp">
+                <div class="bar" style="width: 60%;">1320xp</div>
+            </div>
+        </div>
     </div>
-    <h5>Level 5</h5>
-    <div class="progress progress-warning">
-        <div class="bar" style="width: 60%;">1320xp</div>
+    <div class="span9">
+        <div class="page-header">
+            <h2><?=$profile->getFirstName()." ".$profile->getLastName()?> <small><?=$this->user->getUsername()?></small></h2>
+            <p class="status-message span9">Let’s now move into defining the areas of our page. The first thing to explain is how some portions of the site content are limited in width. </p>
+        </div>
+        <!-- Profile head boxes -->
+        <ul id="profile-boxes">
+            <li class="span2 first">
+                
+            </li>
+            <li class="span2">
+                
+            </li>
+            <li class="span2">
+                
+            </li>
+        </ul>
     </div>
+    <div class="clearfix"></div>
 </div>
-<div class="span9">
-    <div class="page-header">
-        <h2><?=$profile->getFirstName()." ".$profile->getLastName()?> <small><?=$this->user->getUsername()?></small></h2>
-        <h3 class="inline">Bio:</h3>
-        <p class="inline">With Bootstrap 2, we've simplified the base class: .alert instead of .alert-message. We've also reduced the minimum required markup—no  is required by default, just the outer.</p>
-    </div>
-</div>
-<div class="clearfix"></div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.xp').tooltip({
+           'placement' : 'top'
+        });
+    });
+</script>

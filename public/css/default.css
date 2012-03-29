@@ -8,3 +8,11 @@
 
 #subnav ul.breadcrumb li+li {margin-left:10px;}
 
+
+/* Profile */
+#profile-header #level-box {margin-top:10px;}
+#profile-header #level-box h5 {text-transform:capitalize; font-weight: bold;}
+#profile-header .page-header p.status-message {color:#989696; margin-left:0;}
+#profile-header ul#profile-boxes {list-style: none; margin:0; padding:0;}
+#profile-header ul#profile-boxes li {float: left; padding:15px;}
+#profile-header ul#profile-boxes li.first {margin-left:0px;}
