@@ -32,10 +32,15 @@ class User
     
     private $_salt;
     
+    /**
+     * @OneToOne(targetEntity="\App\Entity\Profile", mappedBy="_user", cascade={"persist", "remove"})
+     */
+    
+    private $_profile;
+    
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;
-        $this->_posts = new ArrayCollection();
         // Treat password with salt
         $this->_salt = \Zend_Registry::get('salt'); 
         $this->_password = SHA1($this->_salt.$password);
@@ -136,8 +141,14 @@ class User
         return $this;
     }
     
-    public function getPosts()
+    public function getProfile()
     {
-        return $this->_posts;
+        return $this->_profile;
+    }
+    
+    public function setProfile($profile)
+    {
+        $this->_profile = $profile;
+        return $this;
     }
 }

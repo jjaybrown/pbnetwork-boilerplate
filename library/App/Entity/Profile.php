@@ -18,12 +18,24 @@ class Profile
     private $_lastName;
     /** @Column(type="datetime", name="dob") */
     private $_dob;
+    /** @Column(type="string", name="picture") */
+    private $_pictureUrl;
+    /** @Column(type="string", name="bio") */
+    private $_bio;
+    
+    /**
+     * @OneToOne(targetEntity="\App\Entity\User", inversedBy="_profile", cascade={"persist", "remove"})
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    
+    private $_user;
     
     public function __construct($first, $last, \Datetime $dob)
     {
         $this->_firstName = $first;
         $this->_lastName = $last;
         $this->_dob = $dob;
+        $this->_pictureUrl = "img/profiles/default.jpg";
     }
     
     public function getId()
@@ -61,6 +73,27 @@ class Profile
     public function setDob(\Datetime $date)
     {
         $this->_dob = $date;
+        return $this;
+    }
+    
+    public function getPicture()
+    {
+        return $this->_pictureUrl;
+    }
+    
+    public function setPicture($url)
+    {
+        return $this->_pictureUrl;
+    }
+    
+    public function getUser()
+    {
+        return $this->_user;
+    }
+    
+    public function setUser($user)
+    {
+        $this->_user = $user;
         return $this;
     }
 }

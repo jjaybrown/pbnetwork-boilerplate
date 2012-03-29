@@ -1,7 +1,20 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+    $profile = $this->user->getProfile();
 ?>
+<div class="span2">
+    <div class="thumbnail">
+        <img src="<?=$profile->getPicture()?>" />
+    </div>
+    <h5>Level 5</h5>
+    <div class="progress progress-warning">
+        <div class="bar" style="width: 60%;">1320xp</div>
+    </div>
+</div>
+<div class="span9">
+    <div class="page-header">
+        <h2><?=$profile->getFirstName()." ".$profile->getLastName()?> <small><?=$this->user->getUsername()?></small></h2>
+        <h3 class="inline">Bio:</h3>
+        <p class="inline">With Bootstrap 2, we've simplified the base class: .alert instead of .alert-message. We've also reduced the minimum required markup—no  is required by default, just the outer.</p>
+    </div>
+</div>
+<div class="clearfix"></div>
