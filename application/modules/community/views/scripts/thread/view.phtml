@@ -7,9 +7,32 @@
         </p>
     </div>
     <ul class="breadcrumb" id="top">
-        <li>Forums</li>
-        <li class="divider">/</li>
-        <li><a href="">Banter</a></li>
+        <li><a href="<?=$this->url(array(
+            'module' => 'community',
+            'controller' => 'forum',
+            'action' => 'index'
+        ))?>">Forums</a></li>
+        <? 
+        foreach($this->breadcrumbs->getPages() as $page)
+        {
+            if(!$page->active){
+            ?>
+            <li class="divider">/</li>
+            <li><a href="<?=$this->url(array(
+                'module' => $page->module,
+                'controller' => $page->controller,
+                'action' => $page->action,
+                'id' => $page->id
+            ))?>"><?=$page->label?></a></li>
+            <?
+            }else{
+            ?>
+            <li class="divider">/</li>
+            <li><?=$page->label?></li>
+            <?
+            }
+        }
+        ?>
     </ul>
     <table class="table table-striped table-bordered" id="<?=str_replace(" ", "",$this->forum->getName())?>">
         <thead style="margin-bottom:10px;">
@@ -54,10 +77,33 @@
         ?>
         </tbody>
     </table>
-    <ul class="breadcrumb">
-        <li>Forums</li>
-        <li class="divider">/</li>
-        <li><a href="">Banter</a></li>
+    <ul class="breadcrumb" id="top">
+        <li><a href="<?=$this->url(array(
+            'module' => 'community',
+            'controller' => 'forum',
+            'action' => 'index'
+        ))?>">Forums</a></li>
+        <? 
+        foreach($this->breadcrumbs->getPages() as $page)
+        {
+            if(!$page->active){
+            ?>
+            <li class="divider">/</li>
+            <li><a href="<?=$this->url(array(
+                'module' => $page->module,
+                'controller' => $page->controller,
+                'action' => $page->action,
+                'id' => $page->id
+            ))?>"><?=$page->label?></a></li>
+            <?
+            }else{
+            ?>
+            <li class="divider">/</li>
+            <li><?=$page->label?></li>
+            <?
+            }
+        }
+        ?>
     </ul>
 </div>
 <script type="text/javascript">

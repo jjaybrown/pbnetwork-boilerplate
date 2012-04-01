@@ -7,6 +7,7 @@ class Community_PostController extends AppController
 {
     private $_thread;
     private $_posts;
+    private $_breadcrumbs;
     
     public function init()
     {
@@ -19,6 +20,27 @@ class Community_PostController extends AppController
     public function indexAction()
     {
         $postForm = new PostForum($this->_thread);
+        
+        $this->_breadcrumbs = new Zend_Navigation();
+        $this->_breadcrumbs->addPage(array(
+            'module' => 'community',
+            'controller' => 'thread',
+            'action' => 'view',
+            'id' => $this->_request->getParam('id'),
+            'label' => $this->_thread->getForum()->getName()
+        ));
+        
+        $this->_breadcrumbs->addPage(array(
+            'module' => 'community',
+            'controller' => 'post',
+            'action' => 'index',
+            'id' => $this->_request->getParam('id'),
+            'label' => $this->_thread->getName(),
+            'active' => true
+        ));
+        
+        $this->view->breadcrumbs = $this->_breadcrumbs;
+        
         $this->view->thread = $this->_thread;
         $this->view->postForm = $postForm;
         

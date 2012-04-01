@@ -7,6 +7,7 @@ class Community_ThreadController extends AppController
 {
     
     private $_forums;
+    private $_breadcrumbs;
     
     public function init()
     {
@@ -22,6 +23,16 @@ class Community_ThreadController extends AppController
         
         $this->_forums = $this->_em->find('App\Entity\Community\Forum' ,$id);
         
+        $this->_breadcrumbs = new Zend_Navigation();
+        $this->_breadcrumbs->addPage(array(
+            'module' => 'community',
+            'controller' => 'thread',
+            'action' => 'view',
+            'id' => $this->_request->getParam('id'),
+            'label' => $this->_forums->getName()
+        ));
+        
+        $this->view->breadcrumbs = $this->_breadcrumbs;
         $this->view->forum = $this->_forums;
     }
     
