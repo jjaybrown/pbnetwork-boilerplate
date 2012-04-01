@@ -30,7 +30,12 @@
             ?>
             <tr>
                 <td>
-                    <div><?=$post->getContent()?></div>
+                    <div class="profile-block">
+                        <?=$post->getUser()->getUsername()?>
+                    </div>
+                    <div class="post">
+                        <?=$post->getContent()?>
+                    </div>
                 </td>
             </tr>
             <?
