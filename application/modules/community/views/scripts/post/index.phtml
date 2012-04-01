@@ -25,17 +25,32 @@
         </thead>
         <tbody>
         <?
-        foreach($this->thread->getPosts() as $post)
+        foreach($this->thread->getPosts() as $key => $post)
         {
             ?>
             <tr>
-                <td>
-                    <div class="profile-block">
-                        <?=$post->getUser()->getUsername()?>
+                <td class="span12 post">
+                    <div class="profile-block pull-left">
+                        <div class="avatar">
+                            <a href="<?=$this->url(array(
+                                'module' => 'site',
+                                'controller' => 'profile',
+                                'action' => 'view',
+                                'id' => $post->getUser()->getId()
+                            ))?>" class="thumbnail"><img src="<?=$post->getUser()->getProfile()->getPicture()?>" /></a>
+                        </div>
+                        <h4><?=ucwords($post->getUser()->getUsername())?></h4>
+                        <p>Posts: <?=$post->getUser()->getPostCount()?></p>
                     </div>
-                    <div class="post">
-                        <?=$post->getContent()?>
+                    <div class="pull-left">
+                        <div class="post-mast">
+                            <span><strong>#<?=($key+1)?></strong> Posted: <i><?=$post->getCreated("g:ia l jS F Y")?></i></span>
+                        </div>
+                        <div class="post-content">
+                            <?=$post->getContent()?>
+                        </div>
                     </div>
+                    <span class="pull-right"><a href="#" title="Reply to this post" rel="tooltip"><i class="icon-share-alt"></i> Reply</a></span>
                 </td>
             </tr>
             <?
@@ -43,10 +58,22 @@
         ?>
             <tr>
                 <td>
-                    <?=$this->postForm?>
+                    
                 </td>
             </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <a href="<?=$this->url(array(
+                            'module' => 'community',
+                            'controller' => 'post',
+                            'action' => 'add',
+                            'thread' => $this->thread->getId()
+                        ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-pencil icon-white"></i> New Post</a>
+                </td>
+            </tr>
+        </tfoot>
     </table>
     <ul class="breadcrumb">
         <li>Forums</li>

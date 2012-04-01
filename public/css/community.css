@@ -5,3 +5,9 @@
     Description:
         Defines site styles, overriding twitter bootstrap where needed
 */
+
+/* Forum styles */
+.profile-block {margin-right:30px;}
+.profile-block .thumbnail img {width:65px;}
+.post {width:100%;}
+.post .post-content {margin-top:10px;}

@@ -164,5 +164,10 @@ class User
     {
         return $this->_posts;
     }
+    
+    public function getPostCount()
+    {
+        return count($this->_posts);
+    }
 
 }

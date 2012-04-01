@@ -41,9 +41,13 @@ class Community_PostController extends AppController
             if ($postForm->isValid($this->_request->getPost())) {
 
                 $data = $postForm->getValues();
-                /*$this->_em->merge($this->_auth->getIdentity());
-                $this->_em->persist($this->_auth->getIdentity());*/
-                $post = new Post($this->_auth->getIdentity(), $this->_thread, $data['post']);
+                
+                // Get User Entity for current logged in user
+                $user = $this->_em->find("App\Entity\User", $this->_auth->getIdentity()->getId());
+                
+                // Create new Post object
+                $post = new Post($user, $this->_thread, $data['post']);
+                // Add Post to Thread
                 $this->_thread->getPosts()->add($post);
                 try{
                     $this->_em->persist($post);
