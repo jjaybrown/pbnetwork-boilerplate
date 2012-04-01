@@ -20,7 +20,7 @@
                     'controller' => 'post',
                     'action' => 'add',
                     'thread' => $this->thread->getId()
-                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-pencil icon-white"></i> New Post</a>
+                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +28,7 @@
         foreach($this->thread->getPosts() as $key => $post)
         {
             ?>
-            <tr>
+            <tr id="<?=($key+1)?>">
                 <td class="span12 post">
                     <div class="profile-block pull-left">
                         <div class="avatar">
@@ -44,13 +44,18 @@
                     </div>
                     <div class="pull-left">
                         <div class="post-mast">
-                            <span><strong>#<?=($key+1)?></strong> Posted: <i><?=$post->getCreated("g:ia l jS F Y")?></i></span>
+                            <span><strong><a href="#<?=($key+1)?>">#<?=($key+1)?></a></strong> Posted: <i><?=$post->getCreated("g:ia l jS F Y")?></i></span>
                         </div>
-                        <div class="post-content">
+                        <div class="post-content span12">
                             <?=$post->getContent()?>
                         </div>
                     </div>
-                    <span class="pull-right"><a href="#" title="Reply to this post" rel="tooltip"><i class="icon-share-alt"></i> Reply</a></span>
+                    <span class="pull-right"><a href="<?=$this->url(array(
+                        'module' => 'community',
+                        'controller' => 'post',
+                        'action' => 'reply',
+                        'id' => $post->getId()
+                    ))?>" title="Reply to this post" rel="tooltip"><i class="icon-share-alt"></i> Reply</a></span>
                 </td>
             </tr>
             <?
@@ -70,7 +75,19 @@
                             'controller' => 'post',
                             'action' => 'add',
                             'thread' => $this->thread->getId()
-                        ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-pencil icon-white"></i> New Post</a>
+                        ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                    <div class="pagination pagination-centered">
+                        <ul>
+                            <li><a href="#">Prev</a></li>
+                            <li class="active">
+                            <a href="#">1</a>
+                            </li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">Next</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         </tfoot>

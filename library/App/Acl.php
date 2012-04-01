@@ -158,7 +158,7 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'site:profile',array('view', 'create'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
-                $this->allow($member, 'community:post',array('index', 'view', 'add'));
+                $this->allow($member, 'community:post',array('index', 'view', 'add', 'reply'));
          
             case \App\Acl::GUEST:
                 // Setup access rights

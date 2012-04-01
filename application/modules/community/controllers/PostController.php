@@ -66,5 +66,31 @@ class Community_PostController extends AppController
         $this->view->post = $postForm;
     }
     
+    public function replyAction()
+    {
+        $id = $this->_request->getParam('id');
+        
+        $post = $this->_em->find("App\Entity\Community\Post", $id);
+        
+        // Get User Entity for current logged in user
+        $user = $this->_em->find("App\Entity\User", $this->_auth->getIdentity()->getId());
+
+        // Create new Post object
+        $post = new Post($user, $this->_thread, "<pre>".$post->getContent()."</pre>");
+        // Add Post to Thread
+        $this->_thread->getPosts()->add($post);
+        try{
+            $this->_em->persist($post);
+            $this->_em->flush();
+            $this->_flashMessenger->addMessage(array('success' => 'Successfully added post'));
+            $this->_redirect('/community/post/index/thread/'.$this->_thread->getId());
+        }
+        catch (Exception $e) {
+            // Alert user of error
+            $this->_flashMessenger->addMessage(array('error' => $e));
+            $this->_redirect('/community/post/index/thread/'.$this->_thread->getId());
+        }
+        
+    }
             
 }
