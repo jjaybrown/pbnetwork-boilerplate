@@ -38,9 +38,17 @@ class User
     
     private $_profile;
     
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $_posts
+     * 
+     * @OneToMany(targetEntity="App\Entity\Community\Post", mappedBy="_user", cascade={"persist", "remove"})
+     */
+    private $_posts;
+    
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;
+        $this->_posts = new ArrayCollection();
         // Treat password with salt
         $this->_salt = \Zend_Registry::get('salt'); 
         $this->_password = SHA1($this->_salt.$password);
@@ -151,4 +159,10 @@ class User
         $this->_profile = $profile;
         return $this;
     }
+    
+    public function getPosts()
+    {
+        return $this->_posts;
+    }
+
 }

@@ -4,6 +4,7 @@ use App\Controller as AppController;
 use App\Form\Auth\Login as LoginForm;
 use App\Form\Auth\Register as RegisterForm;
 use App\Entity\User as User;
+use App\Classes\Auth\User as AuthUser;
 
 class Site_AuthController extends AppController
 {
@@ -118,7 +119,10 @@ class Site_AuthController extends AppController
                 $this->_auth->clearIdentity();
                 return false;
             }else{
-                $this->_auth->getStorage()->write($user);
+                // Create Auth User instance for storing to session
+                $authUser = $this->_createAuthUser($user);
+                // Write Auth User to session
+                $this->_auth->getStorage()->write($authUser);
                 return true;
             }
         }
@@ -144,5 +148,15 @@ class Site_AuthController extends AppController
         }
         
         return $authAdapter;
+    }
+    
+    /**
+     * Creates a Session Writeable version of User
+     * Due to problem with session when storing User Entity
+     * @param type $user The user entity to extract values from
+     */
+    protected function _createAuthUser($user)
+    {
+        return new AuthUser($user->getId(), $user->getUsername(), $user->getRoleId());
     }
 }
