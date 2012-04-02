@@ -38,12 +38,14 @@
         <thead style="margin-bottom:10px;">
             <tr>
                 <h3 class="pull-left"><span rel="tooltip" title="<?=$this->thread->getDescription()?>"class="headertip"><?=ucwords($this->thread->getName())?></span></h3>
+                <? if(!$this->thread->locked){ ?>
                 <a href="<?=$this->url(array(
                     'module' => 'community',
                     'controller' => 'post',
                     'action' => 'add',
                     'thread' => $this->thread->getId()
                 ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                <? } ?>
             </tr>
         </thead>
         <tbody>
@@ -73,12 +75,14 @@
                             <?=$post->getContent()?>
                         </div>
                     </div>
+                    <? if(!$this->thread->locked){ ?>
                     <span class="pull-right"><a href="<?=$this->url(array(
                         'module' => 'community',
                         'controller' => 'post',
                         'action' => 'reply',
                         'id' => $post->getId()
                     ))?>" title="Reply to this post" rel="tooltip"><i class="icon-share-alt"></i> Reply</a></span>
+                    <? } ?>
                 </td>
             </tr>
             <?
@@ -93,12 +97,14 @@
         <tfoot>
             <tr>
                 <td>
+                    <? if(!$this->thread->locked){ ?>
                     <a href="<?=$this->url(array(
-                            'module' => 'community',
-                            'controller' => 'post',
-                            'action' => 'add',
-                            'thread' => $this->thread->getId()
-                        ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                        'module' => 'community',
+                        'controller' => 'post',
+                        'action' => 'add',
+                        'thread' => $this->thread->getId()
+                    ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                    <? } ?>
                     <div class="pagination pagination-centered">
                         <ul>
                             <li><a href="#">Prev</a></li>
