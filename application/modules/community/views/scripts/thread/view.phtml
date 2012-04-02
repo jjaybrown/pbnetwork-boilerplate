@@ -63,13 +63,15 @@
                     </h4>
                 </td>
                 <td class="span1">
-                   
+                    <? $posts = $thread->getPostCount(); ?>
+                    <i class="icon-comment" title="Post count: <?=$posts?>"></i> <strong><?=$posts?></strong>
                 </td>
-                <td class="span1">
-                    
-                </td>
-                <td class="span2">
-                    <i class="icon-comment" title="Updated: <?=$thread->getUpdated('dS F \'y , H:iA')?>"></i> <strong><?=$thread->getPostCount()?> posts</strong>
+                <td class="span3">
+                    <span class="visible-desktop visible-tablet">
+                        Updated: <?=$thread->getUpdated('H:iA dS F \'y')?>
+                    </span>
+                    <span class="visible-phone">
+                        <span rel="tooltip" title="Updated: <?=$thread->getUpdated('H:iA dS F \'y')?>" style="width:80px;"><i class="icon-calendar"></i></span>
                 </td>
             </tr>
             <?
@@ -113,7 +115,11 @@
         });
         
         $('i.icon-comment').tooltip({
-           'placement' : 'left'
+           'placement' : 'top'
+        });
+        
+        $('.visible-phone span').tooltip({
+           'placement' : 'top'
         });
     });
 </script>
