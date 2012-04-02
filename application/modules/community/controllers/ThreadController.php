@@ -14,6 +14,7 @@ class Community_ThreadController extends AppController
         parent::init();
         
         $this->_forums = $this->_em->getRepository('App\Entity\Community\Forum')->findAll();
+        
     }
     
     public function viewAction()

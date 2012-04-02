@@ -92,7 +92,7 @@ class Community_IndexController extends AppController
                 )
             )
         );
-
+        \Zend_Registry::set("community_nav", $container);
         $this->view->navigation($container);
     }
 
