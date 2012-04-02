@@ -29,7 +29,19 @@
                             ))?>"><i class="<? echo ($forum->open ? 'icon-folder-open' : 'icon-folder-close');?>"></i> <?=ucwords($forum->getName())?></a> <small class="visible-desktop visible-tablet"><?=$forum->getDescription()?></small>
                         </h4>
                     </td>
-                    <td class="span2"></td>
+                    <td class="span1">
+                        <? $threads = $forum->getThreadCount(); ?>
+                        <a href="#" rel="tooltip" title="Thread Count: <?=$threads?>"><i class="icon-folder-open"></i> <?=$threads?></a>
+                    </td>
+                    <td class="span1">
+                        <? 
+                        $posts = 0;
+                        foreach($forum->getThreads() as $thread){ 
+                            $posts += $thread->getPostCount();
+                        }
+                        ?>
+                        <a href="#" rel="tooltip" title="Post Count: <?=$posts?>"><i class="icon-comment"></i> <?=$posts?></a>
+                    </td>
                 </tr>
                 <?
             }
@@ -45,5 +57,10 @@
         $('.headertip').tooltip({
            'placement' : 'right'
         });
+        
+        $('.span1 a').tooltip({
+           'placement' : 'top'
+        });
+        
     });
 </script>
