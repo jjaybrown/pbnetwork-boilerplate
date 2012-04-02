@@ -39,12 +39,16 @@
             <tr>
                 <h3 class="pull-left"><span rel="tooltip" title="<?=$this->forum->getDescription()?>"class="headertip"><?=ucwords($this->forum->getName())?></span></h3>
             </tr>
-            <tr><a href="<?=$this->url(array(
+            <tr>
+            <? if($this->forum->open){ ?>
+            <a href="<?=$this->url(array(
                     'module' => 'community',
                     'controller' => 'thread',
                     'action' => 'add',
                     'forum' => $this->forum->getId()
-                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a></tr>
+                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a>
+            <? } ?>
+            </tr>
         </thead>
         <tbody>
         <?
