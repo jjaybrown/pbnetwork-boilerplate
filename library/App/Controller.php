@@ -38,7 +38,7 @@ class Controller extends \Zend_Controller_Action implements \Zend_Acl_Resource_I
         $this->_auth = \Zend_Auth::getInstance();
         $this->_cache = \Zend_Registry::get('cache');
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-        $this->view->messages = $this->_flashMessenger->getCurrentMessages();
+        $this->view->messages = array_merge($this->_flashMessenger->getMessages(), $this->_flashMessenger->getCurrentMessages());
     }
     
     public function getResourceId()
