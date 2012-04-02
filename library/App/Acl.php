@@ -158,6 +158,8 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'site:profile',array('view', 'create'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
+                $this->allow($guest, 'community:forum',array('index'));
+                $this->allow($guest, 'community:thread',array('view'));
                 $this->allow($member, 'community:post',array('index', 'view', 'add', 'reply'));
          
             case \App\Acl::GUEST:
@@ -171,8 +173,7 @@ class Acl extends \Zend_Acl
                 $this->allow($guest, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
                 
                 $this->allow($guest, 'community:index',array('index'));
-                $this->allow($guest, 'community:forum',array('index'));
-                $this->allow($guest, 'community:thread',array('view'));
+                
                 break;
         }
     }

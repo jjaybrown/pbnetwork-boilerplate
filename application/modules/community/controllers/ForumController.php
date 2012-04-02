@@ -17,7 +17,21 @@ class Community_ForumController extends AppController
         
     public function indexAction()
     {
-        $this->view->categories = $this->_categories;
+        // Check logged in user has a valid profile
+        if($this->_auth->getIdentity())
+        {
+            $user = $this->_em->find("App\Entity\User", $this->_auth->getIdentity()->getId());
+            if($user->getProfile() === null)
+            {
+                // Redirect to profile create page
+                $this->_flashMessenger->addMessage(array('error' => 'You must create a profile to use the forums'));
+                $this->_redirect('/profile/create');
+            }
+            $this->view->categories = $this->_categories;
+        }else{
+            $this->_flashMessenger->addMessage(array('error' => 'An Error occurred, please check you are logged in'));
+            $this->_redirect('/community');
+        }
     }
 
     public function addAction()
