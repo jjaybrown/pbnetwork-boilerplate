@@ -127,6 +127,8 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('forum:thread'));
         $this->add(new \Zend_Acl_Resource('forum:post'));
         
+        $this->add(new \Zend_Acl_Resource('news:index'));
+        
         
         // Admin resources
         $this->add(new \Zend_Acl_Resource('admin:index'));
@@ -175,6 +177,8 @@ class Acl extends \Zend_Acl
                 $this->allow($guest, 'basket:index',array('index', 'update', 'remove', 'empty', 'trash'));
                 
                 $this->allow($guest, 'community:index',array('index'));
+                
+                $this->allow($guest, 'news:index',array('index'));
                 
                 break;
         }
