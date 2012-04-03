@@ -65,10 +65,20 @@ class Community_IndexController extends AppController
                             'label' => 'Community Roundup'
                         ),
                         array(
-                            'action' => 'index',
-                            'controller' => 'forum',
-                            'module' => 'community',
+                            'module' => 'forum',
                             'label' => 'Forums',
+                            'pages' => array(
+                                array(
+                                    'module' => 'forum',
+                                    'controller' => 'thread',
+                                    'action' => 'view'
+                                ),
+                                array(
+                                 'module' => 'forum',
+                                 'controller' => 'post',
+                                 'action' => 'index' 
+                                )
+                            )
                         ),
                         array(
                             'action' => 'index',

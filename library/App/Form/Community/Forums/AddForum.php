@@ -16,7 +16,7 @@ class AddForum extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/community/forum/add/'));
+        $this->setAction($this->getView()->baseUrl('/forum/index/add/'));
         $this->setAttrib('id', 'addForum');
         
         $category = new \Zend_Form_Element_Select('category');

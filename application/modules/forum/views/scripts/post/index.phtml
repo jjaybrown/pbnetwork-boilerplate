@@ -1,0 +1,158 @@
+<div class="container">
+    <div class="hero-unit">
+        <h1>Forums</h1>
+        <p>
+            The ultimate community site, where beginners to seasoned players can 
+            interact with one another and talk about their passion.
+        </p>
+    </div>
+    <ul class="breadcrumb" id="top">
+        <li><a href="<?=$this->url(array(
+            'module' => 'forum',
+            'controller' => 'index'
+        ))?>">Forums</a></li>
+        <? 
+        foreach($this->breadcrumbs->getPages() as $page)
+        {
+            if(!$page->active){
+            ?>
+            <li class="divider">/</li>
+            <li><a href="<?=$this->url(array(
+                'module' => $page->module,
+                'controller' => $page->controller,
+                'action' => $page->action,
+                'id' => $page->id
+            ))?>"><?=$page->label?></a></li>
+            <?
+            }else{
+            ?>
+            <li class="divider">/</li>
+            <li><?=$page->label?></li>
+            <?
+            }
+        }
+        ?>
+    </ul>
+    <table class="table table-striped table-bordered" id="<?=str_replace(" ", "",$this->thread->getName())?>">
+        <thead style="margin-bottom:10px;">
+            <tr>
+                <h3 class="pull-left"><span rel="tooltip" title="<?=$this->thread->getDescription()?>"class="headertip"><?=ucwords($this->thread->getName())?></span></h3>
+                <? if(!$this->thread->locked){ ?>
+                <a href="<?=$this->url(array(
+                    'module' => 'forum',
+                    'controller' => 'post',
+                    'action' => 'add',
+                    'thread' => $this->thread->getId()
+                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                <? } ?>
+            </tr>
+        </thead>
+        <tbody>
+        <?
+        foreach($this->thread->getPosts() as $key => $post)
+        {
+            ?>
+            <tr id="<?=($key+1)?>">
+                <td class="span12 post">
+                    <div class="profile-block pull-left">
+                        <div class="avatar">
+                            <a href="<?=$this->url(array(
+                                'module' => 'site',
+                                'controller' => 'profile',
+                                'action' => 'view',
+                                'id' => $post->getUser()->getId()
+                            ))?>" class="thumbnail"><img src="<?=$post->getUser()->getProfile()->getPicture()?>" /></a>
+                        </div>
+                        <h4><?=ucwords($post->getUser()->getUsername())?></h4>
+                        <p>Posts: <?=$post->getUser()->getPostCount()?></p>
+                    </div>
+                    <div class="pull-left">
+                        <div class="post-mast">
+                            <span><strong><a href="#<?=($key+1)?>">#<?=($key+1)?></a></strong> Posted: <i><?=$post->getCreated("g:ia l jS F Y")?></i></span>
+                        </div>
+                        <div class="post-content span12">
+                            <?=$post->getContent()?>
+                        </div>
+                    </div>
+                    <? if(!$this->thread->locked){ ?>
+                    <span class="pull-right"><a href="<?=$this->url(array(
+                        'module' => 'forum',
+                        'controller' => 'post',
+                        'action' => 'reply',
+                        'id' => $post->getId()
+                    ))?>" title="Reply to this post" rel="tooltip"><i class="icon-share-alt"></i> Reply</a></span>
+                    <? } ?>
+                </td>
+            </tr>
+            <?
+        }
+        ?>
+            <tr>
+                <td>
+                    
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <? if(!$this->thread->locked){ ?>
+                    <a href="<?=$this->url(array(
+                        'module' => 'forum',
+                        'controller' => 'post',
+                        'action' => 'add',
+                        'thread' => $this->thread->getId()
+                    ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                    <? } ?>
+                    <div class="pagination pagination-centered">
+                        <ul>
+                            <li><a href="#">Prev</a></li>
+                            <li class="active">
+                            <a href="#">1</a>
+                            </li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">Next</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <ul class="breadcrumb" id="top">
+        <li><a href="<?=$this->url(array(
+            'module' => 'community',
+            'controller' => 'forum',
+            'action' => 'index'
+        ))?>">Forums</a></li>
+        <? 
+        foreach($this->breadcrumbs->getPages() as $page)
+        {
+            if(!$page->active){
+            ?>
+            <li class="divider">/</li>
+            <li><a href="<?=$this->url(array(
+                'module' => $page->module,
+                'controller' => $page->controller,
+                'action' => $page->action,
+                'id' => $page->id
+            ))?>"><?=$page->label?></a></li>
+            <?
+            }else{
+            ?>
+            <li class="divider">/</li>
+            <li><?=$page->label?></li>
+            <?
+            }
+        }
+        ?>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('a').tooltip({
+           'placement' : 'top'
+        });
+    });
+</script>

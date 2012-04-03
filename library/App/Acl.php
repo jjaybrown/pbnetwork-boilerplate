@@ -121,10 +121,12 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('basket:checkout'));
         
         $this->add(new \Zend_Acl_Resource('community:index'));
-        $this->add(new \Zend_Acl_Resource('community:category'));
-        $this->add(new \Zend_Acl_Resource('community:forum'));
-        $this->add(new \Zend_Acl_Resource('community:thread'));
-        $this->add(new \Zend_Acl_Resource('community:post'));
+        
+        $this->add(new \Zend_Acl_Resource('forum:category'));
+        $this->add(new \Zend_Acl_Resource('forum:index'));
+        $this->add(new \Zend_Acl_Resource('forum:thread'));
+        $this->add(new \Zend_Acl_Resource('forum:post'));
+        
         
         // Admin resources
         $this->add(new \Zend_Acl_Resource('admin:index'));
@@ -144,13 +146,13 @@ class Acl extends \Zend_Acl
         {
             case \App\Acl::ADMIN:
                 $this->allow($admin, 'event:index',array('add'));
-                $this->allow($admin, 'community:category',array('add'));
-                $this->allow($admin, 'community:forum',array('index', 'add', 'edit', 'delete', 'lock', 'unlock'));
-                $this->allow($admin, 'community:thread',array('add'));
+                $this->allow($admin, 'forum:category',array('add'));
+                $this->allow($admin, 'forum:index',array('add', 'edit', 'delete', 'lock', 'unlock'));
+                $this->allow($admin, 'forum:thread',array('add'));
                 $this->allow($admin, 'admin:index',array('index', 'clearcache'));
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
                 $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
-                $this->allow($admin, 'admin:community',array('index','forum'));
+                $this->allow($admin, 'admin:community',array('index', 'forum'));
                 
             case \App\Acl::MEMBER:
                 // Setup access rights
@@ -158,9 +160,9 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'site:profile',array('view', 'create'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
-                $this->allow($guest, 'community:forum',array('index'));
-                $this->allow($guest, 'community:thread',array('view'));
-                $this->allow($member, 'community:post',array('index', 'view', 'add', 'reply'));
+                $this->allow($guest, 'forum:index',array('index'));
+                $this->allow($guest, 'forum:thread',array('view'));
+                $this->allow($member, 'forum:post',array('index', 'view', 'add', 'reply'));
          
             case \App\Acl::GUEST:
                 // Setup access rights

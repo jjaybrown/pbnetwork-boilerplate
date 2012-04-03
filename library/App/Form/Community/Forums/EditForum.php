@@ -18,7 +18,7 @@ class EditForum extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/community/forum/edit/id/'.$this->_id));
+        $this->setAction($this->getView()->baseUrl('/forum/forum/edit/id/'.$this->_id));
         $this->setAttrib('id', 'editForum');
         
         $category = new \Zend_Form_Element_Select('_category');

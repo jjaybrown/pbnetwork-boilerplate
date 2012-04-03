@@ -16,7 +16,7 @@ class AddPost extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction($this->getView()->baseUrl('/community/post/add/thread/'.$this->_thread->getId()));
+        $this->setAction($this->getView()->baseUrl('/forum/post/add/thread/'.$this->_thread->getId()));
         $this->setAttrib('id', 'addThread');
         
         

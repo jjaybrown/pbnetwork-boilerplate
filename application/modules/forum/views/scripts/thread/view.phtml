@@ -1,0 +1,129 @@
+<div class="container">
+    <div class="hero-unit visible-desktop visible-tablet">
+        <h1>Forums</h1>
+        <p>
+            The ultimate community site, where beginners to seasoned players can 
+            interact with one another and talk about their passion.
+        </p>
+    </div>
+    <ul class="breadcrumb" id="top">
+        <li><a href="<?=$this->url(array(
+            'module' => 'forum',
+            'controller' => 'index',
+            'action' => 'index'
+        ))?>">Forums</a></li>
+        <? 
+        foreach($this->breadcrumbs->getPages() as $page)
+        {
+            if(!$page->active){
+            ?>
+            <li class="divider">/</li>
+            <li><a href="<?=$this->url(array(
+                'module' => $page->module,
+                'controller' => $page->controller,
+                'action' => $page->action,
+                'id' => $page->id
+            ))?>"><?=$page->label?></a></li>
+            <?
+            }else{
+            ?>
+            <li class="divider">/</li>
+            <li><?=$page->label?></li>
+            <?
+            }
+        }
+        ?>
+    </ul>
+    <table class="table table-striped table-bordered" id="<?=str_replace(" ", "",$this->forum->getName())?>">
+        <thead style="margin-bottom:10px;">
+            <tr>
+                <h3 class="pull-left"><span rel="tooltip" title="<?=$this->forum->getDescription()?>"class="headertip"><?=ucwords($this->forum->getName())?></span></h3>
+            </tr>
+            <tr>
+            <? if($this->forum->open){ ?>
+            <a href="<?=$this->url(array(
+                    'module' => 'forum',
+                    'controller' => 'thread',
+                    'action' => 'add',
+                    'forum' => $this->forum->getId()
+                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a>
+            <? } ?>
+            </tr>
+        </thead>
+        <tbody>
+        <?
+        foreach($this->forum->getThreads() as $thread)
+        {
+            ?>
+            <tr>
+                <td class="span8">
+                    <h4 class="pull-left">
+                        <a href="<?=$this->url(array(
+                            'module' => 'forum',
+                            'controller' => 'post',
+                            'action' => 'index',
+                            'thread' => $thread->getId()
+                        ))?>"><i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> <small class="visible-desktop visible-tablet"><?=$thread->getDescription()?></small>
+                    </h4>
+                </td>
+                <td class="span1">
+                    <? $posts = $thread->getPostCount(); ?>
+                    <i class="icon-comment" title="Post count: <?=$posts?>"></i> <strong><?=$posts?></strong>
+                </td>
+                <td class="span3">
+                    <span class="visible-desktop visible-tablet">
+                        Updated: <?=$thread->getUpdated('H:iA dS F \'y')?>
+                    </span>
+                    <span class="visible-phone">
+                        <span rel="tooltip" title="Updated: <?=$thread->getUpdated('H:iA dS F \'y')?>" style="width:80px;"><i class="icon-calendar"></i></span>
+                </td>
+            </tr>
+            <?
+        }
+        ?>
+        </tbody>
+    </table>
+    <ul class="breadcrumb" id="top">
+        <li><a href="<?=$this->url(array(
+            'module' => 'forum',
+            'controller' => 'index',
+            'action' => 'index'
+        ))?>">Forums</a></li>
+        <? 
+        foreach($this->breadcrumbs->getPages() as $page)
+        {
+            if(!$page->active){
+            ?>
+            <li class="divider">/</li>
+            <li><a href="<?=$this->url(array(
+                'module' => $page->module,
+                'controller' => $page->controller,
+                'action' => $page->action,
+                'id' => $page->id
+            ))?>"><?=$page->label?></a></li>
+            <?
+            }else{
+            ?>
+            <li class="divider">/</li>
+            <li><?=$page->label?></li>
+            <?
+            }
+        }
+        ?>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.headertip').tooltip({
+           'placement' : 'right'
+        });
+        
+        $('i.icon-comment').tooltip({
+           'placement' : 'top'
+        });
+        
+        $('.visible-phone span').tooltip({
+           'placement' : 'top'
+        });
+    });
+</script>

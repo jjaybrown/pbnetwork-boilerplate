@@ -36,7 +36,7 @@
         {
             $partial = array('partials/sub.phtml', 'community');
             $this->navigation()->menu()->setPartial($partial);
-            echo $this->navigation()->menu()->renderMenu($page,array('ulClass' => 'breadcrumb'));
+            echo $this->navigation()->menu()->renderMenu($page,array('ulClass' => 'breadcrumb', 'maxDepth' => 0));
         }
     } 
     ?>
