@@ -22,6 +22,7 @@ class Acl extends \Zend_Acl
     const GUEST = "Guest";
     const MEMBER = "Member";
     const ORGANIZER = "Organizer";
+    const WRITER = "Writer";
     const ADMIN = "Admin";
     
     protected $_configType;
@@ -141,8 +142,10 @@ class Acl extends \Zend_Acl
         $this->addRole($guest);
         $member = new \Zend_Acl_Role(\App\Acl::MEMBER);
         $this->addRole($member, $guest);
+        $writer = new \Zend_Acl_Role(\App\Acl::WRITER);
+        $this->addRole($writer, $member);
         $admin = new \Zend_Acl_Role(\App\Acl::ADMIN);
-        $this->addRole($admin, $member);
+        $this->addRole($admin, $writer);
         
         switch($this->getCurrentRole())
         {
@@ -155,6 +158,9 @@ class Acl extends \Zend_Acl
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
                 $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
                 $this->allow($admin, 'admin:community',array('index', 'forum'));
+                
+            case \App\Acl::WRITER:
+                $this->allow($writer, 'news:index',array('add'));
                 
             case \App\Acl::MEMBER:
                 // Setup access rights
