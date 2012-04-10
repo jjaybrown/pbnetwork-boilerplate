@@ -147,6 +147,16 @@ class Article
         return $this->_published;
     }
     
+    public function hasBeenEdited()
+    {
+        if($this->_updated > $this->_posted)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
     public function publish($ignoreEmbargo = false)
     {
         if($ignoreEmbargo)

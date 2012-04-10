@@ -2,6 +2,7 @@
 use App\Controller as AppController;
 use App\Entity\Article as Article;
 use App\Form\News\Add as AddNewsForm;
+use App\Form\News\Edit as EditNewsForm;
 
 class News_IndexController extends AppController
 {
@@ -56,6 +57,51 @@ class News_IndexController extends AppController
         }
 
         $this->view->form = $addNewsForm;
+    }
+    
+    public function editAction()
+    {
+        $id = $this->_request->getParam('id');
+        $article = $this->_em->getRepository("\App\Entity\Article")->find($id);
+     
+        $editNewsForm = new EditNewsForm($article);
+        
+        if ($this->_request->isPost())
+         {
+            if($editNewsForm->isValid($this->_request->getPost())) 
+            {
+                // Get form data
+                $data = $editNewsForm->getValues();
+                
+                // Get user posting
+                $userId = $this->_auth->getIdentity()->getId();
+                $user = $this->_em->find("App\Entity\User", $userId);
+                
+                // Modify article
+                $article->setTitle($data['title']);
+                $article->setSummary($data['summary']);
+                $article->setContent($data['content']);
+               
+                // Save article
+                try {
+                    $this->_em->persist($article);
+                    $this->_em->flush();
+                    $this->_flashMessenger->addMessage('Published article successfully');
+                    //$this->_redirect('/news/index/add');
+                }
+                catch (Exception $e) {
+                    // Alert user of error
+                    $this->_flashMessenger->addMessage('Error: '. $e);
+                    //$this->_redirect('/news/index/add');
+                }
+                
+            }else{
+                $editNewsForm->buildBootstrapErrorDecorators();
+            }
+        }
+        
+        $this->view->articleTitle = $article->getTitle();
+        $this->view->form = $editNewsForm;
     }
     
     public function headerAction()

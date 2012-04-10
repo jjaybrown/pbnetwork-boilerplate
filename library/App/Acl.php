@@ -160,7 +160,7 @@ class Acl extends \Zend_Acl
                 $this->allow($admin, 'admin:community',array('index', 'forum'));
                 
             case \App\Acl::WRITER:
-                $this->allow($writer, 'news:index',array('add'));
+                $this->allow($writer, 'news:index',array('add', 'edit'));
                 
             case \App\Acl::MEMBER:
                 // Setup access rights

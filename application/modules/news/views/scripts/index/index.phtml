@@ -29,7 +29,7 @@
                     <h2><?=$article->getTitle()?> <small style="font-size:14px;"><?=$article->getPosted("l, jS F Y")?></small></h2>
                     <p>
                         <strong><?=$article->getSummary()?></strong>
-                        <br /> <span><i>posted by</i> <a href="#"><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?></a></span>
+                        <br /><span>Posted by <a href="#"><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?></a><?=($article->hasBeenEdited() ? ", updated on <strong>".$article->getUpdated("l, jS F Y")."</strong></span>" : "")?>
                     </p>
                     <hr />
                     <?=$article->getContent()?>
