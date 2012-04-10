@@ -10,75 +10,39 @@
     </p>
     <p><a class="btn btn-primary btn-large">Read more &raquo;</a></p>
 </div>
-
-<h1>Latest News</h1>
-
+<div class="page-header">
+    <h1>Latest News</h1>
+</div>
 <div class="clearfix" style="margin-top:20px;">
     <div class="span10" style="margin-left:0;">
         <ul style="list-style:none; margin-left:0;">
+            <? 
+            foreach($this->articles as $article)
+            {
+                $profile = $article->getAuthor()->getProfile();
+            ?>
             <li>
                 <div class="span1 visible-desktop visible-tablet hidden-phone" style="margin-left:0;">
-                    <a href="#" class="thumbnail"><img src="/img/profiles/default.jpg" /></a>
+                    <a href="#" class="thumbnail"><img src="<?=$article->getAuthor()->getProfile()->getPicture()?>" /></a>
                 </div>
                 <div class="span9" style="margin-left:20px;">
-                    <h2>News article 1 <small style="font-size:14px;">Monday, 23rd March 2012</small></h2>
+                    <h2><?=$article->getTitle()?> <small style="font-size:14px;"><?=$article->getPosted("l, jS F Y")?></small></h2>
                     <p>
-                        <strong>An introduction to the article, a teaser of what to come.</strong>
-                        <br /> <a href="#">Jason Brown</a>
+                        <strong><?=$article->getSummary()?></strong>
+                        <br /> <span><i>posted by</i> <a href="#"><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?></a></span>
                     </p>
                     <hr />
-                    <p>Fylde College had the highest number of voters, with 420 voting in the contest of President, which resulted in ex-Fylde President and current LUSU Campaigns Cross Campus Officer, Ste Smith, being elected LUSU President.</p>
-                    <p>In terms of the number of votes cast, the second highest college was County, who elected three of their own students. Libby Martin, Liz Ashworth and Rachel Harvey were elected LUSU Vice Presidents (Events and Democracy), (Activities), and (Media and Communications) respectively.
-                    </p>
-                    <p>Fylde College had the highest number of voters, with 420 voting in the contest of President, which resulted in ex-Fylde President and current LUSU Campaigns Cross Campus Officer, Ste Smith, being elected LUSU President.</p>
+                    <?=$article->getContent()?>
                     <hr />
                     <div>
+                        <i class="icon-tags"></i>
+                        <span><a href="" class="label label-info">Community</a></span>
+                        <span><a href="" class="label label-important">Announcement</a></span>
                         <a href="#" class="btn btn-small btn-inverse pull-right">Read More &raquo;</a>
                     </div>
                 </div>
             </li>
-            <li>
-                <div class="span1 visible-desktop visible-tablet hidden-phone" style="margin-left:0;">
-                    <a href="#" class="thumbnail"><img src="/img/profiles/default.jpg" /></a>
-                </div>
-                <div class="span9" style="margin-left:20px;">
-                    <h2>News article 1 <small style="font-size:14px;">Monday, 23rd March 2012</small></h2>
-                    <p>
-                        <strong>An introduction to the article, a teaser of what to come.</strong>
-                        <br /> <a href="#">Jason Brown</a>
-                    </p>
-                    <hr />
-                    <p>Fylde College had the highest number of voters, with 420 voting in the contest of President, which resulted in ex-Fylde President and current LUSU Campaigns Cross Campus Officer, Ste Smith, being elected LUSU President.</p>
-                    <p>In terms of the number of votes cast, the second highest college was County, who elected three of their own students. Libby Martin, Liz Ashworth and Rachel Harvey were elected LUSU Vice Presidents (Events and Democracy), (Activities), and (Media and Communications) respectively.
-                    </p>
-                    <p>Fylde College had the highest number of voters, with 420 voting in the contest of President, which resulted in ex-Fylde President and current LUSU Campaigns Cross Campus Officer, Ste Smith, being elected LUSU President.</p>
-                    <hr />
-                    <div>
-                        <a href="#" class="btn btn-small btn-inverse pull-right">Read More &raquo;</a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="span1 visible-desktop visible-tablet hidden-phone" style="margin-left:0;">
-                    <a href="#" class="thumbnail"><img src="/img/profiles/default.jpg" /></a>
-                </div>
-                <div class="span9" style="margin-left:20px;">
-                    <h2>News article 1 <small style="font-size:14px;">Monday, 23rd March 2012</small></h2>
-                    <p>
-                        <strong>An introduction to the article, a teaser of what to come.</strong>
-                        <br /> <a href="#">Jason Brown</a>
-                    </p>
-                    <hr />
-                    <p>Fylde College had the highest number of voters, with 420 voting in the contest of President, which resulted in ex-Fylde President and current LUSU Campaigns Cross Campus Officer, Ste Smith, being elected LUSU President.</p>
-                    <p>In terms of the number of votes cast, the second highest college was County, who elected three of their own students. Libby Martin, Liz Ashworth and Rachel Harvey were elected LUSU Vice Presidents (Events and Democracy), (Activities), and (Media and Communications) respectively.
-                    </p>
-                    <p>Fylde College had the highest number of voters, with 420 voting in the contest of President, which resulted in ex-Fylde President and current LUSU Campaigns Cross Campus Officer, Ste Smith, being elected LUSU President.</p>
-                    <hr />
-                    <div>
-                        <a href="#" class="btn btn-small btn-inverse pull-right">Read More &raquo;</a>
-                    </div>
-                </div>
-            </li>
+           <? } ?>
         </ul>
     </div>
     <div class="span2 visible-desktop visible-tablet hidden-phone">

@@ -45,10 +45,18 @@ class User
      */
     private $_posts;
     
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $_articles
+     * 
+     * @OneToMany(targetEntity="App\Entity\Article", mappedBy="_author", cascade={"persist", "remove"})
+     */
+    private $_articles;
+    
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;
         $this->_posts = new ArrayCollection();
+        $this->_articles = new ArrayCollection();
         // Treat password with salt
         $this->_salt = \Zend_Registry::get('salt'); 
         $this->_password = SHA1($this->_salt.$password);
@@ -169,5 +177,9 @@ class User
     {
         return count($this->_posts);
     }
-
+    
+    public function getArticles()
+    {
+        return $this->_articles;
+    }
 }

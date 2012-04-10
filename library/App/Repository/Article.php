@@ -3,11 +3,11 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
  
-class Quote extends EntityRepository
+class Article extends EntityRepository
 {
-    public function findThemAll()
+    public function published()
     {
-        $stmt = 'SELECT q FROM App\Entity\Quote q ORDER BY q._id DESC';
-        return $this->_em->createQuery($stmt)->getResult();
+        $stmt = 'SELECT a FROM App\Entity\Article a WHERE a._published = true ORDER BY a._posted DESC';
+            return $this->_em->createQuery($stmt)->getResult();
     }
 }
