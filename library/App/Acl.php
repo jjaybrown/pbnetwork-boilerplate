@@ -187,7 +187,7 @@ class Acl extends \Zend_Acl
                 
                 $this->allow($guest, 'community:index',array('index'));
                 
-                $this->allow($guest, 'news:index',array('index'));
+                $this->allow($guest, 'news:index',array('index', 'view'));
                 
                 break;
         }

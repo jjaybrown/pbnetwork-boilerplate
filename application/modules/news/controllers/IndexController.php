@@ -6,6 +6,8 @@ use App\Form\News\Edit as EditNewsForm;
 
 class News_IndexController extends AppController
 {
+    
+    protected $_container;
 
     public function init()
     {
@@ -134,6 +136,36 @@ class News_IndexController extends AppController
         $this->view->form = $editNewsForm;
     }
     
+    public function viewAction()
+    {
+        // Get article id
+        $id = $this->_request->getParam('id');
+        
+        // Get article
+        $article = $this->_em->find("App\Entity\Article", $id);
+        
+        // Check article exists
+        if($article === null)
+        {
+            throw new \Zend_Controller_Action_Exception('This article does not exist', 404);
+        }
+        
+        // Add Page to navigation container
+        $articlePage = new \Zend_Navigation_Page_Mvc(array(
+            'module' => 'news',
+            'controller' => 'index',
+            'action' => 'view',
+            'id' => $id
+        ));
+        
+        /*$this->_container->findOneBy('label', 'Latest News')->addPage($articlePage);
+        
+        $this->view->navigation($this->_container);*/
+        
+        // Assign to view
+        $this->view->article = $article;
+    }
+    
     public function deleteAction()
     {
         $id = $this->_request->getParam('id');
@@ -168,7 +200,7 @@ class News_IndexController extends AppController
     
     public function headerAction()
     {
-        $container = new Zend_Navigation(
+        $this->_container = new Zend_Navigation(
             array(
                 array(
                     'action'     => 'index',
@@ -181,12 +213,20 @@ class News_IndexController extends AppController
                     'controller'    => 'index',
                     'module'        => 'news',
                     'label'      => 'News',
+                    'active' => true,
                     'pages' => array(
                         array(
                             'action' => 'index',
                             'controller' => 'index',
                             'module' => 'news',
-                            'label' => 'Latest News'
+                            'label' => 'Latest News',
+                            'pages' => array(
+                                array(
+                                    'action' => 'view',
+                                    'controller' => 'index',
+                                    'module' => 'news'
+                                )
+                            ) 
                         ),
                         array(
                             'action' => 'archive',
@@ -214,8 +254,7 @@ class News_IndexController extends AppController
                     'action'        => 'index',
                     'controller'    => 'index',
                     'module'        => 'community',
-                    'label'      => 'Community',
-                    'active' => true,
+                    'label'      => 'Community'
                 ),
                 array(
                     'action'     => 'index',
@@ -225,7 +264,8 @@ class News_IndexController extends AppController
                 )
             )
         );
-        $this->view->navigation($container);
+        
+        $this->view->navigation($this->_container);
     }
 
 }
