@@ -1,0 +1,108 @@
+<div class="page-header">
+    <h2 class="pull-left">News</h2>
+    <a href="<?=$this->baseUrl('/news/index/add')?>" class="btn btn-primary pull-right"><i class="icon-white icon-edit"></i> Write Article</a>
+    <div class="clearfix"></div>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr style="text-transform: uppercase;">
+      <th>title</th>
+      <th>summary</th>
+      <th>published</th>
+      <th>updated</th>
+      <th>author</th>
+      <th>actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    foreach($this->articles as $article)
+    {
+    ?>
+    <tr>
+        <td><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=$article->getTitle();?></a></td>
+        <td><?=$article->getSummary();?></td>
+        <td><?=($article->isPublished() ? $article->getPosted('H:ia, D dS M Y') : "<i>Draft</i>");?></td>
+        <td><?=($article->hasBeenEdited() ? $article->getUpdated('H:ia, D dS M Y'): "");?></td>
+        <td><a href="<?=$this->baseUrl('/profile/view/id/'.$article->getAuthor()->getId())?>"><?=$article->getAuthor()->getProfile()->getFirstName()." ".$article->getAuthor()->getProfile()->getLastName();?></a></td>
+        <td>
+            <div class="btn-group">
+                <a href="<?=$this->url(array(
+                        'module' => 'news',
+                        'controller' => 'index',
+                        'action' => 'edit',
+                        'id' => $article->getId()
+                    ))?>" class="btn">Edit
+                </a>
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li class="delete"><a rel="<?=$this->url(array(
+                        'module' => 'news',
+                        'controller' => 'index',
+                        'action' => 'delete',
+                        'id' => $article->getId()
+                        ))?>">Delete</a></li>
+                    <li class="divider"></li>
+                    <li class="publish"><a rel="<?=$this->url(array(
+                        'module' => 'news',
+                        'controller' => 'index',
+                        'action' => 'publish',
+                        'id' => $article->getId()
+                        ))?>">Publish</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    <?
+    }
+    ?>
+  </tbody>
+</table>
+
+<!-- Delete modal -->
+<div class="modal fade" id="delete">
+  <div class="modal-header">
+    <h3>Delete Article</h3>
+  </div>
+  <div class="modal-body">
+    <p>This action is irreversible, are you sure you want to delete this article?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    <a href="#" class="btn btn-danger">Delete Article</a>
+  </div>
+</div>
+
+<!-- Publish modal -->
+<div class="modal fade" id="publish">
+  <div class="modal-header">
+    <h3>Publish Article</h3>
+  </div>
+  <div class="modal-body">
+    <p>This will publish the article straight away, ignoring any embargo date</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    <a href="#" class="btn btn-primary">Publish Article</a>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $(".delete a").click(function()
+        {
+            $("#delete .modal-footer .btn-danger").attr('href', $(this).attr('rel'));
+            $('#delete').modal('toggle');
+        });
+        
+        $(".publish a").click(function()
+        {
+            $("#publish .modal-footer .btn-primary").attr('href', $(this).attr('rel'));
+            $('#publish').modal('toggle');
+        });
+        
+    });
+</script>

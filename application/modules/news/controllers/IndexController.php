@@ -11,7 +11,37 @@ class News_IndexController extends AppController
     {
         parent::init();
     }
+    
+    public function preDispatch()
+    {
+        $action = $this->getRequest()->getActionName();
         
+        switch ($action)
+        {
+            case "edit":
+                // Get article id
+                $id = $this->_request->getParam('id');
+                
+                // Get user id
+                $authId = $this->_auth->getIdentity()->getId();
+                
+                // Find article
+                $article = $this->_em->find("App\Entity\Article", $id);
+                
+                // Check logged in user has permission to edit article
+                if($article->getAuthor()->getId() != $authId && $this->_auth->getIdentity()->getRoleId() != \App\Acl::ADMIN)
+                {
+                    // User doesn't have access
+                    $this->_redirect('/auth/forbidden');
+                }
+                
+                break;
+
+            default:
+                break;
+        }
+    }
+    
     public function indexAction()
     {
         $articles = $this->_em->getRepository("App\Entity\Article")->published();
@@ -43,12 +73,12 @@ class News_IndexController extends AppController
                     $this->_em->persist($article);
                     $this->_em->flush();
                     $this->_flashMessenger->addMessage('Published article successfully');
-                    //$this->_redirect('/news/index/add');
+                    $this->_redirect('/admin/news/');
                 }
                 catch (Exception $e) {
                     // Alert user of error
                     $this->_flashMessenger->addMessage('Error: '. $e);
-                    //$this->_redirect('/news/index/add');
+                    $this->_redirect('/admin/news/');
                 }
                 
             }else{
@@ -87,12 +117,12 @@ class News_IndexController extends AppController
                     $this->_em->persist($article);
                     $this->_em->flush();
                     $this->_flashMessenger->addMessage('Published article successfully');
-                    //$this->_redirect('/news/index/add');
+                    $this->_redirect('/admin/news/');
                 }
                 catch (Exception $e) {
                     // Alert user of error
                     $this->_flashMessenger->addMessage('Error: '. $e);
-                    //$this->_redirect('/news/index/add');
+                    $this->_redirect('/admin/news/');
                 }
                 
             }else{
@@ -102,6 +132,38 @@ class News_IndexController extends AppController
         
         $this->view->articleTitle = $article->getTitle();
         $this->view->form = $editNewsForm;
+    }
+    
+    public function deleteAction()
+    {
+        $id = $this->_request->getParam('id');
+        
+        $article = $this->_em->find("App\Entity\Article", $id);
+        try{
+            $this->_em->remove($article);
+            $this->_em->flush();
+        }catch(Exception $e){
+            $this->_flashMessenger->addMessage('Error: '. $e);
+        }
+        
+        $this->_redirect('/admin/news');
+    }
+    
+    public function publishAction()
+    {
+        $id = $this->_request->getParam('id');
+        
+        $article = $this->_em->find("App\Entity\Article", $id);
+        $article->publish(true);
+        
+        try{
+            $this->_em->persist($article);
+            $this->_em->flush();
+        }catch(Exception $e){
+            $this->_flashMessenger->addMessage('Error: '. $e);
+        }
+        
+        $this->_redirect('/admin/news');
     }
     
     public function headerAction()

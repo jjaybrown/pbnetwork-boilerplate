@@ -136,6 +136,7 @@ class Acl extends \Zend_Acl
         $this->add(new \Zend_Acl_Resource('admin:user'));
         $this->add(new \Zend_Acl_Resource('admin:order'));
         $this->add(new \Zend_Acl_Resource('admin:community'));
+        $this->add(new \Zend_Acl_Resource('admin:news'));
         
         // Create roles
         $guest = new \Zend_Acl_Role(\App\Acl::GUEST);
@@ -158,6 +159,8 @@ class Acl extends \Zend_Acl
                 $this->allow($admin, 'admin:user',array('index', 'add', 'edit', 'delete', 'block', 'permissions'));
                 $this->allow($admin, 'admin:order',array('index', 'view', 'audit'));
                 $this->allow($admin, 'admin:community',array('index', 'forum'));
+                $this->allow($admin, 'admin:news',array('index'));
+                $this->allow($admin, 'news:index',array('delete', 'publish'));
                 
             case \App\Acl::WRITER:
                 $this->allow($writer, 'news:index',array('add', 'edit'));
