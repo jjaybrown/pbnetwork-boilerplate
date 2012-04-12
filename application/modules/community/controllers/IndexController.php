@@ -60,7 +60,7 @@ class Community_IndexController extends AppController
                     'pages' => array(
                         array(
                             'action' => 'index',
-                            'controller' => 'roundup',
+                            'controller' => 'index',
                             'module' => 'community',
                             'label' => 'Community Roundup'
                         ),
