@@ -150,20 +150,13 @@ class News_IndexController extends AppController
             throw new \Zend_Controller_Action_Exception('This article does not exist', 404);
         }
         
-        // Add Page to navigation container
-        $articlePage = new \Zend_Navigation_Page_Mvc(array(
-            'module' => 'news',
-            'controller' => 'index',
-            'action' => 'view',
-            'id' => $id
-        ));
-        
-        /*$this->_container->findOneBy('label', 'Latest News')->addPage($articlePage);
-        
-        $this->view->navigation($this->_container);*/
-        
+        $recentByAuthor = $this->_getAuthorRecent($article->getAuthor()->getId());
+        $recentArticles = $this->_em->getRepository("App\Entity\Article")->published();
+
         // Assign to view
         $this->view->article = $article;
+        $this->view->recentByAuthor = $recentByAuthor;
+        $this->view->recentArticles = $recentArticles;
     }
     
     public function deleteAction()
@@ -197,6 +190,13 @@ class News_IndexController extends AppController
         
         $this->_redirect('/admin/news');
     }
+    
+    protected function _getAuthorRecent($authorId)
+    {
+        $recent = $this->_em->getRepository("App\Entity\Article")->recentByAuthor($authorId);
+        return $recent;
+    }
+    
     
     public function headerAction()
     {

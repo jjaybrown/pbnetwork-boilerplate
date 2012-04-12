@@ -1,17 +1,14 @@
-<? 
-    $profile = $this->article->getAuthor()->getProfile();
-?>
 <div class="container-fluid">
     <div class="span8" style="margin-left:0;">
         <div class="page-header">
             <div class="span1 visible-desktop visible-tablet hidden-phone" style="margin-left:0;">
-                <a href="#" class="thumbnail"><img src="<?=$this->article->getAuthor()->getProfile()->getPicture()?>" /></a>
+                <a href="<?=$this->baseUrl('/profile/view/id/'.$this->article->getAuthor()->getId())?>" class="thumbnail"><img src="<?=$this->article->getAuthor()->getProfile()->getPicture()?>" /></a>
             </div>
             <div class="span7">
                 <h1><?=$this->article->getTitle()?> <small style="font-size:14px;"><?=$this->article->getPosted("l, jS F Y")?></small></h1>
                 <p>
                     <strong><?=$this->article->getSummary()?></strong>
-                    <br /><span>Posted by <a href="#"><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?></a><?=($this->article->hasBeenEdited() ? ", updated on <strong>".$this->article->getUpdated("l, jS F Y")."</strong></span>" : "")?>
+                    <br /><span>Posted by <a href="<?=$this->baseUrl('/profile/view/id/'.$this->article->getAuthor()->getId())?>"><?=$this->article->getAuthor()->getProfile()->getFullName()?></a><?=($this->article->hasBeenEdited() ? ", updated on <strong>".$this->article->getUpdated("l, jS F Y")."</strong></span>" : "")?>
                 </p>
                 <div>
                     <i class="icon-tags"></i>
@@ -26,7 +23,8 @@
     </div>
 
     <div class="span3 visible-desktop visible-tablet hidden-phone">
-        <h3>Advert</h3>
+        <?=$this->partial('partials/recentByAuthor.phtml',array('articles' => $this->recentByAuthor))?>
+        <?=$this->partial('partials/recentArticles.phtml',array('articles' => $this->recentArticles))?>
     </div>
     <div class="clearfix"></div>
 </div>

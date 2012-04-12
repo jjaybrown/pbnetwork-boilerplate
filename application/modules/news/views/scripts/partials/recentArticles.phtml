@@ -1,0 +1,18 @@
+<!-- Recent news articles -->
+<? if(count($this->articles>0)){ ?>
+<div class="span3 well">
+    <h3>Recent Articles</h3>
+    <ul>
+    <? 
+    foreach($this->articles as $article)
+    {
+        ?>
+        <li>
+            <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=$article->getTitle()?></a> <small><?=$article->getPosted("l, jS F Y")?></small></h4>
+        </li>
+        <?
+    }
+    ?>
+    </ul>
+</div>
+<? } ?>

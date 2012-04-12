@@ -65,6 +65,11 @@ class Profile
         return $this;
     }
     
+    public function getFullName()
+    {
+        return ucwords($this->_firstName." ".$this->_lastName);
+    }
+    
     public function getDob()
     {
         return $this->_dob->format("d-M-Y");
