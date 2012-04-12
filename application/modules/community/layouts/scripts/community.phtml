@@ -63,7 +63,14 @@
   </script>
 </head>
 
-<body>
+<body <!--style="background:url('<?=$this->baseUrl('/img/bkgrounds/community_1.JPG')?>') no-repeat center top;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?=$this->baseUrl('/img/bkgrounds/community_1.JPG')?>', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?=$this->baseUrl('/img/bkgrounds/community_1.JPG')?>', sizingMethod='scale')";
+"-->>
 
     <?= $this->action('header', 'index', 'community');  ?>
 
@@ -71,9 +78,10 @@
         <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
         <?php echo $this->flashMessages($this->messages); ?>
         <?php echo $this->layout()->content; ?>
-    <footer>
-      <?= $this->action('footer', 'index', 'site');  ?>
-    </footer>
+        
+        <footer>
+        <?= $this->action('footer', 'index', 'site');  ?>
+        </footer>
 
     </div>
   <!-- Change UA-XXXXX-X to be your site's ID -->
