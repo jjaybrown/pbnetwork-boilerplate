@@ -15,15 +15,37 @@ class Site_IndexController extends AppController
         if ($this->_request->isPost())
         {
             $data = $this->_request->getPost();
-            $api = new MCAPI("3d731852c1bbaa408abe64f3848f1f62-us2");
+            /*$api = new MCAPI("3d731852c1bbaa408abe64f3848f1f62-us2");
             $retval = $api->listSubscribe("6684851a7a", $data["email"], array(), 'html', false);
 
             if($api->errorCode){
                 // There was an error
-                \Zend_Debug::dump($api->errorMessage);
+                $this->_flashMessenger->addMessage(array('error' => $api->errorMessage));
             }else{
                 // Successful
+            }*/
+            
+            if($data["email"] != null)
+            {
+                $config = array('auth' => 'login',
+                        'username' => 'subscriptions@thepaintballnetwork.co.uk',
+                        'password' => '040rlf09',
+                        'port' => '25',
+                        'ssl' => 'tls');
+
+
+                $transport = new Zend_Mail_Transport_Smtp('mail.thepaintballnetwork.co.uk', $config);
+
+                Zend_Mail::setDefaultTransport($transport);
+
+                $mail = new Zend_Mail();
+                $mail->setBodyText('New Subscriber: '.$data["email"]);
+                $mail->setFrom('no-reply@thepaintballnetwork.co.uk', 'the Paintball Network');
+                $mail->addTo('subscriptions@thepaintballnetwork.co.uk', 'Subscriptions');
+                $mail->setSubject('New Subscription');
+                $mail->send();
             }
+            $this->_redirect('/');
         }
     }
     
