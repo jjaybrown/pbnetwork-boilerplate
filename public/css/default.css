@@ -6,6 +6,36 @@
         Defines site styles, overriding twitter bootstrap where needed
 */
 
+body
+{
+    background:url('/img/bkgrounds/community_1.jpg') no-repeat center top;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader('/img/bkgrounds/community_1.jpg', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/bkgrounds/community_1.jpg', sizingMethod='scale')";
+}
+
+footer
+{
+    background:#000 url('/img/dark_mosaic.png');
+    height:60px;
+    width:100%;
+    position:absolute;
+    bottom:0;
+}
+
+.home {background:url('/img/dark_mosaic.png') !important; color:#FFF; opacity:0.9; filter:alpha(opacity=90);}
+
+.block {padding:30px; color:#FFF; margin-left:0;}
+.block p {font-size:14px;}
+
+footer ul {position:absolute; left:10px; bottom:10px; list-style: none;}
+footer ul li {float:left; margin-right:20px;}
+
+footer p.copyright {position:absolute; right:20px; bottom:10px; color:#fff;}
+
 #subnav ul.breadcrumb li+li {margin-left:10px;}
 
 

@@ -1,67 +1,32 @@
 <?php
+use App\Controller as AppController;
+use App\Classes\MCAPI as MCAPI;
 
-class Site_IndexController extends Zend_Controller_Action
+class Site_IndexController extends AppController
 {
-
-    /**
-     * @var Doctrine\ORM\EntityManager
-     */
-    protected $_em = null;
-
-    /**
-     * @var \sfServiceContainer
-     */
-    protected $_sc = null;
-
-    /**
-     * @var \App\Service\RandomQuote
-     * @InjectService RandomQuote
-     */
-    protected $_randomQuote = null;
 
     public function init()
     {
-        $this->_em = Zend_Registry::get('em');
-    }
-
-    public function searchAction()
-    {
-        if ($query = $this->getRequest()->getParam('query')) {
-            $resultSet = array();
-
-            try {
-                $client = Zend_Registry::get('es');
-                $index = $client->getIndex('quotes');
-                $type = $index->getType('quote');
-                $resultSet = $type->search($query);
-            } catch (Exception $e) {
-                $this->_redirect('/');
-            }
-
-            $data = array();
-
-            foreach ($resultSet as $result) {
-                $hit = $result->getHit();
-                $quote = new \App\Entity\Quote();
-                $quote->setAuthor($hit['_source']['author']);
-                $quote->setWording($hit['_source']['wording']);
-                $quote->setSource($hit['_source']['source']);
-                $data[] = $quote;
-            }
-
-            $this->view->search = true;
-            $this->view->data = $data;
-            $this->_helper->viewRenderer('index');
-        }
-        else
-            $this->_redirect('/');
-
+        parent::init();
     }
         
     public function indexAction()
     {
-    }
+        if ($this->_request->isPost())
+        {
+            $data = $this->_request->getPost();
+            $api = new MCAPI("3d731852c1bbaa408abe64f3848f1f62-us2");
+            $retval = $api->listSubscribe("6684851a7a", $data["email"], array(), 'html', false);
 
+            if($api->errorCode){
+                // There was an error
+                \Zend_Debug::dump($api->errorMessage);
+            }else{
+                // Successful
+            }
+        }
+    }
+    
     public function headerAction()
     {
         $container = new Zend_Navigation(
@@ -140,7 +105,7 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function footerAction()
     { 
-        $cache = Zend_Registry::get('cache');
+        /*$cache = Zend_Registry::get('cache');
 
         if ($cache->contains('timestamp')) {
             $timestamp = $cache->fetch('timestamp');
@@ -150,6 +115,6 @@ class Site_IndexController extends Zend_Controller_Action
             $cache->save('timestamp', $timestamp);
         }
 
-        $this->view->timestamp = $timestamp;
+        $this->view->timestamp = $timestamp;*/
     }
 }
