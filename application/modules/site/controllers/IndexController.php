@@ -100,7 +100,7 @@ class Site_IndexController extends AppController
             )
         );
 
-        $this->view->navigation($container);
+        //$this->view->navigation($container);
     }
 
     public function footerAction()
