@@ -11,6 +11,8 @@ class Community_IndexController extends AppController
         
     public function indexAction()
     {
+        $recentPosts = $this->_em->getRepository("App\Entity\Community\Post")->recentActivity();
+        $this->view->recentPosts = $recentPosts;
     }
     
     public function headerAction()

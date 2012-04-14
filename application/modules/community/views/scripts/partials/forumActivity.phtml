@@ -1,0 +1,11 @@
+<!-- Recent forum activity -->
+<ul>
+<?
+foreach($this->posts as $post)
+{
+    ?>
+    <li><?=$post->getContent()?></li>
+    <?
+}
+?>
+<ul>

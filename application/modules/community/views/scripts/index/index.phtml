@@ -7,15 +7,10 @@
         interact with one another and talk about their passion.
     </p>
     </div>
-    <ul class="breadcrumb">
-        <li>Forums</li>
-        <li class="divider">/</li>
-        <li><a href="">Banter</a></li>
-    </ul>
     <div class="row">
         <div class="span4">
-            <h2>Recent Forum Activity</h2>
-            <p>Catch up with friends, keep up to date with the latest goings on within the community.</p>
+            <h2>Forum Activity</h2>
+            <?=$this->partial('partials/forumActivity.phtml', array('posts' => $this->recentPosts))?>
             <p><a class="btn" href="#">Visit Forums &raquo;</a></p>
         </div>
         <div class="span4">
