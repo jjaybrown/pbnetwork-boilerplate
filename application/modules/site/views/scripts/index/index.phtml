@@ -66,13 +66,19 @@
     <div class="home block span4">
         <h2>We'll be launching soon</h2>
         <p>Until then, you can sign up for updates and early access.</p>
-        <form class="form-inline" action="/index/index" method="POST">
+        <form class="form-inline" action="/" method="POST">
         <fieldset>
             <div class="control-group">
                 <div class="controls">
-                <div class="input-append">
-                    <input class="span3" id="appendedPrependedInput" name="email" size="16" placeholder="enter your email address" type="text"><button class="btn btn-inverse" type="submit">Subscribe</button>
-                </div>
+                    <div class="input-append">
+                        <input class="span3" id="appendedPrependedInput" name="email" size="16" placeholder="enter your email address" type="text"><button class="btn btn-inverse" type="submit">Subscribe</button>
+                    </div>
+                    <?
+                    if($this->error != null){
+                    ?>
+                    <p style="margin:10px 0 0 0; padding:0; color:red;"><?=$this->error?></p>        
+                    <?
+                    }?>
                 </div>
             </div>
         </fieldset>

@@ -25,7 +25,8 @@ class Site_IndexController extends AppController
                 // Successful
             }*/
             
-            if($data["email"] != null)
+            $validator = new Zend_Validate_EmailAddress();
+            if ($validator->isValid($data["email"]))
             {
                 $config = array('auth' => 'login',
                         'username' => 'subscriptions@thepaintballnetwork.co.uk',
@@ -44,8 +45,18 @@ class Site_IndexController extends AppController
                 $mail->addTo('subscriptions@thepaintballnetwork.co.uk', 'Subscriptions');
                 $mail->setSubject('New Subscription');
                 $mail->send();
+                
+                // Send Confirmation
+                $mail = new Zend_Mail();
+                $mail->setBodyText('Thank you for subscribing, we\'ll send you updates and hopefully soon, an invite to an early preview of the site.');
+                $mail->setFrom('no-reply@thepaintballnetwork.co.uk', 'the Paintball Network');
+                $mail->addTo($data["email"], '');
+                $mail->setSubject('Your Subscription');
+                $mail->send();
+                
+            }else{
+                $this->view->error = "Invalid email address";
             }
-            $this->_redirect('/');
         }
     }
     
