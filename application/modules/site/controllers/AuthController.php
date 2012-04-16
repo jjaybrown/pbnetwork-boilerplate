@@ -57,6 +57,10 @@ class Site_AuthController extends AppController
             }
         }
         $this->view->form = $form;
+        
+        // Add registration form to login page
+        /*$registerForm = new RegisterForm();
+        $this->view->register = $registerForm;*/
     }
     
     public function logoutAction()

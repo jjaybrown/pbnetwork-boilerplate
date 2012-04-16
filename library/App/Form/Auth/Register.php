@@ -47,6 +47,7 @@ class Register extends \EasyBib_Form
         
         $submit = new \Zend_Form_Element_Button('submit');
         $submit->setLabel("Register");
+        $submit->setAttrib('class', 'btn-inverse');
         
         // add CSRF protection
         $this->addElement('hash', 'csrf', array(

@@ -5,10 +5,43 @@
     Description:
         Defines site styles, overriding twitter bootstrap where needed
 */
+html,
+body 
+{
+   height:100%;
+}
+
+#container 
+{
+   min-height:100%;
+   position:relative;
+}
+
+#content 
+{
+   padding-bottom:100px;   /* Height of the footer */
+}
+
+footer
+{
+    background:#000 url('/img/dark_mosaic.png');
+    height:60px;
+    width:100%;
+    position:absolute;
+    bottom:0;
+}
+
 footer ul {position:absolute; left:10px; bottom:10px; list-style: none;}
 footer ul li {float:left; margin-right:20px;}
 
 footer p.copyright {position:absolute; right:20px; bottom:10px; color:#fff;}
+
+.well
+{
+    background:url('/img/dark_mosaic.png') !important; color:#FFF !important; opacity:0.9; filter:alpha(opacity=90);
+}
+
+.login {padding:10px;}
 
 #subnav ul.breadcrumb li+li {margin-left:10px;}
 

@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="<?=$this->baseUrl('/css/bootstrap.css')?>">
   <link rel="stylesheet" href="<?=$this->baseUrl('/css/bootstrap-responsive.css')?>">
   <link rel="stylesheet" href="<?=$this->baseUrl('/css/default.css')?>">
-  <link rel="stylesheet" href="<?=$this->baseUrl('/css/community.css')?>">
+  <link rel="stylesheet" href="<?=$this->baseUrl('/css/news.css')?>">
   
   <link rel="stylesheet" type="text/css" href="<?=$this->baseUrl('/js/libs/markitup/skins/markitup/style.css')?>" />
   <link rel="stylesheet" type="text/css" href="<?=$this->baseUrl('/js/libs/markitup/markitup/sets/default/style.css')?>" />
@@ -64,18 +64,20 @@
 </head>
 
 <body>
+    <div id="container">
+        <?= $this->action('header', 'index', 'news');  ?>
 
-    <?= $this->action('header', 'index', 'news');  ?>
-
-    <div class="container-fluid">
-        <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
-        <?php echo $this->flashMessages($this->messages); ?>
-        <?php echo $this->layout()->content; ?>
-    <footer>
-      <?= $this->action('footer', 'index', 'site');  ?>
-    </footer>
-
+        <div id="content" class="container">
+            <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
+            <?php echo $this->flashMessages($this->messages); ?>
+            <?php echo $this->layout()->content; ?>
+        </div>
+        <footer>
+            <?= $this->action('footer', 'index', 'site');  ?>
+        </footer>
     </div>
+    
+    
   <!-- Change UA-XXXXX-X to be your site's ID -->
   <script>
     window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
