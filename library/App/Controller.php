@@ -39,6 +39,9 @@ class Controller extends \Zend_Controller_Action implements \Zend_Acl_Resource_I
         $this->_cache = \Zend_Registry::get('cache');
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->view->messages = $this->_flashMessenger->getCurrentMessages();
+        
+        // Set site meta data
+        $this->view->title = "the Paintball Network";
     }
     
     public function getResourceId()

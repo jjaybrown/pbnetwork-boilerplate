@@ -43,6 +43,8 @@ footer p.copyright {position:absolute; right:20px; bottom:10px; color:#fff;}
 
 .login {padding:10px;}
 
+.form-actions {background:url('/img/dark_mosaic.png') !important;}
+
 #subnav ul.breadcrumb li+li {margin-left:10px;}
 
 
