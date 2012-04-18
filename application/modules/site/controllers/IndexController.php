@@ -43,6 +43,10 @@ class Site_IndexController extends AppController
                 $mail->setSubject('Your Subscription');
                 $mail->send();
                 
+                // Show success message
+                $this->_flashMessenger->addMessage(array('success' => 'Great! Your now subscribed to our mailing list.'));
+                $this->_helper->redirector('index', 'index');
+                
             }else{
                 $this->view->error = "Invalid email address";
             }
