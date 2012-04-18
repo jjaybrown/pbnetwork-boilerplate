@@ -1,11 +1,25 @@
 <!-- Recent forum activity -->
-<ul>
+<h3>Forum Activity</h3>
+<ul class="activity">
 <?
 foreach($this->posts as $post)
 {
     ?>
-    <li><?=$post->getContent()?></li>
+    <li><i class="icon-comment icon-white"></i> <a href=""><?=$post->getContent()?></a> posted in <a href="<?=$this->url(array(
+                'module' => 'forum',
+                'controller' => 'post',
+                'action' => 'index',
+                'thread' => $post->getThread()->getId()
+            ))?>"><?=ucwords($post->getThread()->getName())?></a> by <a href="<?=$this->url(array(
+                'module' => 'site',
+                'controller' => 'profile',
+                'action' => 'view',
+                'id' => $post->getUser()->getId()
+            ))?>"><strong><?=ucwords($post->getUser()->getUsername())?></strong></a></li>
     <?
 }
 ?>
-<ul>
+</ul>
+<div class="clearfix"></div>
+<p><a class="btn btn-inverse pull-right" href="#">Visit Forums &raquo;</a></p>
+<div class="clearfix"></div>
