@@ -28,17 +28,6 @@ class Site_IndexController extends AppController
             $validator = new Zend_Validate_EmailAddress();
             if ($validator->isValid($data["email"]))
             {
-                $config = array('auth' => 'login',
-                        'username' => 'subscriptions@thepaintballnetwork.co.uk',
-                        'password' => '040rlf09',
-                        'port' => '25',
-                        'ssl' => 'tls');
-
-
-                $transport = new Zend_Mail_Transport_Smtp('mail.thepaintballnetwork.co.uk', $config);
-
-                Zend_Mail::setDefaultTransport($transport);
-
                 $mail = new Zend_Mail();
                 $mail->setBodyText('New Subscriber: '.$data["email"]);
                 $mail->setFrom('no-reply@thepaintballnetwork.co.uk', 'the Paintball Network');
