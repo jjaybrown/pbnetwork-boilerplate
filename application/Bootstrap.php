@@ -170,4 +170,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         return $acl;
     }
     
+    /**
+     * init mailer 
+     */
+    
+    public function _initMailer()
+    {
+        $config = array('auth' => 'login',
+                        'username' => 'admin@thepaintballnetwork.co.uk',
+                        'password' => '040rlf09',
+                        'port' => '25',
+                        'ssl' => 'tls');
+
+
+        $transport = new Zend_Mail_Transport_Smtp('mail.thepaintballnetwork.co.uk', $config);
+
+        Zend_Mail::setDefaultTransport($transport);
+    }
 }

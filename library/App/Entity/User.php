@@ -149,7 +149,7 @@ class User
         return $this->_active;
     }
     
-    public function setActiveStatus($active)
+    public function setActiveStatus($active = true)
     {
         $this->_active = $active;
         // Update timestamp

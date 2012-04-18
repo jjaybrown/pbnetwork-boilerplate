@@ -97,6 +97,25 @@ class Site_AuthController extends AppController
         $this->view->form = $form;
     }
     
+    public function activateAction()
+    {
+        // Check if form has been posted
+        if(!is_null($this->_request->getParam('code')))
+        {
+            $activation = $this->_em->getRepository('App\Entity\User')->activation($this->_request->getParam('code'));
+            
+            if($activation)
+            {
+                // Redirect to profile setup and guide
+                $this->_helper->redirector('index', 'index');
+            }else{
+                // Something went wrong
+                $this->_flashMessenger->addMessage(array('error' => 'Sorry, we were unable to activated your account'));
+                $this->_helper->redirector('activate', 'auth');
+            }
+        }
+    }
+    
     protected function _processLogin($values)
     {
         // Get our authentication adapter and check credentials
