@@ -1,5 +1,5 @@
 <!-- Main hero unit for a primary marketing message or call to action -->
-<div class="hero-unit visible-desktop visible-tablet hidden-phone well">
+<div class="hero-unit visible-desktop visible-tablet hidden-phone block" style="display:none;">
     <h1>Rise of the student cup <small>Featured article</small></h1>
     <p>
         From what started out as a conversation in a field, in what was later dubbed the student village at the anual North vs South game. The student cup quickly begin to take shape.
@@ -13,39 +13,45 @@
 <div class="page-header">
     <h1>Latest News</h1>
 </div>
-<div class="clearfix articles" style="margin-top:20px;">
-    <div class="span10" style="margin-left:0;">
-        <ul style="list-style:none; margin-left:0;">
-            <? 
-            foreach($this->articles as $article)
-            {
-                $profile = $article->getAuthor()->getProfile();
-            ?>
-            <li>
-                <div class="span1 visible-desktop visible-tablet hidden-phone" style="margin-left:0;">
-                    <a href="#" class="thumbnail"><img src="<?=$article->getAuthor()->getProfile()->getPicture()?>" /></a>
-                </div>
-                <div class="span9" style="margin-left:20px;">
-                    <h2><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=$article->getTitle()?></a> <small style="font-size:14px;"><?=$article->getPosted("l, jS F Y")?></small></h2>
-                    <p>
-                        <strong><?=$article->getSummary()?></strong>
-                        <br /><span>Posted by <a href="#"><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?></a><?=($article->hasBeenEdited() ? ", updated on <strong>".$article->getUpdated("l, jS F Y")."</strong></span>" : "")?>
-                    </p>
-                    <hr />
-                    <?=$article->getContent()?>
-                    <hr />
-                    <div>
-                        <i class="icon-tags"></i>
-                        <span><a href="" class="label label-info">Community</a></span>
-                        <span><a href="" class="label label-important">Announcement</a></span>
-                        <a href="#" class="btn btn-small btn-inverse pull-right">Read More &raquo;</a>
+<div class="clearfix" style="margin-top:20px;"></div>
+<div class="row-fluid">
+    <div class="span10">
+        <div class="articles">
+            <ul style="list-style:none; margin-left:0;">
+                <? 
+                foreach($this->articles as $article)
+                {
+                    $profile = $article->getAuthor()->getProfile();
+                ?>
+                <li>
+                    <div class="span1" style="margin-left:0;">
+                        <a href="#" class="thumbnail visible-desktop visible-table"><img src="<?=$article->getAuthor()->getProfile()->getPicture()?>" /></a>
                     </div>
-                </div>
-            </li>
-        <? } ?>
-        </ul>
+                    <div class="span9" style="margin-left:20px;">
+                        <h2><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=$article->getTitle()?></a> <small style="font-size:14px;"><?=$article->getPosted("l, jS F Y")?></small></h2>
+                        <p>
+                            <strong><?=$article->getSummary()?></strong>
+                            <br /><span>Posted by <a href="#"><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?></a><?=($article->hasBeenEdited() ? ", updated on <strong>".$article->getUpdated("l, jS F Y")."</strong></span>" : "")?>
+                        </p>
+                        <hr />
+                        <?=$article->getContent()?>
+                        <hr />
+                        <div>
+                            <i class="icon-tags"></i>
+                            <span><a href="" class="label label-info">Community</a></span>
+                            <span><a href="" class="label label-important">Announcement</a></span>
+                            <a href="#" class="btn btn-small btn-inverse pull-right">Read More &raquo;</a>
+                        </div>
+                    </div>
+                </li>
+            <? } ?>
+            </ul>
+        </div>
     </div>
-    <div class="span2 visible-desktop visible-tablet hidden-phone">
-        <h3>Advert</h3>
+    <div class="span2">
+        <div class="advert visible-desktop visible-table">
+            <h3>Advert</h3>
+        </div>
     </div>
 </div>
+
