@@ -16,7 +16,7 @@
     <div class="span9">
         <div class="page-header">
             <h2><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?> <small><?=$this->user->getUsername()?></small></h2>
-            <p class="status-message span9">Let’s now move into defining the areas of our page. The first thing to explain is how some portions of the site content are limited in width. </p>
+            <p class="status-message span9"><?=$profile->getBio()?></p>
         </div>
         <!-- Profile head boxes -->
         <ul id="profile-boxes">
