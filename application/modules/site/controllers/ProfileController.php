@@ -61,6 +61,8 @@ class Site_ProfileController extends AppController
     public function createAction()
     {
         $createForm = new CreateForm();
+        $user = $this->_em->find("\App\Entity\User", $this->_id);
+        
         if ($this->_request->isPost())
         {
             $data = $this->_request->getPost();
@@ -69,9 +71,6 @@ class Site_ProfileController extends AppController
             {
                 $dob = \DateTime::createFromFormat("d-m-Y", $data['dob']);
                 $profile = new Profile($data['first'], $data['last'], $dob);
-                
-                // Get user account for this profile & assign to profile
-                $user = $this->_em->find("\App\Entity\User", $this->_id);
                 $profile->setUser($user);
                 
                 // Check if location is set
@@ -100,7 +99,28 @@ class Site_ProfileController extends AppController
                 $createForm->buildBootstrapErrorDecorators();
                 \Zend_Debug::dump($createForm->getErrors());
             }
+        }else{
+            $picture = new \Zend_Form_Element_File('picture', array(
+                'label' => 'Picture',
+                'required' => true,
+                'MaxFileSize' => 2097152, // 2097152 bytes = 2 megabytes
+                'validators' => array(
+                    array('Count', false, 1),
+                    array('Size', false, 2097152),
+                    array('Extension', false, 'gif,jpg,png'),
+                    array('ImageSize', false, array('minwidth' => 100,
+                                                    'minheight' => 100,
+                                                    'maxwidth' => 1000,
+                                                    'maxheight' => 1000))
+                )
+            ));
+            
+            $picture->setValueDisabled(true);
+            $picture->setLabel('');
+            $createForm->addElement($picture);
         }
+        
+        $this->view->gravitar = Profile::get_gravatar($user->getEmailAddress());
         $this->view->form = $createForm;
     }
     

@@ -10,7 +10,7 @@ class Create extends \EasyBib_Form
         $this->setMethod('POST');
         $this->setAction($this->getView()->baseUrl('/profile/create'));
         $this->setAttrib('id', 'profile');       
-        
+
         $first = new \Zend_Form_Element_Text('first');
         $first->setAttrib('placeholder', 'your firstname*')
               ->setRequired(true);

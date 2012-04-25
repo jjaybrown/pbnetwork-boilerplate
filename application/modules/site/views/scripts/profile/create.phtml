@@ -9,8 +9,11 @@
             </div>
             <form method="<?=$this->form->getMethod()?>" action="<?=$this->form->getAction()?>" class="form-inline">
                 <div class="pull-left">
-                    <div class="thumbnail span2" style="margin-left:0 !important;">
-                        <img src="/img/profiles/default.jpg" />
+                    <div class="span2" style="margin-left:0 !important;">
+                        <div class="thumbnail">
+                            <img src="<?=$this->gravitar?>" />
+                        </div>
+                        <?php echo $this->form->getElement('picture'); ?>
                     </div>
                     <div class="span3">
                         <h3>Personal Details</h3>
