@@ -153,7 +153,7 @@ class EasyBib_Form_Decorator
                 'HtmlTag',
                 array(
                     'tag'   => 'div',
-                    'class' => 'clearfix'
+                    'class' => 'control-group'
                 )
             )
         )
