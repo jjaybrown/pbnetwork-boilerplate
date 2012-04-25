@@ -4,6 +4,7 @@ use App\Controller as AppController;
 use App\Entity\User as User;
 use App\Entity\Profile as Profile;
 use App\Form\Profile\Create as CreateForm;
+use App\Entity\Interest as Interest;
 
 class Site_ProfileController extends AppController
 {
@@ -61,5 +62,15 @@ class Site_ProfileController extends AppController
     {
         $createForm = new CreateForm();
         $this->view->form = $createForm;
+    }
+    
+    public function interestsAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $request = $this->getRequest();
+        // Get interest from database
+        //$interest = $this->_em->getRepository("App\Entity\Profile")->findBy('name' => $data['interest']);
+        $data = $request->getPost();
+        echo $data;
     }
 }

@@ -13,15 +13,23 @@ class Create extends \EasyBib_Form
         
         $first = new \Zend_Form_Element_Text('first');
         $first->setRequired(true)
-              ->setLabel("Firstname:");
+              ->setAttrib('placeholder', 'your firstname');
         
         $last = new \Zend_Form_Element_Text('last');
         $last->setRequired(true)
-              ->setLabel("Lastname:");
+              ->setAttrib('placeholder', 'your lastname');
         
         $dob = new \ZendX_JQuery_Form_Element_DatePicker('dob', array('jQueryParams' => array('dateFormat' => 'dd-mm-yy')));
-        $dob->setLabel('Date of Birth:')
+        $dob->setAttrib('placeholder', 'your date of birth')
               ->setRequired(true);
+        
+        $location = new \Zend_Form_Element_Text('location');
+        $location->setRequired(true)
+              ->setAttrib('placeholder', 'your location');
+        
+        $interests = new \Zend_Form_Element_Text('interests');
+        $interests->setRequired(true)
+              ->setAttrib('placeholder', 'your interests');
         
         $submit = new \Zend_Form_Element_Button('submit');
         $submit->setLabel("Save Profile");
@@ -31,7 +39,7 @@ class Create extends \EasyBib_Form
             'ignore' => true,
         ));
         
-        $this->addElements(array($first, $last, $dob, $submit));
+        $this->addElements(array($first, $last, $dob, $location, $interests, $submit));
         
         // Setup decorators for form elements
         \EasyBib_Form_Decorator::setFormDecorator(

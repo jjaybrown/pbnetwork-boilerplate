@@ -39,16 +39,20 @@ class Site_AuthController extends AppController
     {
         $form = new LoginForm();
         $request = $this->getRequest();
+ 
         if ($request->isPost()) {
             if ($form->isValid($request->getPost())) {
                 if ($this->_processLogin($form->getValues())) {
                     // We're authenticated!
-                    if($this->_auth->getIdentity()->getRoleId() == App\Acl::ADMIN)
+                    /*if($this->_auth->getIdentity()->getRoleId() == App\Acl::ADMIN)
                     {
+                        
                         $this->_helper->redirector('index', 'admin');
-                    }else{
-                        $this->_helper->redirector('index', 'index');
-                    }
+                    }*/
+                    
+                    // Get referrer back from session
+                    $session = new \Zend_Session_Namespace('tmp');
+                    $this->_redirect($session->redirect);
                 }else{
                     // Auth failed
                     $this->_flashMessenger->addMessage(array('error' => 'Login failed. Please check your username and password'));
@@ -56,6 +60,10 @@ class Site_AuthController extends AppController
                 }
             }
         }
+        
+        // Store referrer in session
+        $session = new \Zend_Session_Namespace('tmp');
+        $session->redirect = $request->getRequestUri();
         $this->view->form = $form;
         
         // Add registration form to login page

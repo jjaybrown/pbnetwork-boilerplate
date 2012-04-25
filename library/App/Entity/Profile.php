@@ -22,6 +22,8 @@ class Profile
     private $_pictureUrl;
     /** @Column(type="string", name="bio") */
     private $_bio;
+    /** @Column(type="string", name="location") */
+    private $_location;
     
     /**
      * @OneToOne(targetEntity="\App\Entity\User", inversedBy="_profile", cascade={"persist", "remove"})
@@ -99,6 +101,17 @@ class Profile
     public function setUser($user)
     {
         $this->_user = $user;
+        return $this;
+    }
+    
+    public function getLocation()
+    {
+        return $this->_location;
+    }
+    
+    public function setLocation($location)
+    {
+        $this->_location = $location;
         return $this;
     }
 }
