@@ -21,7 +21,7 @@ class Profile
     /** @Column(type="string", name="picture") */
     private $_pictureUrl;
     /** @Column(type="string", name="bio") */
-    private $_bio;
+    private $_bio = "";
     /** @Column(type="string", name="location") */
     private $_location;
     
@@ -37,7 +37,7 @@ class Profile
         $this->_firstName = $first;
         $this->_lastName = $last;
         $this->_dob = $dob;
-        $this->_pictureUrl = "img/profiles/default.jpg";
+        $this->_pictureUrl = "/img/profiles/default.jpg";
     }
     
     public function getId()
@@ -112,6 +112,17 @@ class Profile
     public function setLocation($location)
     {
         $this->_location = $location;
+        return $this;
+    }
+    
+    public function getBio()
+    {
+        return $this->_bio;
+    }
+    
+    public function setBio($bio)
+    {
+        $this->_bio = $bio;
         return $this;
     }
 }

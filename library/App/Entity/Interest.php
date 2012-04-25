@@ -14,13 +14,13 @@ class Interest
     private $_id;
     /** @Column(type="string", name="name") */
     private $_name;
-    /** @Column(type="text", name="name", length="140") */
+    /** @Column(type="text", name="description", length="140") */
     private $_description;
     
     public function __construct($name, $description)
     {
         $this->_name = $name;
-        $this->_description;
+        $this->_description = $description;
     }
     
     public function getId()

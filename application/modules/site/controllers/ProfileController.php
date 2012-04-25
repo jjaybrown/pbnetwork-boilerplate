@@ -61,6 +61,46 @@ class Site_ProfileController extends AppController
     public function createAction()
     {
         $createForm = new CreateForm();
+        if ($this->_request->isPost())
+        {
+            $data = $this->_request->getPost();
+            
+            if ($createForm->isValid($data))
+            {
+                $dob = \DateTime::createFromFormat("d-m-Y", $data['dob']);
+                $profile = new Profile($data['first'], $data['last'], $dob);
+                
+                // Get user account for this profile & assign to profile
+                $user = $this->_em->find("\App\Entity\User", $this->_id);
+                $profile->setUser($user);
+                
+                // Check if location is set
+                if(!empty($data['location']))
+                {
+                    $profile->setlocation($data['location']);
+                }
+                
+                // Check if bio is set
+                if(!empty($data['bio']))
+                {
+                    $profile->setBio($data['bio']);
+                }
+                    
+                try {
+                    $this->_em->persist($profile);
+                    $this->_em->flush();
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully create your profile'));
+                    $this->_helper->redirector('view', 'profile');
+                }catch (Exception $e) {
+                    // Alert user of error
+                    $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
+                    $this->_helper->redirector('create', 'profile');
+                }
+            }else{
+                $createForm->buildBootstrapErrorDecorators();
+                \Zend_Debug::dump($createForm->getErrors());
+            }
+        }
         $this->view->form = $createForm;
     }
     
