@@ -175,7 +175,7 @@ class Site_AuthController extends AppController
                     $this->_cache->delete('users');
                     
                     // Create profile 
-                    $this->createFacebookProfile($user);
+                    $this->_createFacebookProfile($user);
                     
                     $this->_flashMessenger->addMessage(array('success' => 'Successfully created your Account, you can now login'));
                     $this->_helper->redirector('login', 'auth');
@@ -317,7 +317,7 @@ class Site_AuthController extends AppController
      * Create Facebook profile 
      */
     
-    protected function createFacebookProfile($user)
+    protected function _createFacebookProfile($user)
     {
         // Make API request to Facebook
         $query = $this->_facebook->api('/me?fields=first_name,last_name,gender,bio,birthday,email,location,picture,permissions&type=large');
