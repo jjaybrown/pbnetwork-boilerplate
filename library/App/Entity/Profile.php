@@ -90,7 +90,7 @@ class Profile
     
     public function setPicture($url)
     {
-        return $this->_pictureUrl;
+        $this->_pictureUrl = $url;
     }
     
     public function getUser()

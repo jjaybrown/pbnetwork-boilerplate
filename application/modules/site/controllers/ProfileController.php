@@ -10,24 +10,13 @@ class Site_ProfileController extends AppController
 {
     
     private $_id;
+    
     public function init()
     {
-        parent::init();
+        parent::init(array('facebook' => true));
         
-        // Create test profile for current user
+        // Get user id
         $this->_id = $this->_auth->getIdentity()->getId();
-        /*$dob = \DateTime::createFromFormat("d-m-Y", "05-08-1987");
-        $profile = new Profile("Jason", "Brown", $dob);
-        $user = $this->_em->find("\App\Entity\User", $this->_id);
-        
-        $user->setProfile($profile);
-        $profile->setUser($user);
-        
-        $this->_em->persist($user);
-        $this->_em->persist($profile);
-        $this->_em->flush();
-        
-        \Zend_Debug::dump($profile);*/
     }
     
     
@@ -97,7 +86,6 @@ class Site_ProfileController extends AppController
                 }
             }else{
                 $createForm->buildBootstrapErrorDecorators();
-                \Zend_Debug::dump($createForm->getErrors());
             }
         }else{
             $picture = new \Zend_Form_Element_File('picture', array(
@@ -124,6 +112,23 @@ class Site_ProfileController extends AppController
         $this->view->form = $createForm;
     }
     
+    public function facebookAction()
+    {
+        $action = $this->_request->getParam('option');
+        switch($action)
+        {
+            case "connect":
+                // Connect Facebook profile
+                $this->_connectFb();
+                break;
+            case "create":
+                $this->_createUsingFb();
+                break;
+        }
+ 
+        
+    }
+    
     public function interestsAction()
     {
         $this->_helper->layout->disableLayout();
@@ -132,5 +137,70 @@ class Site_ProfileController extends AppController
         //$interest = $this->_em->getRepository("App\Entity\Profile")->findBy('name' => $data['interest']);
         $data = $request->getPost();
         echo $data;
+    }
+    
+    protected function _connectFb()
+    {
+        try{
+            $user = $this->_facebook->getUser();
+            if($user) // Check for logged in user
+            {
+                // Make API requet to Facebook
+                $query = $this->_facebook->api('/me?fields=installed');
+                
+                // Check if user has installed the application
+                if($query['installed'])
+                {
+                    $this->notification("Facebook connected", "Successfully connected your Facebook account");
+                }
+            }else{ // No users logged in 
+                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday' ,'redirect_uri' => 'http://pbnetwork.dev/profile/facebook/option/create')));
+            }
+        }catch(\App\Classes\Facebook\FacebookApiException $e){
+            $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
+            $this->_helper->redirector('index', 'index');
+        }
+    }
+    
+    protected function _createUsingFb()
+    {
+        try{
+            $user = $this->_facebook->getUser();
+            if($user) // Check for logged in user
+            {
+                // Make API requet to Facebook
+                $query = $this->_facebook->api('/me?fields=first_name,last_name,gender,bio,birthday,email,location,picture,permissions&type=large');
+                
+                // Check if user has installed the application
+                if($query['permissions']['data'][0]['installed'])
+                {
+                    $dob = \DateTime::createFromFormat("d/m/Y", $query['birthday']);
+                    $profile = new Profile($query['first_name'], $query['last_name'], $dob);
+                    $profile->setLocation($query['location']['name']);
+                    $profile->setBio($query['bio']);
+                    $profile->setPicture($query['picture']);
+                    
+                    // Get user
+                    $user = $this->_em->find("\App\Entity\User", $this->_id);
+                    $profile->setUser($user);
+                
+                    try {
+                        $this->_em->persist($profile);
+                        $this->_em->flush();
+                        $this->_flashMessenger->addMessage(array('success' => 'Successfully create your profile'));
+                        $this->_helper->redirector('view', 'profile');
+                    }catch (Exception $e) {
+                        // Alert user of error
+                        $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
+                        $this->_helper->redirector('create', 'profile');
+                    }
+                }
+            }else{ // No users logged in 
+                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday', 'redirect_uri' => 'http://pbnetwork.dev/profile/facebook')));
+            }
+        }catch(\App\Classes\Facebook\FacebookApiException $e){
+            $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
+            $this->_helper->redirector('index', 'index');
+        }
     }
 }

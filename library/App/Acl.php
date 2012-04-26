@@ -168,7 +168,7 @@ class Acl extends \Zend_Acl
             case \App\Acl::MEMBER:
                 // Setup access rights
                 $this->allow($member, 'site:auth',array('logout'));
-                $this->allow($member, 'site:profile',array('view', 'create', 'interests'));
+                $this->allow($member, 'site:profile',array('view', 'create', 'interests', 'facebook'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
                 $this->allow($guest, 'forum:index',array('index'));
@@ -177,7 +177,7 @@ class Acl extends \Zend_Acl
          
             case \App\Acl::GUEST:
                 // Setup access rights
-                $this->allow($guest, 'site:index',array('index'));
+                $this->allow($guest, 'site:index',array('index', 'notification'));
                 $this->allow($guest, 'site:auth',array('index', 'login', 'register', 'forbidden', 'activate'));
                 
                 $this->allow($guest, 'event:index',array('index','view'));

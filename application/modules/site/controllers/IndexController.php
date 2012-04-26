@@ -53,6 +53,25 @@ class Site_IndexController extends AppController
         }
     }
     
+    /**
+     * Used for displaying notifcations without action required 
+     */
+    public function notificationAction()
+    {
+        if(\Zend_Session::namespaceIsset('notification'))
+        {
+            $notification = new \Zend_Session_Namespace('notification');
+            $this->view->heading = $notification->heading;
+            $this->view->message = $notification->message;
+            
+            // Destroy notification session to prevent it being displayed again
+            \Zend_Session::namespaceUnset('notification');
+        }else{
+            // No notifications redirect to front page
+            $this->_helper->redirector('index', 'index');
+        }
+    }
+    
     public function headerAction()
     {
         $container = new Zend_Navigation(
