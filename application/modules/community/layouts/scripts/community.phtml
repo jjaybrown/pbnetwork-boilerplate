@@ -12,7 +12,7 @@
        More info: h5bp.com/b/378 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>ZF-Boilerplate</title>
+  <title><?=$this->title?></title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -63,26 +63,26 @@
   </script>
 </head>
 
-<body <!--style="background:url('<?=$this->baseUrl('/img/bkgrounds/community_1.JPG')?>') no-repeat center top;
+<body style="background:url('<?=$this->baseUrl('/img/bkgrounds/crowd_1_community.jpg')?>') no-repeat center top;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?=$this->baseUrl('/img/bkgrounds/community_1.JPG')?>', sizingMethod='scale');
-    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?=$this->baseUrl('/img/bkgrounds/community_1.JPG')?>', sizingMethod='scale')";
-"-->>
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?=$this->baseUrl('/img/bkgrounds/crowd_1_community.jpg')?>', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?=$this->baseUrl('/img/bkgrounds/crowd_1_community.jpg')?>', sizingMethod='scale')";
+">
 
-    <?= $this->action('header', 'index', 'community');  ?>
+    <div id="container">
+        <?= $this->action('header', 'index', 'community');  ?>
 
-    <div class="container">
-        <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
-        <?php echo $this->flashMessages($this->messages); ?>
-        <?php echo $this->layout()->content; ?>
-        
+        <div id="content" class="container">
+            <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
+            <?php echo $this->flashMessages($this->messages); ?>
+            <?php echo $this->layout()->content; ?>
+        </div>
         <footer>
-        <?= $this->action('footer', 'index', 'site');  ?>
+            <?= $this->action('footer', 'index', 'site');  ?>
         </footer>
-
     </div>
   <!-- Change UA-XXXXX-X to be your site's ID -->
   <script>

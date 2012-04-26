@@ -1,33 +1,83 @@
-<div class="container">
-    <!-- Main hero unit for a primary marketing message or call to action -->
-    <div class="hero-unit">
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="hero-unit block">
     <h1>Community</h1>
-    <p>
-        The ultimate community site, where beginners to seasoned players can 
-        interact with one another and talk about their passion.
-    </p>
+    <p>Welcome to the community portal, where you'll find out what's going on throughout the entire paintball community</p>
+</div>
+
+<!--<div class="row-fluid span4" style="margin-left:0 !important;">
+    <div class="span4 well" style="margin-left:0 !important;">
+        <?//$this->partial('partials/forumActivity.phtml', array('posts' => $this->recentPosts))?>
     </div>
-    <div class="row">
-        <div class="span4">
-            <h2>Forum Activity</h2>
-            <?=$this->partial('partials/forumActivity.phtml', array('posts' => $this->recentPosts))?>
-            <p><a class="btn" href="#">Visit Forums &raquo;</a></p>
-        </div>
-        <div class="span4">
-            <h2>Weekly Competitions</h2>
-            <p>Each week we run competitions</p>
-            <ul>
-                <li>Forums</li>
-                <li>Groups</li>
-                <li>Profile pages</li>
-                <li>Group and P chat</li>
-                <li>Weekly Competitions</li>
-            </ul>
-            <p><a class="btn" href="#">Sign up &raquo;</a></p>
-        </div>
-        <div class="span4">
+    <div class="span4 well" style="margin-left:0 !important;">
+        <h2>Newsletter</h2>
+        <p>Receive email updates and notifications</p>
+        <form class="form-inline" action="/" method="POST">
+            <fieldset>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span3" id="appendedPrependedInput" name="email" size="16" placeholder="enter your email address" type="text"><button class="btn btn-inverse" type="submit">Subscribe</button>
+                        </div>
+                        <?
+                        if($this->error != null){
+                        ?>
+                        <p style="margin:10px 0 0 0; padding:0; color:red;"><?=$this->error?></p>        
+                        <?
+                        }?>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<div class="row span7" style="margin-right:40px !important;">
+    <div class="span7 well">
+        <h2>Paintball around the web <small>other communities</small></h2>
+        <ul>
+            <li><p>new forum post on p8ntballer</p></li>
+        </ul>
+    </div>
+</div>-->
+<div class="clearfix"></div>
+<div class="row-fluid">
+    <div class="span4">
+        <div style="padding:19px;" class="block"><?=$this->partial('partials/forumActivity.phtml', array('posts' => $this->recentPosts))?></div>
+        <div style="padding:19px; margin-top:20px !important;" class="block">
             <h2>Newsletter</h2>
-            <p>Receive email updates and notifications</p>
+                <p>Receive email updates and notifications</p>
+                <form class="form-inline" action="/" method="POST">
+                    <fieldset>
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input id="appendedPrependedInput" name="email" size="16" placeholder="enter your email address" type="text"><button class="btn btn-inverse" type="submit">Subscribe</button>
+                                </div>
+                                <?
+                                if($this->error != null){
+                                ?>
+                                <p style="margin:10px 0 0 0; padding:0; color:red;"><?=$this->error?></p>        
+                                <?
+                                }?>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="block" style="padding:19px;">
+            <h2>Community Roundup <small><?=date('M Y')?></small></h2>
+            <ul>
+                <li><li class="icon-white icon-user"></li> Number of new members: <strong>102</strong></li>
+                <li><li class="icon-white icon-th-list"></li> Number of new threads: <strong>32</strong></li>
+            </ul>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="block" style="padding:19px;">
+            <h3>Community Statistics <small><i class="icon-white icon-signal"></i></small></h3>
+            <h5><i class="icon-white icon-user"></i> Newest User  <small>Jason Brown</small></h5>
+            <h5><i class="icon-white icon-comment"></i> Num Posts  <small>2,012</small></h5>
         </div>
     </div>
 </div>

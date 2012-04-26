@@ -65,16 +65,17 @@
 
 <body>
 
-    <?= $this->action('header', 'index', 'community');  ?>
+    <div id="container">
+        <?= $this->action('header', 'index', 'community');  ?>
 
-    <div class="container">
-        <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
-        <?php echo $this->flashMessages($this->messages); ?>
-        <?php echo $this->layout()->content; ?>
-    <footer>
-      <?= $this->action('footer', 'index', 'site');  ?>
-    </footer>
-
+        <div id="content" class="container">
+            <div class="visible-desktop visible-tablet" style="margin-top:100px;"></div>
+            <?php echo $this->flashMessages($this->messages); ?>
+            <?php echo $this->layout()->content; ?>
+        </div>
+        <footer>
+            <?= $this->action('footer', 'index', 'site');  ?>
+        </footer>
     </div>
   <!-- Change UA-XXXXX-X to be your site's ID -->
   <script>

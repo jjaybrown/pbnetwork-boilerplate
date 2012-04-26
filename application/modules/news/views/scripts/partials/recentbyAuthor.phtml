@@ -1,6 +1,6 @@
 <!-- Recent news articles by author -->
 <? if(count($this->articles>0)){ ?>
-<div class="span3 well">
+<div class="span3 well block">
     <h3>Articles by <?=$this->articles[0]->getAuthor()->getProfile()->getFullName()?></h3>
     <ul>
     <? 
@@ -8,7 +8,7 @@
     {
         ?>
         <li>
-            <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=$article->getTitle()?></a> <small><?=$article->getPosted("l, jS F Y")?></small></h4>
+            <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=ucwords($article->getTitle())?></a> <small><?=$article->getPosted("l, jS F Y")?></small></h4>
         </li>
         <?
     }

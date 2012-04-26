@@ -24,7 +24,8 @@ class Login extends \EasyBib_Form
                 ->setLabel("Password:");
         
         $submit = new \Zend_Form_Element_Button('submit');
-        $submit->setLabel("Login");
+        $submit->setLabel("Login")
+                ->setAttrib('class', 'btn-inverse');
         
         // add CSRF protection
         $this->addElement('hash', 'csrf', array(

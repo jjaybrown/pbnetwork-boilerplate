@@ -28,17 +28,6 @@ class Site_IndexController extends AppController
             $validator = new Zend_Validate_EmailAddress();
             if ($validator->isValid($data["email"]))
             {
-                $config = array('auth' => 'login',
-                        'username' => 'subscriptions@thepaintballnetwork.co.uk',
-                        'password' => '040rlf09',
-                        'port' => '25',
-                        'ssl' => 'tls');
-
-
-                $transport = new Zend_Mail_Transport_Smtp('mail.thepaintballnetwork.co.uk', $config);
-
-                Zend_Mail::setDefaultTransport($transport);
-
                 $mail = new Zend_Mail();
                 $mail->setBodyText('New Subscriber: '.$data["email"]);
                 $mail->setFrom('no-reply@thepaintballnetwork.co.uk', 'the Paintball Network');
@@ -54,9 +43,32 @@ class Site_IndexController extends AppController
                 $mail->setSubject('Your Subscription');
                 $mail->send();
                 
+                // Show success message
+                $this->_flashMessenger->addMessage(array('success' => 'Great! Your now subscribed to our mailing list.'));
+                $this->_helper->redirector('index', 'index');
+                
             }else{
                 $this->view->error = "Invalid email address";
             }
+        }
+    }
+    
+    /**
+     * Used for displaying notifcations without action required 
+     */
+    public function notificationAction()
+    {
+        if(\Zend_Session::namespaceIsset('notification'))
+        {
+            $notification = new \Zend_Session_Namespace('notification');
+            $this->view->heading = $notification->heading;
+            $this->view->message = $notification->message;
+            
+            // Destroy notification session to prevent it being displayed again
+            \Zend_Session::namespaceUnset('notification');
+        }else{
+            // No notifications redirect to front page
+            $this->_helper->redirector('index', 'index');
         }
     }
     

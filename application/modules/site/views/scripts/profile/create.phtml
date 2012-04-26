@@ -1,3 +1,175 @@
-<?php
-echo $this->form;
-?>
+<style>
+    .input {margin-bottom:10px !important;}
+</style>
+<div class="row-fluid">
+    <div class="span12">
+        <div style="background:white; padding:20px 20px 10px 20px; margin-left:0;">
+            <div class="page-header">
+                <h1>Lets create your profile <small>*required</small></h1>
+            </div>
+            <form method="<?=$this->form->getMethod()?>" action="<?=$this->form->getAction()?>" class="form-inline">
+                <div class="pull-left">
+                    <div class="span2" style="margin-left:0 !important;">
+                        <div class="thumbnail">
+                            <img src="<?=$this->gravitar?>" />
+                        </div>
+                        <?php echo $this->form->getElement('picture'); ?>
+                    </div>
+                    <div class="span3">
+                        <h3>Personal Details</h3>
+
+                        <?php
+                        echo $this->form->getElement('first');
+                        echo $this->form->getElement('last');
+                        echo $this->form->getElement('dob');
+                        ?>
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="input-prepend input-append">
+                                    <span class="add-on location-tip" rel='tooltip' title="Use your current location"><i class='icon-map-marker'></i></span><input class="input-medium location" data-provide="typeahead" placeholder="your location" id="appendedPrependedInput" size="16" type="text" name="location"><span class="add-on question" rel="popover" data-content="We use your location to provide better results when searching for events, friends and venues." data-original-title="Using your location"><i class="icon-question-sign"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="pull-left">
+                    <div class="span4" style="margin-left:0 !important;">
+                        <h3>Additional Info</h3>
+                        <?php
+                        echo $this->form->getElement('bio');
+                        //echo $this->form->getElement('interests');
+                        ?>
+                        <ul id="interests-holder">
+                            <!-- Displays interests -->
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <h3>Be Social <small>it's easy</small></h3>
+                        <a href="/profile/facebook/option/connect" target="_blank" class="btn btn-primary">Facebook</a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <?=$this->form->getElement('submit')?>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.location-tip').tooltip({
+           'placement' : 'top'
+        });
+        
+        // Start type ahead
+        $('.location').typeahead(
+        {
+            'source' : ['<?=  implode("','", \Zend_Registry::get('locations'))?>']
+        });
+        
+        // Start pop over
+        $('.question').popover();
+        
+        // Load interests
+        $("#interests").keyup(function()
+        {
+            // Check for enter key
+            var value = $(this).attr('value');
+
+            $.getJSON('/profile/interests', {"interest" : value}, function(data, status)
+            {
+                // Display interest in box
+                $("#interests-holder").append("<li><i class='icon-tag'></i> "+data+"</li>");
+                
+            });
+        });
+        
+        $(".location-tip").click(function()
+        {
+            // Allow browser to locate our user
+            if (navigator.geolocation) 
+            {
+                navigator.geolocation.getCurrentPosition( 
+
+                    function (position)
+                    {  
+                        // Trigger search icon
+                        $(this).children('.icon-map-marker').removeClass('icon-map-marker').addClass('icon-search');
+                        // Get users location 
+                        mapServiceProvider(position.coords.latitude,position.coords.longitude);
+
+                    }, 
+                    // next function is the error callback
+                    function (error)
+                    {
+                        // Attach error style to input
+                        $(this).parents('.control-group').addClass('error');
+                        
+                        switch(error.code) 
+                        {
+                            case error.TIMEOUT:
+                                    $(this).parents('.control-group').append('<span class="help-inline">Operation timed out</span>');
+                                    break;
+                            case error.POSITION_UNAVAILABLE:
+                                    $(this).parents('.control-group').append('<span class="help-inline">Your position is unavailable</span>');
+                                    break;
+                            case error.PERMISSION_DENIED:
+                                    $(this).parents('.control-group').append('<span class="help-inline">Permission denied</span>');
+                                    break;
+                            case error.UNKNOWN_ERROR:
+                                    $(this).parents('.control-group').append('<span class="help-inline">Oops. Something went wrong</span>');
+                                    break;
+                        }
+                    }
+                );
+            }else{
+                // Denied access to locate user 
+                // Attach error style to input
+                $(this).parents('.control-group').addClass('error');
+                $(this).parents('.control-group').append('<span class="help-inline">Permission denied</span>');
+            }
+        });
+        
+    });
+    
+    function mapServiceProvider(latitude,longitude)
+    {
+        mapThisGoogle(latitude,longitude);
+    }
+    
+    function mapThisGoogle(latitude,longitude)
+    {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(latitude,longitude);
+
+
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[1]) {
+                    $.each(results[1].address_components, function (i, address_component) {
+                        if (address_component.types[0] == "locality") // locality type
+                        {
+                            $('.location').attr('value', address_component.long_name);
+                            return false; // break the loop
+                        }
+                    });
+                } else {
+                    // Attach error style to input
+                    $(this).parents('.control-group').addClass('error');
+                    $(this).parents('.control-group').append('<span class="help-inline">No results found</span>');
+                }
+            } else {
+                // Attach error style to input
+                $(this).parents('.control-group').addClass('error');
+                $(this).parents('.control-group').append('<span class="help-inline">Failed due to '+status+'</span>');
+            }
+        });
+    }
+
+    
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>

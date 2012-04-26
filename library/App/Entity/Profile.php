@@ -21,7 +21,9 @@ class Profile
     /** @Column(type="string", name="picture") */
     private $_pictureUrl;
     /** @Column(type="string", name="bio") */
-    private $_bio;
+    private $_bio = "";
+    /** @Column(type="string", name="location") */
+    private $_location;
     
     /**
      * @OneToOne(targetEntity="\App\Entity\User", inversedBy="_profile", cascade={"persist", "remove"})
@@ -35,7 +37,7 @@ class Profile
         $this->_firstName = $first;
         $this->_lastName = $last;
         $this->_dob = $dob;
-        $this->_pictureUrl = "img/profiles/default.jpg";
+        $this->_pictureUrl = "/img/profiles/default.jpg";
     }
     
     public function getId()
@@ -88,7 +90,7 @@ class Profile
     
     public function setPicture($url)
     {
-        return $this->_pictureUrl;
+        $this->_pictureUrl = $url;
     }
     
     public function getUser()
@@ -101,4 +103,45 @@ class Profile
         $this->_user = $user;
         return $this;
     }
+    
+    public function getLocation()
+    {
+        return $this->_location;
+    }
+    
+    public function setLocation($location)
+    {
+        $this->_location = $location;
+        return $this;
+    }
+    
+    public function getBio()
+    {
+        return $this->_bio;
+    }
+    
+    public function setBio($bio)
+    {
+        $this->_bio = $bio;
+        return $this;
+    }
+    
+    public static function get_gravatar( $email, $s = 180, $d = 'mm', $r = 'g', $img = false, $atts = array() ) 
+    {
+        $url = 'http://www.gravatar.com/avatar/';
+        $url .= md5( strtolower( trim( $email ) ) );
+        $url .= "?s=$s&d=$d&r=$r";
+
+        if($img)
+        {
+            $url = '<img src="' . $url . '"';
+            foreach($atts as $key => $val)
+                $url .= ' ' . $key . '="' . $val . '"';
+
+            $url .= ' />';
+        }
+
+        return $url;
+    }
+
 }

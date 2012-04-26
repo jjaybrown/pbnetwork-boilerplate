@@ -40,18 +40,19 @@ class Register extends \EasyBib_Form
         $emailConfirm = new \Zend_Form_Element_Text('emailConfirm');
         $emailConfirm->setRequired(true)
               ->addValidators(array('EmailAddress'))
-              ->setLabel("Confirm Email:");
+              ->setLabel("Confirm Email Address:");
         
         
         
         
         $submit = new \Zend_Form_Element_Button('submit');
         $submit->setLabel("Register");
+        $submit->setAttrib('class', 'btn-inverse');
         
         // add CSRF protection
-        $this->addElement('hash', 'csrf', array(
+        /*$this->addElement('hash', 'csrf', array(
             'ignore' => true,
-        ));
+        ));*/
         
         $this->addElements(array($username, $password, $passwordConfirm, $email, $emailConfirm, $submit));
         

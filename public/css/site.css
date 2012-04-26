@@ -9,16 +9,6 @@ body
     -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/bkgrounds/community_1.jpg', sizingMethod='scale')";
 }
 
-footer
-{
-    background:#000 url('/img/dark_mosaic.png');
-    height:60px;
-    width:100%;
-    position:absolute;
-    bottom:0;
-}
-
 .home {background:url('/img/dark_mosaic.png') !important; color:#FFF; opacity:0.9; filter:alpha(opacity=90);}
-
 .block {padding:30px; color:#FFF; margin-left:0;}
 .block p {font-size:14px;}

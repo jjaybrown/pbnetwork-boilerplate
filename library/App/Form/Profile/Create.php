@@ -10,35 +10,44 @@ class Create extends \EasyBib_Form
         $this->setMethod('POST');
         $this->setAction($this->getView()->baseUrl('/profile/create'));
         $this->setAttrib('id', 'profile');       
-        
+
         $first = new \Zend_Form_Element_Text('first');
-        $first->setRequired(true)
-              ->setLabel("Firstname:");
+        $first->setAttrib('placeholder', 'your firstname*')
+              ->setRequired(true);
         
         $last = new \Zend_Form_Element_Text('last');
         $last->setRequired(true)
-              ->setLabel("Lastname:");
+              ->setAttrib('placeholder', 'your lastname*');
         
         $dob = new \ZendX_JQuery_Form_Element_DatePicker('dob', array('jQueryParams' => array('dateFormat' => 'dd-mm-yy')));
-        $dob->setLabel('Date of Birth:')
+        $dob->setAttrib('placeholder', 'your date of birth*')
               ->setRequired(true);
+        
+        $location = new \Zend_Form_Element_Text('location');
+        $location->setRequired(false)
+              ->setAttrib('placeholder', 'your location');
+        
+        $interests = new \Zend_Form_Element_Text('interests');
+        $interests->setRequired(false)
+              ->setAttrib('placeholder', 'your interests');
+        
+        $bio = new \Zend_Form_Element_TextArea('bio');
+        $bio->setRequired(false)
+            ->setAttribs(array('class' => 'span3', 'rows' => '5', 'cols' => '10'))
+            ->setAttrib('placeholder', 'little about you');
         
         $submit = new \Zend_Form_Element_Button('submit');
         $submit->setLabel("Save Profile");
+        $submit->setIgnore(true)
+                ->setAttrib('class', 'pull-right btn-primary');
         
-        // add CSRF protection
-        $this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));
-        
-        $this->addElements(array($first, $last, $dob, $submit));
+        $this->addElements(array($first, $last, $dob, $location, $interests, $bio, $submit));
         
         // Setup decorators for form elements
         \EasyBib_Form_Decorator::setFormDecorator(
             $this, \EasyBib_Form_Decorator::BOOTSTRAP, 'submit'
         );
         
-        // Setup decorators for jQuery elements
         $dob->setDecorators(array('FormElements'
             => 'UiWidgetElement',
             array('BootstrapErrors'),
@@ -48,7 +57,7 @@ class Create extends \EasyBib_Form
             array('BootstrapTag', array('class' => 'input')),
             array('Label'),
             array('HtmlTag',
-                array('tag' => 'div', 'class' => 'clearfix')
+                array('tag' => 'div', 'class' => 'control-group')
             )
          ));
     }

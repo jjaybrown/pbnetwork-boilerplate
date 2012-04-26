@@ -5,12 +5,14 @@ use App\Form\Auth\Login as LoginForm;
 use App\Form\Auth\Register as RegisterForm;
 use App\Entity\User as User;
 use App\Classes\Auth\User as AuthUser;
+use App\Entity\Facebook as FacebookJoin;
 
 class Site_AuthController extends AppController
 {
     public function init()
     {
-        parent::init();
+        // Init parent controll with facebook api access
+        parent::init(array('facebook' => true));
     }
     
     public function preDispatch()
@@ -39,24 +41,67 @@ class Site_AuthController extends AppController
     {
         $form = new LoginForm();
         $request = $this->getRequest();
+ 
         if ($request->isPost()) {
             if ($form->isValid($request->getPost())) {
-                if ($this->_processLogin($form->getValues())) {
+                if ($this->_processLogin($form->getValues(), 'Doctrine')) {
                     // We're authenticated!
-                    if($this->_auth->getIdentity()->getRoleId() == App\Acl::ADMIN)
+                    /*if($this->_auth->getIdentity()->getRoleId() == App\Acl::ADMIN)
                     {
+                        
                         $this->_helper->redirector('index', 'admin');
-                    }else{
-                        $this->_helper->redirector('index', 'index');
-                    }
+                    }*/
+                    
+                    // Get referrer back from session
+                    $session = new \Zend_Session_Namespace('tmp');
+                    $this->_redirect($session->redirect);
                 }else{
                     // Auth failed
                     $this->_flashMessenger->addMessage(array('error' => 'Login failed. Please check your username and password'));
                     $this->_helper->redirector('login');
                 }
             }
+        }elseif($this->getRequest()->getParam('facebook')){
+            // Using facebook to login
+            $uid = $this->_facebook->getUser();
+            if($uid) // Got a user
+            {
+                if($this->_processLogin($uid, 'Facebook'))
+                {
+                    
+                    // Get referrer back from session
+                    $session = new \Zend_Session_Namespace('tmp');
+                    $this->_redirect($session->redirect);
+                }else{
+                    // Auth failed
+                    $this->_flashMessenger->addMessage(array('error' => 'Login failed. You\'ve not registered a Facebook account'));
+                    $this->_helper->redirector('login');
+                }
+            }else{
+                if (0 !== stripos($_SERVER["SERVER_NAME"], 'http://'))
+                {
+                    $url = "http://".$_SERVER["SERVER_NAME"];
+                }else{
+                    $url = $_SERVER["SERVER_NAME"];
+                }
+                
+                $this->_redirect($this->_facebook->getLoginUrl(
+                        array(
+                            'scope' => 'user_about_me, user_birthday' ,
+                            'redirect_uri' => $url.'/auth/login/facebook/true'
+                            )
+                        ));
+            }
         }
+        
+        // Store referrer in session
+        $session = new \Zend_Session_Namespace('tmp');
+        $session->redirect = $request->getRequestUri();
         $this->view->form = $form;
+        
+        // Add registration form to login page
+        $registerForm = new RegisterForm();
+        $this->view->register = $registerForm;
     }
     
     public function logoutAction()
@@ -79,29 +124,149 @@ class Site_AuthController extends AppController
             if ($form->isValid($request->getPost())) {                
                 // Process registration data
                 $data = $request->getPost();
-                $user = new User($data['username'], $data['password'], $data['email']);
-                $this->_em->persist($user);
-                $this->_em->flush();
                 
-                // Clear users from cache
-                $this->_cache->delete('users');
-                // Retrieve activation code and email user for activation
-                $code = $user->getActivationCode();
-                //@TODO add messages to flash, send email with activation code
+                try{
+                    $user = new User($data['username'], $data['password'], $data['email']);
+                    $this->_em->persist($user);
+                    $this->_em->flush();
+
+                    // Clear users from cache
+                    $this->_cache->delete('users');
+                    // Retrieve activation code and email user for activation
+                    $code = $user->getActivationCode();
+                    //@TODO add messages to flash, send email with activation code
+                }catch(Exception $e){
+                    // Something went wrong
+                    $this->_flashMessenger->addMessage(array('error' => $e->getMessage()));
+                    $this->_helper->redirector('register', 'auth');
+                }
+            }
+        }elseif($this->getRequest()->getParam('facebook')){
+            // Using facebook to login
+            $uid = $this->_facebook->getUser();
+            if($uid) // Got a user
+            {
+                $query = $this->_facebook->api('/me?fields=id,username,first_name,last_name,gender,bio,birthday,email');
+
+                // Check fb user has a username
+                if(!isset($query['username']) && is_null($this->getRequest()->getParam('username')))
+                {
+                    // Need to ask them for a username
+                    $this->_helper->redirector('username', 'auth');
+                }elseif(!isset($query['username'])){
+                    $query['username'] = $this->getRequest()->getParam('username');
+                }
+                
+                //\Zend_Debug::dump($query);die;
+                try{
+                    // Create user using creditionals
+                    $user = new User($query['username'], md5(date('iMY')), $query['email']);
+                    $user->setActiveStatus(true);
+                    $this->_em->persist($user);
+                    $this->_em->flush();
+
+                    // Create join table between facebook id and user id
+                    $fbJoin = new FacebookJoin($query['id'], $user->getId());
+                    $this->_em->persist($fbJoin);
+                    
+                    $this->_em->flush();
+
+                    // Clear users from cache
+                    $this->_cache->delete('users');
+                    
+                    // Create profile 
+                    $this->_createFacebookProfile($user);
+                    
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully created your Account, you can now login'));
+                    $this->_helper->redirector('login', 'auth');
+                    
+                    // Log the user straight in
+                    /*$this->_redirect($this->_facebook->getLoginUrl(
+                        array(
+                            'scope' => 'user_about_me, user_birthday' ,
+                            'redirect_uri' => '$_SERVER["SERVER_NAME"]/auth/login/facebook/true'
+                            )
+                        ));*/
+                }catch(Exception $e){
+                    // Something went wrong
+                    $this->_flashMessenger->addMessage(array('error' => $e->getMessage()));
+                    $this->_helper->redirector('register', 'auth');
+                }
+            }else{
+                if (0 !== stripos($_SERVER["SERVER_NAME"], 'http://'))
+                {
+                    $url = "http://".$_SERVER["SERVER_NAME"];
+                }else{
+                    $url = $_SERVER["SERVER_NAME"];
+                }
+                
+                $this->_redirect($this->_facebook->getLoginUrl(
+                        array(
+                            'scope' => 'user_about_me, user_birthday, email' ,
+                            'redirect_uri' => $url.'/auth/register/facebook/true'
+                            )
+                        ));
             }
         }
         $this->view->form = $form;
     }
     
-    protected function _processLogin($values)
+    public function activateAction()
+    {
+        // Check if form has been posted
+        if(!is_null($this->_request->getParam('code')))
+        {
+            $activation = $this->_em->getRepository('App\Entity\User')->activation($this->_request->getParam('code'));
+            
+            if($activation)
+            {
+                // Redirect to profile setup and guide
+                $this->_helper->redirector('index', 'index');
+            }else{
+                // Something went wrong
+                $this->_flashMessenger->addMessage(array('error' => 'Sorry, we were unable to activated your account'));
+                $this->_helper->redirector('activate', 'auth');
+            }
+        }
+    }
+    
+    public function usernameAction()
+    {
+        if(!is_null($this->_request->getParam('username')))
+        {
+            $valid = $this->_em->getRepository('App\Entity\User')->validUsername($this->_request->getParam('username'));
+            
+            if($valid)
+            {
+                // Redirect to profile setup and guide
+                $this->_redirect('/auth/register/facebook/true/username/'.$this->_request->getParam('username'));
+            }else{
+                // Something went wrong
+                $this->view->error = "Sorry the username you have choosen is unavailable";
+            }
+        }
+    }
+    
+    protected function _processLogin($values, $adp)
     {
         // Get our authentication adapter and check credentials
-        $adapter = $this->_getAuthAdapter('Doctrine');
-        $adapter->setIdentity($values['username']); 
-        // Salt password
-        $salt = \Zend_Registry::get('salt');
-        $adapter->setCredential(SHA1($salt.$values['password']));
-
+        $adapter = $this->_getAuthAdapter($adp);
+        
+        // Setup adapter depending on it's type
+        switch($adp)
+        {
+            case 'Doctrine':
+                $adapter->setIdentity($values['username']); 
+                // Salt password
+                $salt = \Zend_Registry::get('salt');
+                $adapter->setCredential(SHA1($salt.$values['password']));
+                break;
+            case 'Facebook':
+                $adapter->setIdentity($values);
+                break;
+        }
+        
+        
         $result = $this->_auth->authenticate($adapter);
 
         if ($result->isValid()) {
@@ -140,10 +305,15 @@ class Site_AuthController extends AppController
                 
                 $authAdapter->setEntityName('App\Entity\User')
                             ->setIdentityField('_username')
-                            ->setCredentialField('_password')
-                            //->setCredentialTreatment('SHA1(?)')
-                            ->setIdentity('username')
-                            ->setCredential('password');
+                            ->setCredentialField('_password');
+                break;
+            case "Facebook":
+                $authAdapter = new App_Auth_Adapter_Facebook(
+                    $this->_em
+                );
+                
+                $authAdapter->setEntityName('App\Entity\Facebook')
+                            ->setIdentityField('_fid');
                 break;
         }
         
@@ -158,5 +328,42 @@ class Site_AuthController extends AppController
     protected function _createAuthUser($user)
     {
         return new AuthUser($user->getId(), $user->getUsername(), $user->getRoleId());
+    }
+    
+    /**
+     * Create Facebook profile 
+     */
+    
+    protected function _createFacebookProfile($user)
+    {
+        // Make API request to Facebook
+        $query = $this->_facebook->api('/me?fields=first_name,last_name,gender,bio,birthday,email,location,picture,permissions&type=large');
+        //\Zend_Debug::dump($query);
+        // Check if user has installed the application
+        if($query['permissions']['data'][0]['installed'])
+        {
+            $dob = \DateTime::createFromFormat("d/m/Y", $query['birthday']);
+            $profile = new App\Entity\Profile($query['first_name'], $query['last_name'], $dob);
+            // Check user has a location
+            if(isset($query['location']))
+            {
+                $profile->setLocation($query['location']['name']);
+            }else{
+                $profile->setLocation("");
+            }
+            $profile->setBio($query['bio']);
+            $profile->setPicture($query['picture']);
+            $profile->setUser($user);
+
+            try {
+                $this->_em->persist($profile);
+                $this->_em->flush();
+                return true;
+            }catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        
+        return false;
     }
 }

@@ -50,7 +50,16 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
             'module' => 'site',
             'controller'=>'auth',
             'action'=>'index'));
-        return '<li><a href="'.$loginUrl.'">Login</a></li>';
+        return '<li><a href="'.$loginUrl.'">Login / Register</a></li>';
+        /*return '<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login</a>
+            <div class="dropdown-menu login">
+                <form>
+                    <input type="text" class="span3" placeholder="Username">
+                    <input type="text" class="span3" placeholder="Password">
+                </form>
+            </div>
+        </li>';*/
     }
 }
 ?>
