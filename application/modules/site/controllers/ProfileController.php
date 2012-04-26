@@ -154,7 +154,7 @@ class Site_ProfileController extends AppController
                     $this->notification("Facebook connected", "Successfully connected your Facebook account");
                 }
             }else{ // No users logged in 
-                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday, email' ,'redirect_uri' => 'http://pbnetwork.dev/profile/facebook/option/connect')));
+                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday, email' ,'redirect_uri' => $_SERVER['SERVER_NAME'].'/profile/facebook/option/connect')));
             }
         }catch(\App\Classes\Facebook\FacebookApiException $e){
             $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
@@ -196,7 +196,7 @@ class Site_ProfileController extends AppController
                     }
                 }
             }else{ // No users logged in 
-                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday, email', 'redirect_uri' => 'http://pbnetwork.dev/profile/facebook/option/create')));
+                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday, email', 'redirect_uri' => $_SERVER['SERVER_NAME'].'/profile/facebook/option/create')));
             }
         }catch(\App\Classes\Facebook\FacebookApiException $e){
             $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));

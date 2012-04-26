@@ -81,7 +81,7 @@ class Site_AuthController extends AppController
                 $this->_redirect($this->_facebook->getLoginUrl(
                         array(
                             'scope' => 'user_about_me, user_birthday' ,
-                            'redirect_uri' => 'http://pbnetwork.dev/auth/login/facebook/true'
+                            'redirect_uri' => $_SERVER["SERVER_NAME"].'/auth/login/facebook/true'
                             )
                         ));
             }
@@ -177,7 +177,7 @@ class Site_AuthController extends AppController
                     /*$this->_redirect($this->_facebook->getLoginUrl(
                         array(
                             'scope' => 'user_about_me, user_birthday' ,
-                            'redirect_uri' => 'http://pbnetwork.dev/auth/login/facebook/true'
+                            'redirect_uri' => '$_SERVER["SERVER_NAME"]/auth/login/facebook/true'
                             )
                         ));*/
                 }catch(Exception $e){
@@ -189,7 +189,7 @@ class Site_AuthController extends AppController
                 $this->_redirect($this->_facebook->getLoginUrl(
                         array(
                             'scope' => 'user_about_me, user_birthday, email' ,
-                            'redirect_uri' => 'http://pbnetwork.dev/auth/register/facebook/true'
+                            'redirect_uri' => $_SERVER["SERVER_NAME"].'/auth/register/facebook/true'
                             )
                         ));
             }
