@@ -161,7 +161,7 @@ class Site_AuthController extends AppController
                 try{
                     // Create user using creditionals
                     $user = new User($query['username'], md5(date('iMY')), $query['email']);
-                    $user->setActiveStatus(true);
+                    //$user->setActiveStatus(true);
                     $this->_em->persist($user);
                     $this->_em->flush();
 
