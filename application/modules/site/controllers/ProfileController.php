@@ -154,7 +154,18 @@ class Site_ProfileController extends AppController
                     $this->notification("Facebook connected", "Successfully connected your Facebook account");
                 }
             }else{ // No users logged in 
-                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday, email' ,'redirect_uri' => $_SERVER['SERVER_NAME'].'/profile/facebook/option/connect')));
+                if (0 !== stripos($_SERVER["SERVER_NAME"], 'http://'))
+                {
+                    $url = "http://".$_SERVER["SERVER_NAME"];
+                }else{
+                    $url = $_SERVER["SERVER_NAME"];
+                }
+                $this->_redirect($this->_facebook->getLoginUrl(
+                        array(
+                            'scope' => 'user_about_me, user_birthday, email' ,
+                            'redirect_uri' => $url.'/profile/facebook/option/connect'
+                            )
+                        ));
             }
         }catch(\App\Classes\Facebook\FacebookApiException $e){
             $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
@@ -196,7 +207,18 @@ class Site_ProfileController extends AppController
                     }
                 }
             }else{ // No users logged in 
-                $this->_redirect($this->_facebook->getLoginUrl(array('scope' => 'user_about_me, user_birthday, email', 'redirect_uri' => $_SERVER['SERVER_NAME'].'/profile/facebook/option/create')));
+                if (0 !== stripos($_SERVER["SERVER_NAME"], 'http://'))
+                {
+                    $url = "http://".$_SERVER["SERVER_NAME"];
+                }else{
+                    $url = $_SERVER["SERVER_NAME"];
+                }
+                $this->_redirect($this->_facebook->getLoginUrl(
+                        array(
+                            'scope' => 'user_about_me, user_birthday, email',
+                            'redirect_uri' => $_url.'/profile/facebook/option/create'
+                            )
+                        ));
             }
         }catch(\App\Classes\Facebook\FacebookApiException $e){
             $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));

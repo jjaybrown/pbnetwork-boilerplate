@@ -78,10 +78,17 @@ class Site_AuthController extends AppController
                     $this->_helper->redirector('login');
                 }
             }else{
+                if (0 !== stripos($_SERVER["SERVER_NAME"], 'http://'))
+                {
+                    $url = "http://".$_SERVER["SERVER_NAME"];
+                }else{
+                    $url = $_SERVER["SERVER_NAME"];
+                }
+                
                 $this->_redirect($this->_facebook->getLoginUrl(
                         array(
                             'scope' => 'user_about_me, user_birthday' ,
-                            'redirect_uri' => $_SERVER["SERVER_NAME"].'/auth/login/facebook/true'
+                            'redirect_uri' => $url.'/auth/login/facebook/true'
                             )
                         ));
             }
@@ -186,10 +193,17 @@ class Site_AuthController extends AppController
                     $this->_helper->redirector('register', 'auth');
                 }
             }else{
+                if (0 !== stripos($_SERVER["SERVER_NAME"], 'http://'))
+                {
+                    $url = "http://".$_SERVER["SERVER_NAME"];
+                }else{
+                    $url = $_SERVER["SERVER_NAME"];
+                }
+                
                 $this->_redirect($this->_facebook->getLoginUrl(
                         array(
                             'scope' => 'user_about_me, user_birthday, email' ,
-                            'redirect_uri' => $_SERVER["SERVER_NAME"].'/auth/register/facebook/true'
+                            'redirect_uri' => $url.'/auth/register/facebook/true'
                             )
                         ));
             }
