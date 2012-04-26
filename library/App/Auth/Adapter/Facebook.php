@@ -118,8 +118,8 @@ class App_Auth_Adapter_Facebook implements Zend_Auth_Adapter_Interface
             } else if (1 == $resultCount) {
                 // Need to get User object from returned Facebook user
                 $object = $this->resultRowObject; 
-                $user = $object[0]->getUser();
-                $this->resultRowObject = array($user);
+                $uid = $object[0]->getUserId();
+                $this->resultRowObject = array($this->em->find('App\Entity\User', $uid));
                 $authResult['code'] = Zend_Auth_Result::SUCCESS;
                 $authResult['identity'] = $this->identity;
                 $authResult['messages'][] = 'Authentication successful.';
