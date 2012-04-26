@@ -178,7 +178,7 @@ class Acl extends \Zend_Acl
             case \App\Acl::GUEST:
                 // Setup access rights
                 $this->allow($guest, 'site:index',array('index', 'notification'));
-                $this->allow($guest, 'site:auth',array('index', 'login', 'register', 'forbidden', 'activate'));
+                $this->allow($guest, 'site:auth',array('index', 'login', 'register', 'forbidden', 'activate', 'username'));
                 
                 $this->allow($guest, 'event:index',array('index','view'));
                 $this->allow($guest, 'event:calendar',array('index', 'view'));

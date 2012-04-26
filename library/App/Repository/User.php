@@ -23,4 +23,17 @@ class User extends EntityRepository
         }
         return false;
     }
+    
+    public function validUsername($username)
+    {
+        $stmt = "SELECT u FROM App\Entity\User u WHERE u._username = '".$username."'";
+        $result = $this->_em->createQuery($stmt)->getResult();
+        if(count($result) == 0)
+        {
+            // Check username isn't on the reserved list
+            if(!in_array($username, \Zend_Registry::get('reserved_usernames')))
+                return true;
+        }
+        return false;
+    }
 }

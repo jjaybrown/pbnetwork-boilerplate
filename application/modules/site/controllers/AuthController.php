@@ -146,7 +146,7 @@ class Site_AuthController extends AppController
             $uid = $this->_facebook->getUser();
             if($uid) // Got a user
             {
-                $query = $this->_facebook->api('/me?fields=username,first_name,last_name,gender,bio,birthday,email');
+                $query = $this->_facebook->api('/me?fields=id,username,first_name,last_name,gender,bio,birthday,email');
 
                 // Check fb user has a username
                 if(!isset($query['username']) && is_null($this->getRequest()->getParam('username')))
@@ -161,12 +161,12 @@ class Site_AuthController extends AppController
                 try{
                     // Create user using creditionals
                     $user = new User($query['username'], md5(date('iMY')), $query['email']);
-                    //$user->setActiveStatus(true);
+                    $user->setActiveStatus(true);
                     $this->_em->persist($user);
                     $this->_em->flush();
 
                     // Create join table between facebook id and user id
-                    $fbJoin = new FacebookJoin($uid, $user->getId());
+                    $fbJoin = new FacebookJoin($query['id'], $user->getId());
                     $this->_em->persist($fbJoin);
                     
                     $this->_em->flush();
@@ -226,6 +226,23 @@ class Site_AuthController extends AppController
                 // Something went wrong
                 $this->_flashMessenger->addMessage(array('error' => 'Sorry, we were unable to activated your account'));
                 $this->_helper->redirector('activate', 'auth');
+            }
+        }
+    }
+    
+    public function usernameAction()
+    {
+        if(!is_null($this->_request->getParam('username')))
+        {
+            $valid = $this->_em->getRepository('App\Entity\User')->validUsername($this->_request->getParam('username'));
+            
+            if($valid)
+            {
+                // Redirect to profile setup and guide
+                $this->_redirect('/auth/register/facebook/true/username/'.$this->_request->getParam('username'));
+            }else{
+                // Something went wrong
+                $this->view->error = "Sorry the username you have choosen is unavailable";
             }
         }
     }
@@ -296,7 +313,7 @@ class Site_AuthController extends AppController
                 );
                 
                 $authAdapter->setEntityName('App\Entity\Facebook')
-                            ->setIdentityField('_id');
+                            ->setIdentityField('_fid');
                 break;
         }
         

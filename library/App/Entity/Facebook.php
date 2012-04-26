@@ -9,25 +9,31 @@ class Facebook
 {
     /**
      * @Id @Column(type="integer", name="id")
+     * @GeneratedValue
      */
     private $_id;
     
     /**
-     * @Id @Column(type="integer", name="uid")
+     * @Column(type="bigint", name="fid", unique="true")
+     */
+    private $_fid;
+    
+    /**
+     * @Column(type="integer", name="uid")
      */
     
     private $_uid;
     
     
-    public function __construct($id, $uid)
+    public function __construct($fid, $uid)
     {
-        $this->_id = $id;
+        $this->_fid = $fid;
         $this->_uid = $uid;
     }
     
-    public function getId()
+    public function getFid()
     {
-        return $this->_id;
+        return $this->_fid;
     }
     
     /**
