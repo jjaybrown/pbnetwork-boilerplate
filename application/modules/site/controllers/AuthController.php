@@ -136,7 +136,15 @@ class Site_AuthController extends AppController
                     $code = $user->getActivationCode();
                     //@TODO add messages to flash, send email with activation code
                     
-                    
+                    $m = new App\Classes\HtmlMailer();
+                    $m->setSubject('Account Activation')
+                    ->addTo($data['email'])
+                    ->addTo('subscriptions@thepaintballnetwork.co.uk')
+                    ->setViewParam('heading', 'Please activate your account')
+                    ->setViewParam('open', 'Thanks for registering, before you can use your account we need you to activate it.')
+                    ->setViewParam('code', $code)
+                    ->sendHtmlTemplate('activation.phtml');
+                    $this->_helper->redirector('activate', 'auth');
                     
                 }catch(Exception $e){
                     // Something went wrong
@@ -224,7 +232,8 @@ class Site_AuthController extends AppController
             if($activation)
             {
                 // Redirect to profile setup and guide
-                $this->_helper->redirector('index', 'index');
+                $this->_flashMessenger->addMessage(array('success' => 'Congratulations, your account is now active'));
+                $this->_helper->redirector('login', 'auth');
             }else{
                 // Something went wrong
                 $this->_flashMessenger->addMessage(array('error' => 'Sorry, we were unable to activated your account'));
