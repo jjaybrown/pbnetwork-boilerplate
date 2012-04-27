@@ -114,6 +114,12 @@ class Site_AuthController extends AppController
     public function forbiddenAction()
     {
         //@TODO Log unauthorized access attempt
+        $m = new App\Classes\HtmlMailer();
+        $m->setSubject('Welcome')
+           ->addTo('jason.brown@jbfreelance.co.uk')
+           ->setViewParam('heading', 'Welcome')
+           ->setViewParam('open', 'Thanks for creating an account.')
+           ->sendHtmlTemplate();
     }
     
     public function registerAction()
@@ -135,6 +141,9 @@ class Site_AuthController extends AppController
                     // Retrieve activation code and email user for activation
                     $code = $user->getActivationCode();
                     //@TODO add messages to flash, send email with activation code
+                    
+                    
+                    
                 }catch(Exception $e){
                     // Something went wrong
                     $this->_flashMessenger->addMessage(array('error' => $e->getMessage()));

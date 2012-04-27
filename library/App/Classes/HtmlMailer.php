@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Classes;
+
+class HtmlMailer extends \Zend_Mail
+{
+    static $fromName = 'the Paintball Network';
+    static $fromEmail = 'no-reply@thepaintballnetwork.co.uk';
+    
+    /**
+     *
+     * @var Zend_View 
+     */
+    static $_defaultView;
+    
+    /**
+     * Current instance of our Zend_View
+     * @var Zend_View 
+     */
+    protected $_view;
+    
+    public function __construct($charset = 'iso-8859-1')
+    {
+        parent::__construct($charset);
+        $this->setFrom(self::$fromEmail, self::$fromName);
+        $this->_view = self::getDefaultView();
+    }
+    
+    protected static function getDefaultView()
+    {
+        if(self::$_defaultView === null)
+        {
+            self::$_defaultView = new \Zend_View();
+            self::$_defaultView->setScriptPath(APPLICATION_PATH . '/views/scripts/mails');
+        }
+        
+        return self::$_defaultView;
+    }
+    
+    public function setViewParam($property, $value)
+    {
+        $this->_view->__set($property, $value);
+        return $this;
+    }
+    
+    public function sendHtmlTemplate($template = "basic.phtml", $encoding = \Zend_Mime::ENCODING_QUOTEDPRINTABLE)
+    {
+        $html = $this->_view->render($template);
+        $this->setBodyHtml($html, $this->getCharset(), $encoding);
+        $this->send();
+    }
+}
+?>
