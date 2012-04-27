@@ -134,7 +134,6 @@ class Site_AuthController extends AppController
                     $this->_cache->delete('users');
                     // Retrieve activation code and email user for activation
                     $code = $user->getActivationCode();
-                    //@TODO add messages to flash, send email with activation code
                     
                     $m = new App\Classes\HtmlMailer();
                     $m->setSubject('Account Activation')
@@ -188,9 +187,6 @@ class Site_AuthController extends AppController
                     // Create profile 
                     $this->_createFacebookProfile($user);
                     
-                    $this->_flashMessenger->addMessage(array('success' => 'Successfully created your Account, you can now login'));
-                    $this->_helper->redirector('login', 'auth');
-                    
                     // Log the user straight in
                     /*$this->_redirect($this->_facebook->getLoginUrl(
                         array(
@@ -198,6 +194,19 @@ class Site_AuthController extends AppController
                             'redirect_uri' => '$_SERVER["SERVER_NAME"]/auth/login/facebook/true'
                             )
                         ));*/
+                    
+                    // Welcome the user with an email
+                    $m = new App\Classes\HtmlMailer();
+                    $m->setSubject('Welcome to the Paintball Network')
+                    ->addTo($query['email'])
+                    ->addBcc('subscriptions@thepaintballnetwork.co.uk')
+                    ->setViewParam('heading', 'Welcome')
+                    ->setViewParam('open', 'Thanks for being part of our growing community. By connecting your Facebook account, you will be able to share content and easily receive updates. <br/><br/> It\'s still early days so if you encounter any issues please email: <a href="mailto:enquiries@thepaintballnetwork.co.uk">enquiries@thepaintballnetwork.co.uk</a>')
+                    ->sendHtmlTemplate('basic.phtml');
+                    
+                    // Let the user know the account is setup
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully created your Account, you can now login'));
+                    $this->_helper->redirector('login', 'auth');
                 }catch(Exception $e){
                     // Something went wrong
                     $this->_flashMessenger->addMessage(array('error' => $e->getMessage()));
