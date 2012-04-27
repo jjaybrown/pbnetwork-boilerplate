@@ -114,12 +114,6 @@ class Site_AuthController extends AppController
     public function forbiddenAction()
     {
         //@TODO Log unauthorized access attempt
-        $m = new App\Classes\HtmlMailer();
-        $m->setSubject('Welcome')
-           ->addTo('jason.brown@jbfreelance.co.uk')
-           ->setViewParam('heading', 'Welcome')
-           ->setViewParam('open', 'Thanks for creating an account.')
-           ->sendHtmlTemplate();
     }
     
     public function registerAction()
