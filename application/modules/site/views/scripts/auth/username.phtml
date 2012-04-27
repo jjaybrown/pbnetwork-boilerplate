@@ -1,0 +1,19 @@
+<div class="block" style="text-align:center;">
+    <h1>Create a Username</h1>
+    <p>In order to use the community features you need to create a username</p>
+    <form class="form-inline">
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-append">
+                    <input id="appendedPrependedInput" name="username" size="16" placeholder="enter your choosen username" type="text"><button class="btn btn-inverse" type="submit">Create username</button>
+                </div>
+                <?
+                if($this->error != null){
+                ?>
+                <p style="margin:10px 0 0 0; padding:0; color:red;"><?=$this->error?></p>        
+                <?
+                }?>
+            </div>
+        </div>
+    </form>
+</div>
