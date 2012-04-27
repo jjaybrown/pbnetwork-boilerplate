@@ -16,7 +16,7 @@ class User extends EntityRepository
                 $this->_em->persist($result[0]);
                 $this->_em->flush();
                 
-                return true;
+                return $result[0];
             }catch(Exception $e){
                 // Log error
             }
