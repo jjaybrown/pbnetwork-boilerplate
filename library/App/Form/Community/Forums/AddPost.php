@@ -23,7 +23,7 @@ class AddPost extends \EasyBib_Form
         
         $post = new \Zend_Form_Element_Textarea('post');
         $post->setRequired(true)
-                ->setAttrib("style", "width:100%;");
+                ->setAttrib("class", "span6");
         
         $submit = new \Zend_Form_Element_Button('submit');
         $submit->setLabel("Post");
