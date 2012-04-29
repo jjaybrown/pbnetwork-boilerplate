@@ -96,6 +96,55 @@ class Forum_PostController extends AppController
     
     public function replyAction()
     {
+        $postForm = new PostForum($this->_thread);
+        if ($this->_request->isPost()) {
+            if ($postForm->isValid($this->_request->getPost())) {
+
+                $data = $postForm->getValues();
+                
+                // Get User Entity for current logged in user
+                $user = $this->_em->find("App\Entity\User", $this->_auth->getIdentity()->getId());
+                
+                // Create new Post object
+                $post = new Post($user, $this->_thread, $data['post']);
+                // Add Post to Thread
+                $this->_thread->getPosts()->add($post);
+                try{
+                    $this->_em->persist($post);
+                    $this->_em->flush();
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully added post'));
+                    $this->_redirect('/forum/post/index/thread/'.$this->_thread->getId());
+                }
+                catch (Exception $e) {
+                    // Alert user of error
+                    $this->_flashMessenger->addMessage(array('error' => $e));
+                    $this->_redirect('/forum/post/index/thread/'.$this->_thread->getId());
+                }
+            }
+        }
+        
+        
+        // Set content of editor to be the post we are replying to
+        $id = $this->_request->getParam('id');
+        
+        $post = $this->_em->find("App\Entity\Community\Post", $id);
+        
+        $postForm->getElement('post')->setValue("<pre>".$post->getContent()."</pre>");
+        
+        $this->view->forum = "<a href='/forum/thread/view/id/".$this->_thread->getForum()->getId()."'>".ucwords($this->_thread->getForum()->getName())."</a>";
+        $this->view->thread = "<a href='/forum/post/index/id/".$this->_thread->getForum()->getId()."/thread/".$this->_thread->getId()."'/>".ucwords($this->_thread->getName())."</a>";
+        
+        // Get most recent posts
+        $posts = $this->_em->getRepository('App\Entity\Community\Thread')->recentPosts($this->_thread->getId());
+        $this->view->posts = $posts;
+        $this->view->post = $postForm;
+        
+        // Set view to add post
+        $this->_helper->viewRenderer->setRender('add'); 
+    }
+    
+    /*public function replyAction()
+    {
         $id = $this->_request->getParam('id');
         
         $post = $this->_em->find("App\Entity\Community\Post", $id);
@@ -119,6 +168,6 @@ class Forum_PostController extends AppController
             $this->_redirect('/forum/post/index/thread/'.$this->_thread->getId());
         }
         
-    }
+    }*/
             
 }
