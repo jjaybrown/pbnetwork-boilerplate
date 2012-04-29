@@ -85,6 +85,12 @@ class Forum_PostController extends AppController
             }
         }
         
+        $this->view->forum = "<a href='/forum/thread/view/id/".$this->_thread->getForum()->getId()."'>".ucwords($this->_thread->getForum()->getName())."</a>";
+        $this->view->thread = "<a href='/forum/post/index/id/".$this->_thread->getForum()->getId()."/thread/".$this->_thread->getId()."'/>".ucwords($this->_thread->getName())."</a>";
+        
+        // Get most recent posts
+        $posts = $this->_em->getRepository('App\Entity\Community\Thread')->recentPosts($this->_thread->getId());
+        $this->view->posts = $posts;
         $this->view->post = $postForm;
     }
     

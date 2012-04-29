@@ -1,3 +1,49 @@
-<?php
-echo $this->post;
-?>
+<div class="page-header">
+    <h1><?=$this->forum?> / <?=$this->thread?> - new post</h1>
+</div>
+<form id="<?=$this->post->getId()?>" action="<?=$this->post->getAction()?>" method="<?=$this->post->getMethod()?>" class="addpost">
+    <div class="row">
+        <div class="span12">
+            <div class="row">
+                <div class="span6">
+                    <?php
+                    echo $this->post->getElement('post');
+                    echo $this->post->getElement('submit')
+                    ?>
+                </div>
+                <div class="span6 pull-right">
+                    <h3>Previous posts</h3>
+                    <div class="row">
+                        <ul class="posts">
+                            <?php foreach($this->posts as $key => $post) {?>
+                            <li>
+                                <div class="pull-left">
+                                    <i class="icon-user"></i>
+                                    <a class="profile-pop" rel="popover" data-content="
+                                       <div class='thumbnail pull-left'><img src='<?=$post->getUser()->getProfile()->getPicture()?>' width='80' /></div>
+                                       <div class='pull-left' style='margin-left:10px;'>
+                                        <strong><?=$post->getUser()->getProfile()->getFullName()?></strong>
+                                        <br />
+                                        Joined: <?=$post->getUser()->getCreated('jS F \'y')?>
+                                        <br />
+                                        Posts: <?=$post->getUser()->getPostCount()?>
+                                       </div>
+                                       <div class='clearfix'></div>"
+                                       data-original-title="<?=ucwords($post->getUser()->getUsername())?>'s Profile"
+                                       href="<?=$this->baseUrl('/profile/view/id/'.$post->getUser()->getId())?>"><?=ucwords($post->getUser()->getUsername())?></a>
+                                </div>
+                                <div class="pull-right"><span>Posted: <i><?=$post->getCreated("g:ia l jS F Y")?></i></span></div>
+                                <div class="clearfix"></div>
+                                <div class="post"><?=$post->getContent()?></div>
+                            </li>
+                            <? } ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('.profile-pop').popover();    
+</script>

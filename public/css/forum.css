@@ -3,6 +3,12 @@
     Created on : Apr 29, 2012, 4:47:35 PM
     Author     : jasonbrown
     Description:
-        Purpose of the stylesheet follows.
+        Forum style sheet
 */
 
+/*
+* Add post form
+*/
+form.addpost ul.posts {list-style:none; padding:20px 0;}
+form.addpost ul li {margin-left:10px; margin-bottom:20px;}
+form.addpost ul li .post {padding:5px; border-top: 1px solid #DDD;}
