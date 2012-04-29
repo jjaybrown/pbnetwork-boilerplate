@@ -36,15 +36,15 @@ class Site_IndexController extends AppController
                 $mail->send();
                 
                 // Send Confirmation
-                $mail = new Zend_Mail();
-                $mail->setBodyText('Thank you for subscribing, we\'ll send you updates and hopefully soon, an invite to an early preview of the site.');
-                $mail->setFrom('no-reply@thepaintballnetwork.co.uk', 'the Paintball Network');
-                $mail->addTo($data["email"], '');
-                $mail->setSubject('Your Subscription');
-                $mail->send();
+                $m = new App\Classes\HtmlMailer();
+                    $m->setSubject('Your subscription')
+                    ->addTo($data['email'])
+                    ->setViewParam('heading', 'Thanks for subscribing')
+                    ->setViewParam('open', 'We\'ll send you site updates and hopefully soon, an invite to an early preview of the site.')
+                    ->sendHtmlTemplate();
                 
                 // Show success message
-                $this->_flashMessenger->addMessage(array('success' => 'Great! Your now subscribed to our mailing list.'));
+                $this->_flashMessenger->addMessage(array('success' => 'Great! You\'re now subscribed to our mailing list.'));
                 $this->_helper->redirector('index', 'index');
                 
             }else{
