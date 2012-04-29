@@ -11,6 +11,8 @@ body
    height:100%;
 }
 
+a.thumbnail:hover {border-color: #F2BC1B !important;}
+
 #container 
 {
    min-height:100%;
