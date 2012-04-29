@@ -79,6 +79,11 @@ class Community_IndexController extends AppController
                                  'module' => 'forum',
                                  'controller' => 'post',
                                  'action' => 'index' 
+                                ),
+                                array(
+                                 'module' => 'forum',
+                                 'controller' => 'post',
+                                 'action' => 'add' 
                                 )
                             )
                         ),
