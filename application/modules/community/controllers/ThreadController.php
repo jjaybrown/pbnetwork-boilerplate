@@ -79,12 +79,12 @@ class Community_ThreadController extends AppController
                 try{
                     $this->_em->persist($thread);
                     $this->_em->flush();
-                    $this->_flashMessenger->addMessage('Successfully created thread');
+                    $this->_flashMessenger->addMessage(array('success' => 'Successfully created thread'));
                     $this->_redirect('/community/thread/view/id/'.$id);
                 }
                 catch (Exception $e) {
                     // Alert user of error
-                    $this->_flashMessenger->addMessage('Error: '. $e);
+                    $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e));
                     $this->_redirect('/community/thread/add');
                 }
             }
