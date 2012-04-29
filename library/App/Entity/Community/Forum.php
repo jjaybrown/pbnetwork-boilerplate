@@ -22,6 +22,11 @@ class Forum
     /** @Column(type="boolean", name="open") */
     public $open = true;
     
+    /*
+     * App\Entity\Community\Post
+     */
+    public $latestPost;
+    
     
     /**
      * @ManyToOne(targetEntity="App\Entity\Community\Category")

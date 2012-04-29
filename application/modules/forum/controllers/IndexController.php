@@ -28,6 +28,22 @@ class Forum_IndexController extends AppController
                 $this->_flashMessenger->addMessage(array('error' => 'You must create a profile to use the forums'));
                 $this->_redirect('/profile/create');
             }
+            
+            /*
+             *  Find latest post for each forum
+             *  Need to cache this as it's heavy I/O
+             */
+            
+            foreach($this->_categories as $cat)
+            {
+                foreach($cat->getForums() as $forum)
+                {
+                    $post = $this->_em->getRepository("App\Entity\Community\Forum")->latestPost($forum->getId());
+                    if(is_array($post) && sizeof($post) > 0)
+                        $forum->latestPost = $post[0];
+                }
+            }
+            
             $this->view->categories = $this->_categories;
         }else{
             $this->_flashMessenger->addMessage(array('error' => 'An Error occurred, please check you are logged in'));
