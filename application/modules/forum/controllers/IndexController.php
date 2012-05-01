@@ -53,6 +53,10 @@ class Forum_IndexController extends AppController
 
     public function addAction()
     {
+        // Set layout for admin
+        $this->_helper->layout->setLayoutPath(APPLICATION_PATH.'/modules/admin/layouts/scripts/');
+        $this->_helper->layout->setLayout('admin');
+        
         // Get supplied category id
         $id = $this->_request->getParam('cat');
         // Get all categories if no id given
