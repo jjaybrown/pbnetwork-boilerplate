@@ -12,4 +12,10 @@ class Thread extends EntityRepository
         return $query->getResult();
 
     }
+    
+    public function count()
+    {
+        $query = $this->_em->createQuery("SELECT COUNT(t) FROM App\Entity\Community\Thread t");
+        return $query->getSingleResult();
+    }
 }

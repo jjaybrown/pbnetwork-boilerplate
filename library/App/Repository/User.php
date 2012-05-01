@@ -36,4 +36,11 @@ class User extends EntityRepository
         }
         return false;
     }
+    
+    public function latestUser()
+    {
+        $query = $this->_em->createQuery("SELECT u FROM App\Entity\User u ORDER BY u._created DESC");
+        $query->setMaxResults(1);
+        return $query->getResult();
+    }
 }

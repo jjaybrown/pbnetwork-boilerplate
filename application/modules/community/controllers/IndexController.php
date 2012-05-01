@@ -13,6 +13,15 @@ class Community_IndexController extends AppController
     {
         $recentPosts = $this->_em->getRepository("App\Entity\Community\Post")->recentActivity();
         $this->view->recentPosts = $recentPosts;
+        
+        // Get latest user
+        $this->view->latestUser = $this->_em->getRepository("App\Entity\User")->latestUser();
+        
+        // Get post count
+        $this->view->postCount = $this->_em->getRepository("App\Entity\Community\Post")->count();
+        
+        // Get thread count
+        $this->view->threadCount = $this->_em->getRepository("App\Entity\Community\Thread")->count();
     }
     
     public function headerAction()

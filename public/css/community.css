@@ -13,3 +13,9 @@
 .post .post-content {margin-top:10px;}
 
 ul.activity {margin-bottom:10px;}
+
+
+.block-community {padding:19px;}
+.block-community {margin-bottom:20px;}
+.block-community p {margin:0 !important;}
+.block-community p.justify {text-align: justify;}
