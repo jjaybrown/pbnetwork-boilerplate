@@ -98,7 +98,7 @@ class Community_IndexController extends AppController
                         ),
                         array(
                             'action' => 'index',
-                            'controller' => 'groups',
+                            'controller' => 'group',
                             'module' => 'community',
                             'label' => 'Groups'
                         ),
