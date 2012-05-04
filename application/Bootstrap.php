@@ -170,6 +170,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         return $acl;
     }
     
+    public function _initUserActivity()
+    {
+        // Get front controller
+        $this->bootstrap('frontController');
+        $fc = $this->getResource('frontController');
+        
+        // Get user activity plugin
+        $fc->registerPlugin(new App\Plugin\UserActivity);
+    }
+    
     /**
      * init mailer 
      */

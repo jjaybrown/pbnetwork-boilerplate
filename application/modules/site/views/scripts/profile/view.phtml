@@ -15,7 +15,20 @@
     </div>
     <div class="span9">
         <div class="page-header">
-            <h2><?=ucwords($profile->getFirstName()." ".$profile->getLastName())?> <small><?=$this->user->getUsername()?></small></h2>
+            <h2>
+                <?=ucwords($profile->getFirstName()." ".$profile->getLastName())?>
+                <small>
+                    <?=$this->user->getUsername()?> 
+                    <?
+                    if($this->IsUserActive($this->user))
+                    {
+                        ?>
+                        <span style="color:green !important; font-size:11px !important;"> Online</span>
+                        <?
+                    }
+                    ?>
+                </small>
+            </h2>
             <p class="status-message span9"><?=$profile->getBio()?></p>
         </div>
         <!-- Profile head boxes -->
