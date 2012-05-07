@@ -52,10 +52,18 @@ class User
      */
     private $_articles;
     
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $_activity
+     * 
+     * @OneToMany(targetEntity="App\Entity\UserActivity", mappedBy="_user", cascade={"persist", "remove"})
+     */
+    private $_activity;
+    
     public function __construct($username, $password, $emailAddress)
     {
         $this->_username = $username;
         $this->_posts = new ArrayCollection();
+        $this->_activity = new ArrayCollection();
         $this->_articles = new ArrayCollection();
         // Treat password with salt
         $this->_salt = \Zend_Registry::get('salt'); 
@@ -181,5 +189,10 @@ class User
     public function getArticles()
     {
         return $this->_articles;
+    }
+    
+    public function getActivity()
+    {
+        return $this->_activity;
     }
 }
