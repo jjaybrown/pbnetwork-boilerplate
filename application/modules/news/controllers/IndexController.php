@@ -67,20 +67,20 @@ class News_IndexController extends AppController
                 // Create article
                 $article = new Article($data['title'], $user, $data['summary'], $data['content']);
                 
-                //@TODO check if we're saving or publishing article
-                $article->publish(true);
+                if(!$this->_request->getParam('draft'))
+                    $article->publish(true);
                
                 // Save article
                 try {
                     $this->_em->persist($article);
                     $this->_em->flush();
-                    $this->_flashMessenger->addMessage('Published article successfully');
+                    $this->_flashMessenger->addMessage(array('success' => 'Saved article successfully'));
                     $this->_redirect('/admin/news/');
                 }
                 catch (Exception $e) {
                     // Alert user of error
-                    $this->_flashMessenger->addMessage('Error: '. $e);
-                    $this->_redirect('/admin/news/');
+                    $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e->getMessage()));
+                    $this->_redirect('/admin/news/index/add');
                 }
                 
             }else{
@@ -117,18 +117,19 @@ class News_IndexController extends AppController
                 $article->setTitle($data['title']);
                 $article->setSummary($data['summary']);
                 $article->setContent($data['content']);
+                $article->setAuthor($user);
                
                 // Save article
                 try {
                     $this->_em->persist($article);
                     $this->_em->flush();
-                    $this->_flashMessenger->addMessage('Published article successfully');
+                    $this->_flashMessenger->addMessage(array('success', 'Published article successfully'));
                     $this->_redirect('/admin/news/');
                 }
                 catch (Exception $e) {
                     // Alert user of error
-                    $this->_flashMessenger->addMessage('Error: '. $e);
-                    $this->_redirect('/admin/news/');
+                    $this->_flashMessenger->addMessage(array('error', 'Error: '. $e->getMessage()));
+                    $this->_redirect('/admin/news/index/edit/id/'.$id);
                 }
                 
             }else{

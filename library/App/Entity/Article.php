@@ -32,7 +32,7 @@ class Article
     private $_created;
     /** @Column(type="datetime", name="updated")*/
     private $_updated;
-    /** @Column(type="datetime", name="posted")*/
+    /** @Column(type="datetime", name="posted", nullable="true")*/
     private $_posted;
     /** @Column(type="boolean", name="published")*/
     private $_published = false;
