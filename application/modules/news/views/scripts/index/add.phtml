@@ -1,3 +1,26 @@
-<?php
-echo $this->form;
-?>
+<div class="page-header">
+    <h1></h1>
+</div>
+<form id="<?=$this->form->getId()?>" action="<?=$this->form->getAction()?>" method="<?=$this->form->getMethod()?>">
+    <?php
+    echo $this->form->getElement('title');
+    echo $this->form->getElement('summary');
+    echo $this->form->getElement('start');
+    echo $this->form->getElement('content');
+    ?>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary" >Publish Article</button>
+        <input type="button" class="btn btn-info" id="draft" value="Save Draft" />
+    </div>
+</form>
+<script>
+    $(document).ready(function()
+    {
+        // Save Draft
+        $("#draft").click(function()
+        {
+            $('form').attr('action', ($('form').attr('action')+"/draft/true"));
+            $('form').submit();
+        });
+    });
+</script>
