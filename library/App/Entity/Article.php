@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use \Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 
 /**
  * @Entity(repositoryClass="App\Repository\Article")
@@ -22,9 +23,16 @@ class Article
      * })
      */
     private $_author;
+    
+    /**
+     * @ManyToMany(targetEntity="App\Entity\Tag", inversedBy="_articles", cascade={"persist"})
+     * @JoinTable(name="articles_tags")
+     */
+    private $_tags;
+    
     /** @Column(type="string", name="summary") */
     private $_summary;
-    /** @Column(type="string", name="source") */
+    /** @Column(type="string", name="source", nullable="true") */
     private $_source;
     /** @Column(type="text", name="content") */
     private $_content;
@@ -39,10 +47,11 @@ class Article
     /** @Column(type="boolean", name="published")*/
     private $_published = false;
     
-    public function __construct($title, $user, $summary, $content, $source,  \DateTime $embargo = null)
+    public function __construct($title, $user, $summary, $content, $source = null,  \DateTime $embargo = null)
     {
         $this->_title = $title;
         $this->_author = $user;
+        $this->_tags = new ArrayCollection();
         $this->_summary = $summary;
         $this->_source = $source;
         $this->_content = $content;
@@ -78,6 +87,12 @@ class Article
         $this->_author = $author;
         $this->_updated = new \DateTime();
         return $this;
+    }
+    
+    public function addTag(\App\Entity\Tag $tag)
+    {
+        $tag->addArticle($this);
+        $this->_tags[] = $tag;
     }
     
     public function getSummary()
