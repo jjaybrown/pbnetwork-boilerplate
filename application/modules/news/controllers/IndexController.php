@@ -93,10 +93,6 @@ class News_IndexController extends AppController
     
     public function editAction()
     {
-        // Set layout for admin
-        $this->_helper->layout->setLayoutPath(APPLICATION_PATH.'/modules/admin/layouts/scripts/');
-        $this->_helper->layout->setLayout('admin');
-        
         $id = $this->_request->getParam('id');
         $article = $this->_em->getRepository("\App\Entity\Article")->find($id);
      
