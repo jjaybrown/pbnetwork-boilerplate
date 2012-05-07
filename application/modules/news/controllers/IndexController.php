@@ -52,10 +52,6 @@ class News_IndexController extends AppController
     
     public function addAction()
     {
-        // Set layout for admin
-        $this->_helper->layout->setLayoutPath(APPLICATION_PATH.'/modules/admin/layouts/scripts/');
-        $this->_helper->layout->setLayout('admin');
-        
         $addNewsForm = new AddNewsForm;
          if ($this->_request->isPost())
          {
