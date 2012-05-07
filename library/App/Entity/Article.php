@@ -28,7 +28,7 @@ class Article
     private $_source;
     /** @Column(type="text", name="content") */
     private $_content;
-    /** @Column(type="datetime", name="embargo")*/
+    /** @Column(type="datetime", name="embargo", nullable="true")*/
     private $_embargo;
     /** @Column(type="datetime", name="created")*/
     private $_created;
