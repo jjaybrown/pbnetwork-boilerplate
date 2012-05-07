@@ -5,7 +5,7 @@
                 <a href="<?=$this->baseUrl('/profile/view/id/'.$this->article->getAuthor()->getId())?>" class="thumbnail"><img src="<?=$this->article->getAuthor()->getProfile()->getPicture()?>" /></a>
             </div>
             <div class="span7">
-                <h1><?=$this->article->getTitle()?> <small style="font-size:14px;"><?=$this->article->getPosted("l, jS F Y")?></small></h1>
+                <h1><?=$this->article->getTitle()?> <small style="font-size:14px;"><?=($this->article->isPublished())? $this->article->getPosted("l, jS F Y") : ""?></small></h1>
                 <p>
                     <strong><?=$this->article->getSummary()?></strong>
                     <br /><span>Posted by <a href="<?=$this->baseUrl('/profile/view/id/'.$this->article->getAuthor()->getId())?>"><?=$this->article->getAuthor()->getProfile()->getFullName()?></a><?=($this->article->hasBeenEdited() ? ", updated on <strong>".$this->article->getUpdated("l, jS F Y")."</strong></span>" : "")?>

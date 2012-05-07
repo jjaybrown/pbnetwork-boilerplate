@@ -4,3 +4,5 @@ tests/reports/coverage/*
 data/migrations/*
 library/App/Entity/Proxy/*
 application/configs/application.ini
+
+application/modules/news/views/scripts/partials/recentbyAuthor.phtml

@@ -8,7 +8,7 @@
     {
         ?>
         <li>
-            <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=ucwords($article->getTitle())?></a> <small><?=$article->getPosted("l, jS F Y")?></small></h4>
+            <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=ucwords($article->getTitle())?></a> <small><?=($article->isPublished())? $article->getPosted("l, jS F Y") : ""?></small></h4>
         </li>
         <?
     }
