@@ -115,16 +115,19 @@ class News_IndexController extends AppController
                 $article->setContent($data['content']);
                 $article->setAuthor($user);
                
+                if(!$this->_request->getParam('draft'))
+                    $article->publish(true);
+                
                 // Save article
                 try {
                     $this->_em->persist($article);
                     $this->_em->flush();
-                    $this->_flashMessenger->addMessage(array('success', 'Published article successfully'));
+                    $this->_flashMessenger->addMessage(array('success' => 'Published article successfully'));
                     $this->_redirect('/admin/news/');
                 }
                 catch (Exception $e) {
                     // Alert user of error
-                    $this->_flashMessenger->addMessage(array('error', 'Error: '. $e->getMessage()));
+                    $this->_flashMessenger->addMessage(array('error' => 'Error: '. $e->getMessage()));
                     $this->_redirect('/admin/news/index/edit/id/'.$id);
                 }
                 
