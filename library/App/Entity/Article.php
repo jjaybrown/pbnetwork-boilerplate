@@ -24,6 +24,8 @@ class Article
     private $_author;
     /** @Column(type="string", name="summary") */
     private $_summary;
+    /** @Column(type="string", name="source") */
+    private $_source;
     /** @Column(type="text", name="content") */
     private $_content;
     /** @Column(type="datetime", name="embargo")*/
@@ -37,13 +39,14 @@ class Article
     /** @Column(type="boolean", name="published")*/
     private $_published = false;
     
-    public function __construct($title, $user, $summary, $content, \DateTime $embargo = null)
+    public function __construct($title, $user, $summary, $content, $source,  \DateTime $embargo = null)
     {
         $this->_title = $title;
         $this->_author = $user;
         $this->_summary = $summary;
+        $this->_source = $source;
         $this->_content = $content;
-        $this->_embargo = new \DateTime();
+        $this->_embargo = $embargo;
         $this->_created = new \DateTime();
         $this->_updated = new \DateTime();
     }
@@ -86,6 +89,17 @@ class Article
     {
         $this->_summary = $summary;
         $this->_updated = new \DateTime();
+        return $this;
+    }
+    
+    public function getSource()
+    {
+        return $this->_source;
+    }
+    
+    public function setSource($source)
+    {
+        $this->_source = $source;
         return $this;
     }
     
