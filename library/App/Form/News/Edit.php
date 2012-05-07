@@ -38,14 +38,7 @@ class Edit extends \EasyBib_Form
         $content->setRequired(true)
                 ->setValue($this->_article->getContent());
         
-        $submit = new \Zend_Form_Element_Submit('submit');
-        $submit->setLabel("Publish Article");
-        
-        $save = new \Zend_Form_Element_Button('cancel');
-        $save->setLabel("Save Draft")
-                ->setAttrib("class", "btn btn-info");
-        
-        $this->addElements(array($title, $summary, $embargo, $content, $submit, $save));
+        $this->addElements(array($title, $summary, $embargo, $content));
 
         // Setup decorators for form elements
         \EasyBib_Form_Decorator::setFormDecorator(
