@@ -1,18 +1,20 @@
 <!-- Recent news articles -->
 <? if(count($this->articles>0)){ ?>
-<div class="span3 well block">
-    <h3>Recent Articles</h3>
-    <ul>
-    <? 
-    foreach($this->articles as $article)
-    {
+<div class="span4">
+    <div class="well block">
+        <h3>Recent Articles</h3>
+        <ul>
+        <? 
+        foreach($this->articles as $article)
+        {
+            ?>
+            <li>
+                <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=ucwords($article->getTitle())?></a></h4>
+            </li>
+            <?
+        }
         ?>
-        <li>
-            <h4><a href="<?=$this->baseUrl('/news/index/view/id/'.$article->getId())?>"><?=ucwords($article->getTitle())?></a> <small><?=($article->isPublished())? $article->getPosted("l, jS F Y") : ""?></small></h4>
-        </li>
-        <?
-    }
-    ?>
-    </ul>
+        </ul>
+    </div>
 </div>
 <? } ?>
