@@ -18,6 +18,21 @@
 
 h2 a {color: #000 !important;}
 
+/*
+* Articles block
+*/
+.articles {list-style: none; margin-left:0;}
+.articles .article + .article {margin-top:40px;}
+.articles .article h2 {margin-bottom:0; line-height: 24px !important; text-transform: uppercase;} 
+.articles .article h2 small {text-transform: capitalize;}
+.articles .article .content {padding:15px 0; border-top:1px solid #EEE; border-bottom:1px solid #EEE; text-align: justify; font-size:16px;}
+.articles .article .content img
+{
+    width:100%;
+    padding:5px;
+    border:3px solid #EEE;
+    margin:10px 0;
+}
+.articles .article .posted {font-size:11px;}
 .articles .label, .btn {color: #FFF !important;}
-
-a.thumbnail:hover {border-color: #F2BC1B !important;}
+.articles a.thumbnail:hover {border-color: #F2BC1B !important;}
