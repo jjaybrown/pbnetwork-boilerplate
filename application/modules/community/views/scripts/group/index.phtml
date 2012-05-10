@@ -1,7 +1,144 @@
-<?php
+<style>
+    #groups {list-style: none;}
+    #groups + #groups {margin-top:20px;}
+    #groups .group > .content {padding:10px; border:1px solid #ccc;}
+    #groups .group > .content .thumbnail {background-position:bottom; height:138px !important; width:138px !important;}
+</style>
+<div class="hero-unit block">
+    <h1>Groups</h1>
+    <p>Share common hobbies, interests and social activities</p>
+</div>
+<div class="row">
+    <div class="span12">
+        <?php
+        if($this->IsLoggedIn()){
+        ?>
+        <a href="#" class="start btn btn-warning pull-left">Start Group</a>
+        <? } ?>
+        <form class="form-inline pull-right" action="/" method="POST">
+            <fieldset>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span3" id="appendedPrependedInput" name="search" size="16" placeholder="type a group name, activity or category" type="text"><button class="btn btn-inverse" type="submit">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class="clearfix"></div>
+        <div class="row" id="groups">
+            <div class="span2 group">
+                <div class="content">
+                    <div class="thumbnail" style="background:url('/img/groups/group4ca.jpg') no-repeat;"></div>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <div class="thumbnail" style="background:url('/img/groups/group396.jpg') no-repeat;"></div>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" id="groups">
+            <div class="span2 group">
+                <div class="content">
+                    <div class="thumbnail" style="background:url('/img/groups/group4ca.jpg') no-repeat;"></div>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <div class="thumbnail" style="background:url('/img/groups/group396.jpg') no-repeat;"></div>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+            <div class="span2 group">
+                <div class="content">
+                    <span class="thumbnail">
+                        <img src="/img/groups/group4ca.jpg" />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
+<!-- Start Group modal -->
+<div class="modal fade" id="access">
+   <form id="<?=$this->form->getId()?>" method="<?=$this->form->getMethod()?>" 
+            action="<?=$this->form->getAction()?>" enctype="<?=$this->form->getAttrib('enctype')?>">
+        <div class="modal-header">
+            <h3>Start a new Group</h3>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-info">
+                <p>Create your own group if you know of a subject people are interested in and it doesn't already have a group.</p>
+                <p><strong>Starting a group is free and easy. Just fill in the fields below.</strong></p>
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <?=$this->form->getElement('submit')?>
+            <a href="#" class="btn pull-right" data-dismiss="modal">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("a.start").click(function()
+        {
+            $('#access').modal('toggle');
+        });
+        
+    });
+</script>

@@ -172,6 +172,7 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'site:profile',array('view', 'create', 'interests', 'facebook'));
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
+                $this->allow($member, 'community:group',array('create'));
                 $this->allow($guest, 'forum:index',array('index'));
                 $this->allow($guest, 'forum:thread',array('view'));
                 $this->allow($member, 'forum:post',array('index', 'view', 'add', 'reply'));
