@@ -1,0 +1,29 @@
+<style>
+    ul#tags-container {list-style: none; margin:0; padding:0; width:200px;}
+    ul#tags-container li {float:left;}
+    ul#tags-container li+li {margin-left:10px;}
+</style>
+<!-- Add Tags -->
+<div class="pull-right">
+    <h4>Tags</h4>
+    <div class="control-group">
+        <div class="controls" style="margin-left:0;">
+            <div class="input-append">
+                <input class="span2 tagging" id="appendedInputButton" size="16" type="text"><button class="btn btn-inverse add-tag" type="button">Add</button>
+            </div>
+        </div>
+    </div>
+    <ul id="tags-container">
+        
+    </ul>
+</div>
+<script>
+    $(document).ready(function()
+    {
+        $(".add-tag").click(function()
+        {
+            $("#tags-container").append("<li><span class='label'><i class='icon-tag icon-white'></i> "+$(".tagging").attr('value')+"</span></li>");
+            $(".tagging").attr('value', '');
+        });
+    });
+</script>

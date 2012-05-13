@@ -28,6 +28,9 @@ class Add extends \EasyBib_Form
         $content = new \Zend_Form_Element_Textarea('content');
         $content->setRequired(true);
         
+        $tags = new \Zend_Form_Element_Hidden("tags");
+        $tags->setAttrib('name', 'tags[]');
+        
         /*$submit = new \Zend_Form_Element_Submit('submit');
         $submit->setLabel("Publish Article");
         
@@ -35,7 +38,7 @@ class Add extends \EasyBib_Form
         $save->setLabel("Save Draft")
                 ->setAttrib("class", "btn btn-info");*/
         
-        $this->addElements(array($title, $summary, $embargo, $content));
+        $this->addElements(array($title, $summary, $embargo, $content, $tags));
 
         // Setup decorators for form elements
         \EasyBib_Form_Decorator::setFormDecorator(

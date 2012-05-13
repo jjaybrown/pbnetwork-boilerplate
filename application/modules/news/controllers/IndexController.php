@@ -55,6 +55,7 @@ class News_IndexController extends AppController
         $addNewsForm = new AddNewsForm;
          if ($this->_request->isPost())
          {
+             \Zend_Debug::dump($this->_request->getPost());die;
             if($addNewsForm->isValid($this->_request->getPost())) 
             {
                 // Get form data

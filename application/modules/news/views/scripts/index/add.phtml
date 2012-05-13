@@ -1,14 +1,19 @@
 <div class="page-header">
     <h1>Write a new Article</h1>
 </div>
-<form id="<?=$this->form->getId()?>" action="<?=$this->form->getAction()?>" method="<?=$this->form->getMethod()?>">
-    <?php
-    echo $this->form->getElement('title');
-    echo $this->form->getElement('summary');
-    echo $this->form->getElement('start');
-    echo $this->form->getElement('content');
-    ?>
-    <div class="form-actions">
+<form id="<?=$this->form->getId()?>" action="<?=$this->form->getAction()?>" method="<?=$this->form->getMethod()?>" class="form-horizontal">
+    <?=$this->partial('partials/addTags.phtml')?>
+    <div class="pull-left">
+        <?php
+        echo $this->form->getElement('title');
+        echo $this->form->getElement('summary');
+        echo $this->form->getElement('start');
+        echo $this->form->getElement('content');
+        echo $this->form->getElement('tags');
+        ?>
+    </div>
+    <div class="clearfix"></div>
+    <div class="">
         <button type="submit" class="btn btn-primary" >Publish Article</button>
         <input type="button" class="btn btn-info" id="draft" value="Save Draft" />
     </div>
