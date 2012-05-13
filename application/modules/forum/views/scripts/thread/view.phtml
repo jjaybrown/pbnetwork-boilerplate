@@ -46,13 +46,19 @@
                     'controller' => 'thread',
                     'action' => 'add',
                     'forum' => $this->forum->getId()
-                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a>
+                ))?>" class="btn btn-warning btn-mini pull-right"><i class="icon-comment icon-white"></i> New Thread</a>
             <? } ?>
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td class="span7">Title</td>
+                <td class="span1">Posts</td>
+                <td class="span1">Views</td>
+                <td class="span3">Latest Post</td>
+            </tr>
         <?
-        foreach($this->forum->getThreads() as $thread)
+        foreach($this->threads as $thread)
         {
             ?>
             <tr>
@@ -63,19 +69,29 @@
                             'controller' => 'post',
                             'action' => 'index',
                             'thread' => $thread->getId()
-                        ))?>"><i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> <small class="visible-desktop visible-tablet"><?=$thread->getDescription()?></small>
+                        ))?>">
+                        <? echo ($thread->sticky) ? '<i class="icon-sticky" title="sticky"></i>' : '' ?>
+                        <i class="<? echo ($thread->locked ? 'icon-folder-close' : 'icon-folder-open');?>"></i> <?=ucwords($thread->getName())?></a> 
+                        <small class="visible-desktop visible-tablet"><?=$thread->getDescription()?></small>
                     </h4>
                 </td>
                 <td class="span1">
-                    <? $posts = $thread->getPostCount(); ?>
-                    <i class="icon-comment" title="Post count: <?=$posts?>"></i> <strong><?=$posts?></strong>
+                    <strong><?=$thread->getPostCount()?></strong>
                 </td>
-                <td class="span3">
+                <td class="span1">
+                    <strong><?=$thread->views?></strong>
+                </td>
+                <td class="span2">
                     <span class="visible-desktop visible-tablet">
-                        Updated: <?=$thread->getUpdated('H:iA dS F \'y')?>
+                        <?php
+                        if($thread->getUpdated('d-m-Y') == date('d-m-Y'))
+                        {
+                            echo "Today at ".$thread->getUpdated('H:ia');
+                        }else{
+                            echo $thread->getUpdated('jS M Y');
+                        }
+                        ?>
                     </span>
-                    <span class="visible-phone">
-                        <span rel="tooltip" title="Updated: <?=$thread->getUpdated('H:iA dS F \'y')?>" style="width:80px;"><i class="icon-calendar"></i></span>
                 </td>
             </tr>
             <?
@@ -119,6 +135,10 @@
         });
         
         $('i.icon-comment').tooltip({
+           'placement' : 'top'
+        });
+        
+         $('i.icon-sticky').tooltip({
            'placement' : 'top'
         });
         

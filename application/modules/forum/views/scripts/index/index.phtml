@@ -47,15 +47,15 @@
                         if(!is_null($forum->latestPost))
                         {
                             ?>
-                            <p><a href="/forum/post/index/thread/<?=$forum->latestPost->getThread()->getId()?>/id/<?=$forum->getId()?>"><?=ucwords($forum->latestPost->getThread()->getName())?></a>
-                            by 
+                            <p>Latest: <a href="/forum/post/index/thread/<?=$forum->latestPost->getThread()->getId()?>/id/<?=$forum->getId()?>"><?=ucwords($forum->latestPost->getThread()->getName())?></a>
+                            <br/>
                             <?
-                            echo "<strong>".ucwords($forum->latestPost->getUser()->getUsername())."</strong> ";
+                            echo "<strong>".ucwords($forum->latestPost->getUser()->getUsername())."</strong>, ";
                             if($forum->latestPost->getCreated('d-m-Y') == date('d-m-Y'))
                             {
                                 echo "Today at ".$forum->latestPost->getCreated('H:ia');
                             }else{
-                                echo "on ".$forum->latestPost->getCreated('jS M \'y');
+                                echo $forum->latestPost->getCreated('jS M \'y');
                             }
                             ?></p><?
                         }

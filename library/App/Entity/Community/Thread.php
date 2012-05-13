@@ -44,6 +44,9 @@ class Thread
     public $locked = false;
     /** @Column(type="boolean", name="sticky") */
     public $sticky = false;
+    /** @Column(type="integer", name="views") */
+    public $views = 0;
+    
     
     public function __construct($forum, $name, $description, $private = false, $locked = false, $sticky = false)
     {

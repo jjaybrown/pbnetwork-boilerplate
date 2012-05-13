@@ -197,4 +197,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         Zend_Mail::setDefaultTransport($transport);
     }
+    
+    /**
+     * init helpers 
+     */
+    
+    public function _initHelpers()
+    {
+        Zend_Controller_Action_HelperBroker::addPrefix('App_Action_Helper');
+    }
 }

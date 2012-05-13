@@ -14,3 +14,18 @@ form.addpost ul li {margin-left:10px; margin-bottom:20px;}
 form.addpost ul li .post {padding:5px; border-top: 1px solid #DDD;}
 
 iframe {border:0;}
+
+.icon-sticky {background-position:0 !important; background-image:url('../img/icons/glyphicons_335_pin_classic.png') !important;}
+a:hover {text-decoration: none !important;}
+
+.post .post-content img {
+    padding:5px; border:3px solid #EEE;
+    line-height: 1;
+    border: 1px solid #DDD;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}

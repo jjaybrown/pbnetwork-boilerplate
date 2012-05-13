@@ -45,7 +45,7 @@ class UserActivity
         $this->_action = $request->getActionName();
         $this->_controller = $request->getControllerName();
         $this->_module = $request->getModuleName();
-        $this->_params = $this->_filterParams($request->getUserParams());
+        $this->_params = $this->filterParams($request->getUserParams());
         $this->_when = new \DateTime;
     }
     
@@ -99,7 +99,7 @@ class UserActivity
      * @param mixed $params
      * @return mixed 
      */
-    protected function _filterParams($params)
+    public static function filterParams($params)
     {
         foreach($params as $key => $value)
         {

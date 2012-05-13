@@ -1,4 +1,4 @@
-<div class="container">
+<div class="row">    
     <div class="hero-unit block">
         <h1>Forums</h1>
         <p>
@@ -43,7 +43,7 @@
                     'controller' => 'post',
                     'action' => 'add',
                     'thread' => $this->thread->getId()
-                ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                ))?>" class="btn btn-warning btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
                 <? } ?>
             </tr>
         </thead>
@@ -53,7 +53,7 @@
         {
             ?>
             <tr id="<?=($key+1)?>">
-                <td class="span12 post">
+                <td class="post">
                     <div class="profile-block pull-left">
                         <div class="avatar">
                             <a href="<?=$this->url(array(
@@ -70,7 +70,7 @@
                         <div class="post-mast">
                             <span><strong><a href="#<?=($key+1)?>">#<?=($key+1)?></a></strong> Posted: <i><?=$post->getCreated("g:ia l jS F Y")?></i></span>
                         </div>
-                        <div class="post-content span12">
+                        <div class="post-content span10">
                             <?=$post->getContent()?>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
         ?>
             <tr>
                 <td>
-                    
+
                 </td>
             </tr>
         </tbody>
@@ -102,7 +102,7 @@
                         'controller' => 'post',
                         'action' => 'add',
                         'thread' => $this->thread->getId()
-                    ))?>" class="btn btn-primary btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
+                    ))?>" class="btn btn-warning btn-mini pull-right"><i class="icon-edit icon-white"></i> New Post</a>
                     <? } ?>
                     <div class="pagination pagination-centered">
                         <ul>
@@ -120,6 +120,7 @@
             </tr>
         </tfoot>
     </table>
+
     <ul class="breadcrumb" id="top">
         <li><a href="<?=$this->url(array(
             'module' => 'forum',
@@ -148,6 +149,7 @@
         ?>
     </ul>
 </div>
+
 <script type="text/javascript">
     $(document).ready(function(){
         $('a').tooltip({

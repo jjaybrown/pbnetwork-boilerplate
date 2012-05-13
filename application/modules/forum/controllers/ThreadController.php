@@ -5,36 +5,32 @@ use App\Form\Community\Forums\AddThread as AddThread;
 
 class Forum_ThreadController extends AppController
 {
-    
-    private $_forums;
-    private $_breadcrumbs;
-    
     public function init()
     {
-        parent::init();
-        
-        $this->_forums = $this->_em->getRepository('App\Entity\Community\Forum')->findAll();
-        
+        parent::init();      
     }
     
     public function viewAction()
     {
         // Get forum id
         $id = $this->_request->getParam('id');
+        $forum = $this->_em->find("App\Entity\Community\Forum", $id);
+        $threads = $this->_em->getRepository("App\Entity\Community\Thread")->findAllBySticky($id);
         
-        $this->_forums = $this->_em->find('App\Entity\Community\Forum' ,$id);
-        
-        $this->_breadcrumbs = new Zend_Navigation();
-        $this->_breadcrumbs->addPage(array(
+        $breadcrumbs = new Zend_Navigation();
+        $breadcrumbs->addPage(array(
             'module' => 'forum',
             'controller' => 'thread',
             'action' => 'view',
             'id' => $this->_request->getParam('id'),
-            'label' => $this->_forums->getName()
+            'label' => $forum->getName()
         ));
         
-        $this->view->breadcrumbs = $this->_breadcrumbs;
-        $this->view->forum = $this->_forums;
+        $this->view->breadcrumbs = $breadcrumbs;
+        $this->view->forum = $forum;
+        $this->view->threads = $threads;
+        
+        $this->view->paginator = \Zend_Paginator::factory($threads);
     }
     
     public function addAction()
@@ -44,6 +40,8 @@ class Forum_ThreadController extends AppController
         // Get all categories if no id given
         if(is_null($id))
         {
+            $this->_forums = $this->_em->getRepository('App\Entity\Community\Forum')->findAll();  
+            
             // Loop throuh array of entities and store name of forum for select
             $forums = array();
             foreach($this->_forums as $forum)

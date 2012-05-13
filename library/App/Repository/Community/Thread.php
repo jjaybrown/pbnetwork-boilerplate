@@ -18,4 +18,10 @@ class Thread extends EntityRepository
         $query = $this->_em->createQuery("SELECT COUNT(t) FROM App\Entity\Community\Thread t");
         return $query->getSingleResult();
     }
+    
+    public function findAllBySticky($forum_id)
+    {
+        $query = $this->_em->createQuery("SELECT t FROM App\Entity\Community\Thread t WHERE t._forum = '$forum_id' ORDER BY t.sticky DESC");
+        return $query->getResult();
+    }
 }

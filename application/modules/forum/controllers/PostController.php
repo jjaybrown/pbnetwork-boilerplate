@@ -14,7 +14,11 @@ class Forum_PostController extends AppController
         parent::init();
         $id = $this->_request->getParam('thread');
         $this->_thread = $this->_em->find('App\Entity\Community\Thread', $id);
-        $this->_posts = $this->_thread->getPosts();
+        
+        // Log thread views
+        $this->_thread->views = ($this->_thread->views + 1);
+        $this->_em->persist($this->_thread);
+        $this->_em->flush();
     }
         
     public function indexAction()
