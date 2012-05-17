@@ -55,7 +55,7 @@ class Site_ProfileController extends AppController
         if ($this->_request->isPost())
         {
             $data = $this->_request->getPost();
-            
+            \Zend_Debug::dump($_FILES);die;
             if ($createForm->isValid($data))
             {
                 $dob = \DateTime::createFromFormat("d-m-Y", $data['dob']);
@@ -87,25 +87,6 @@ class Site_ProfileController extends AppController
             }else{
                 $createForm->buildBootstrapErrorDecorators();
             }
-        }else{
-            $picture = new \Zend_Form_Element_File('picture', array(
-                'label' => 'Picture',
-                'required' => true,
-                'MaxFileSize' => 2097152, // 2097152 bytes = 2 megabytes
-                'validators' => array(
-                    array('Count', false, 1),
-                    array('Size', false, 2097152),
-                    array('Extension', false, 'gif,jpg,png'),
-                    array('ImageSize', false, array('minwidth' => 100,
-                                                    'minheight' => 100,
-                                                    'maxwidth' => 1000,
-                                                    'maxheight' => 1000))
-                )
-            ));
-            
-            $picture->setValueDisabled(true);
-            $picture->setLabel('');
-            $createForm->addElement($picture);
         }
         
         $this->view->gravitar = Profile::get_gravatar($user->getEmailAddress());
