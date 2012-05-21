@@ -43,6 +43,7 @@ class UserActivity
     {
         $this->_user = $user;
         $this->_module = $module;
+        $this->_controller = $controller;
         $this->_action = $action;
         $this->_params = $this->_filterParams($params);
         $this->_when = new \DateTime;
