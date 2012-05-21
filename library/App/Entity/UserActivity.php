@@ -39,13 +39,12 @@ class UserActivity
      * @param \App\Entity\User $user
      * @param \Zend_Controller_Request_Abstract $request
      */
-    public function __construct($user, \Zend_Controller_Request_Abstract $request)
+    public function __construct($user, $module, $controller, $action, $params)
     {
         $this->_user = $user;
-        $this->_action = $request->getActionName();
-        $this->_controller = $request->getControllerName();
-        $this->_module = $request->getModuleName();
-        $this->_params = $this->_filterParams($request->getUserParams());
+        $this->_module = $module;
+        $this->_action = $action;
+        $this->_params = $this->_filterParams($params);
         $this->_when = new \DateTime;
     }
     
