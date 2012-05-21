@@ -116,23 +116,34 @@ class Basket_IndexController extends Zend_Controller_Action
             $quantity->setValue($item->getQuantity());
 
             $quantity->setAttrib('onChange', 'document.cart.submit()');
+            
             // Check we have enough tickets to display our max purchase amount
             $max_purchase_amount = \Zend_Registry::get('max_purchase_amount');
-
-            // Get the event information
-            $event = $this->_em->getRepository("\App\Entity\Event")->find($item->getEventId());
-
-            if($event->getNumTickets() >= $max_purchase_amount)
+            
+            // Check if it's an event item
+            switch(get_class($item))
             {
-                for($i = 1; $i <= $max_purchase_amount; $i++)
-                {
-                    $quantity->addMultiOption($i, $i);
-                }
-            }else{
-                for($i = 1; $i <= $event->getNumTickets(); $i++)
-                {
-                    $quantity->addMultiOption($i, $i);
-                }
+                case "App\Classes\Cart\Ticket":
+                    // Get the event information
+                    $event = $this->_em->getRepository("\App\Entity\Event")->find($item->getEventId());
+
+                    if($event->getNumTickets() >= $max_purchase_amount)
+                    {
+                        for($i = 1; $i <= $max_purchase_amount; $i++)
+                        {
+                            $quantity->addMultiOption($i, $i);
+                        }
+                    }else{
+                        for($i = 1; $i <= $event->getNumTickets(); $i++)
+                        {
+                            $quantity->addMultiOption($i, $i);
+                        }
+                    }
+                    break;
+                default:
+                    // Dealing with a normal item no special checks on quantity
+                        $quantity->addMultiOption($item->getQuantity(), $item->getQuantity());
+                    break;
             }
             
             // Add element to form
