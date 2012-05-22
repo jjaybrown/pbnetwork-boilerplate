@@ -8,6 +8,7 @@ class Create extends \EasyBib_Form
         \ZendX_JQuery::enableForm($this);
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
+        $this->setAttrib('enctype', 'multipart/form-data');
         $this->setAction($this->getView()->baseUrl('/profile/create'));
         $this->setAttrib('id', 'profile');       
 
@@ -36,12 +37,30 @@ class Create extends \EasyBib_Form
             ->setAttribs(array('class' => 'span3', 'rows' => '5', 'cols' => '10'))
             ->setAttrib('placeholder', 'little about you');
         
+        $picture = new \Zend_Form_Element_File('picture', array(
+                'label' => 'Picture',
+                'required' => true,
+                'MaxFileSize' => 2097152, // 2097152 bytes = 2 megabytes
+                'validators' => array(
+                    array('Count', false, 1),
+                    array('Size', false, 2097152),
+                    array('Extension', false, 'gif,jpg,png'),
+                    array('ImageSize', false, array('minwidth' => 100,
+                                                    'minheight' => 100,
+                                                    'maxwidth' => 1000,
+                                                    'maxheight' => 1000))
+                )
+            ));
+            
+        $picture->setValueDisabled(true);
+        $picture->setLabel('');
+        
         $submit = new \Zend_Form_Element_Button('submit');
         $submit->setLabel("Save Profile");
         $submit->setIgnore(true)
                 ->setAttrib('class', 'pull-right btn-primary');
         
-        $this->addElements(array($first, $last, $dob, $location, $interests, $bio, $submit));
+        $this->addElements(array($first, $last, $dob, $location, $interests, $bio, $picture, $submit));
         
         // Setup decorators for form elements
         \EasyBib_Form_Decorator::setFormDecorator(

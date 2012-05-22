@@ -45,7 +45,13 @@ class UserActivity extends \Zend_Controller_Plugin_Abstract
                 $user = $em->find("\App\Entity\User", $user->getId());
                 
                 // Log user activity
-                $activity = new \App\Entity\UserActivity($user, $request);
+                $activity = new \App\Entity\Tracking\UserActivity(
+                        $user, 
+                        $request->getModuleName(),
+                        $request->getControllerName(),
+                        $request->getActionName(),
+                        $request->getUserParams()
+                 );
 
                 try{
                     // Save user activity

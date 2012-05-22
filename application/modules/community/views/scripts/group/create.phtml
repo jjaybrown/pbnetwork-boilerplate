@@ -1,7 +1,10 @@
+<form id="<?=$this->form->getId()?>" method="<?=$this->form->getMethod()?>" 
+            action="<?=$this->form->getAction()?>" enctype="<?=$this->form->getAttrib('enctype')?>">
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+echo $this->form->getElement('name');
+echo $this->form->getElement('description');
+echo $this->form->getElement('image');
+echo $this->form->getElement('submit');
 ?>
+</form>

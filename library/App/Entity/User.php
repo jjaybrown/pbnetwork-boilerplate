@@ -55,7 +55,7 @@ class User
     /**
      * @param \Doctrine\Common\Collections\ArrayCollection $_activity
      * 
-     * @OneToMany(targetEntity="App\Entity\UserActivity", mappedBy="_user", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="App\Entity\Tracking\UserActivity", mappedBy="_user", cascade={"persist", "remove"})
      */
     private $_activity;
     

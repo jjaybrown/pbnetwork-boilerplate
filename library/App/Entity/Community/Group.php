@@ -15,7 +15,7 @@ class Group
     private $_id;
     /** @Column(type="string", name="name") */
     private $_name;
-    /** @Column(type="string", name="description") */
+    /** @Column(type="string", name="description", length="160") */
     private $_description;
     /** @Column(type="boolean", name="private") */
     public $private = false;
