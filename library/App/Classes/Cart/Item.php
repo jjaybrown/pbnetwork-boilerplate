@@ -9,11 +9,11 @@ class Item
     protected $_quantity;
     protected $_inStock = true;
 
-    public function __construct($code, $name, $price, $quantity = 0){
+    public function __construct($code, $name, $price){
         $this->code = $code;
         $this->_name = $name;
         $this->_price = $price;
-        $this->_quantity = $quantity;
+        $this->_quantity = (int)0;
     }
 
     public function getName(){

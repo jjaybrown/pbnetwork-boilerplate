@@ -123,7 +123,6 @@ class Acl extends \Zend_Acl
         
         $this->add(new \Zend_Acl_Resource('community:index'));
         $this->add(new \Zend_Acl_Resource('community:group'));
-        $this->add(new \Zend_Acl_Resource('community:exchange'));
         
         $this->add(new \Zend_Acl_Resource('forum:category'));
         $this->add(new \Zend_Acl_Resource('forum:index'));
@@ -174,7 +173,6 @@ class Acl extends \Zend_Acl
                 $this->allow($member, 'event:calendar',array('index', 'view'));
                 $this->allow($member, 'basket:checkout',array('index', 'paypal', 'complete'));
                 $this->allow($member, 'community:group',array('create'));
-                $this->allow($member, 'community:exchange',array('add'));
                 $this->allow($guest, 'forum:index',array('index'));
                 $this->allow($guest, 'forum:thread',array('view'));
                 $this->allow($member, 'forum:post',array('index', 'view', 'add', 'reply'));
@@ -191,7 +189,6 @@ class Acl extends \Zend_Acl
                 
                 $this->allow($guest, 'community:index',array('index'));
                 $this->allow($guest, 'community:group',array('index'));
-                $this->allow($guest, 'community:exchange',array('view'));
                 
                 $this->allow($guest, 'news:index',array('index', 'view'));
                 
