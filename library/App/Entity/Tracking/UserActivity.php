@@ -108,7 +108,7 @@ class UserActivity
      * @param mixed $params
      * @return mixed 
      */
-    public static function filterParams($params)
+    protected function _filterParams($params)
     {
         //\Zend_Debug::dump($params);die;
         foreach($params as $key => $value)
