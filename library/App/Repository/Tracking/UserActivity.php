@@ -1,5 +1,5 @@
 <?php
-namespace App\Repository;
+namespace App\Repository\Tracking;
 
 use Doctrine\ORM\EntityRepository;
  
