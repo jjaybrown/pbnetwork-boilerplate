@@ -1,9 +1,9 @@
 <?php
-namespace App\Entity;
+namespace App\Entity\Tracking;
 use \Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 
 /**
- * @Entity(repositoryClass="App\Repository\UserActivity")
+ * @Entity(repositoryClass="App\Repository\Tracking\UserActivity")
  * @Table(name="user_activity")
  */
 class UserActivity
@@ -29,8 +29,14 @@ class UserActivity
     private $_controller;
     /** @Column(type="string", name="module") */
     private $_module;
-    /** @Column(type="array", name="params") */
+    
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $_params
+     * 
+     * @OneToMany(targetEntity="App\Entity\Tracking\Param", mappedBy="_activity", cascade={"persist", "remove"})
+     */
     private $_params;
+    
     /** @Column(type="datetime", name="created") */
     private $_when;
     
@@ -45,7 +51,10 @@ class UserActivity
         $this->_module = $module;
         $this->_controller = $controller;
         $this->_action = $action;
-        $this->_params = $this->_filterParams($params);
+        $this->_params = new ArrayCollection();
+        
+        // Add params to user activity 
+        $this->_filterParams($params);
         $this->_when = new \DateTime;
     }
     
@@ -101,6 +110,7 @@ class UserActivity
      */
     protected function _filterParams($params)
     {
+        //\Zend_Debug::dump($params);die;
         foreach($params as $key => $value)
         {
             switch($key)
@@ -109,6 +119,11 @@ class UserActivity
                 case "controller":
                 case "module":
                     unset($params[$key]);
+                    break;
+                default:
+                    // Add param to params ArrayCollection
+                    $param = new \App\Entity\Tracking\Param($this, $key, $value);
+                    $this->_params->add($param);
                     break;
             }
         }

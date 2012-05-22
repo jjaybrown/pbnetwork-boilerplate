@@ -15,7 +15,7 @@ class Zend_View_Helper_IsUserActive extends Zend_View_Helper_Abstract
     {
         // Get user's activity
         $em = \Zend_Registry::get('em');
-        $activity = $em->getRepository("\App\Entity\UserActivity")->findByInterval($user->getId(), self::$interval);
+        $activity = $em->getRepository("\App\Entity\Tracking\UserActivity")->findByInterval($user->getId(), self::$interval);
         
         // Check if any records are returned
         if(count($activity) > 0)
